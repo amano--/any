@@ -1,0 +1,1 @@
+Onetabのようなchrome extention のTypescriptコードを生成してください
