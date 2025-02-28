@@ -23,8 +23,8 @@ const getQueryClient = () => {
 
 export const api = createTRPCReact<AppRouter>();
 
-// const isDev = true;//process.env.NODE_ENV === "development";
-// export const api = mockApi//isDev? mockApi : createTRPCReact<AppRouter>();
+// const isDev = true; //process.env.NODE_ENV === "development";
+// export const api = isDev ? mockApi : createTRPCReact<AppRouter>();
 
 /**
  * Inference helper for inputs.
@@ -61,7 +61,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
           },
         }),
       ],
-    })
+    }),
   );
 
   return (

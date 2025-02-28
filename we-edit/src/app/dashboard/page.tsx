@@ -1,4 +1,4 @@
-import { AppSidebar } from "~/shadcn/components/app-sidebar"
+import { AppSidebar } from "~/shadcn/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,13 +6,13 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "~/shadcn/components/ui/breadcrumb"
-import { Separator } from "~/shadcn/components/ui/separator"
+} from "~/shadcn/components/ui/breadcrumb";
+import { Separator } from "~/shadcn/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "~/shadcn/components/ui/sidebar"
+} from "~/shadcn/components/ui/sidebar";
 
 export default function Page() {
   return (
@@ -48,5 +48,5 @@ export default function Page() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
