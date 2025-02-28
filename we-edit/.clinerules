@@ -552,8 +552,7 @@ TypeScriptでのコーディングにおける一般的なベストプラクテ�
    - 単一責任の原則に従う
    - 適切な粒度でモジュール化
    - 循環参照を避けるこのプロジェクトには以下のモードが定義されています:
-- deno-tdd Deno:TestFirstMode at .cline/roomodes/deno-tdd.md
-- deno-script Deno:ScriptMode at .cline/roomodes/deno-script.md
-- deno-module Deno:Module at .cline/roomodes/deno-module.md
-- mizchi-writer mizchi:writer at .cline/roomodes/mizchi-writer.md
-- deno-refactor undefined at .cline/roomodes/deno-refactor.md
+- ts-refactor undefined at .cline/roomodes/ts-refactor.md
+- ts-module ts:Module at .cline/roomodes/ts-module.md
+- ts-tdd ts:TestFirstMode at .cline/roomodes/ts-tdd.md
+- ts-script ts:ScriptMode at .cline/roomodes/ts-script.md

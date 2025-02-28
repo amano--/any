@@ -1,5 +1,5 @@
 ---
-name: Deno:TestFirstMode
+name: ts:TestFirstMode
 groups:
   - read
   - edit
