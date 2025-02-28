@@ -61,11 +61,23 @@ export default async function Home() {
             </div>
           </div>
 
-          <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="dashboard"
-              target="_blank"
-            >dashboard</Link>
+          <div>
+            <h2>テストリンク集</h2>
+            <div className="flex flex-col gap-4">
+              <Link
+                className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
+                href="dashboard"
+              >
+                dashboard
+              </Link>
+              <Link
+                className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
+                href="bookmark/edit"
+              >
+                ブックマーク
+              </Link>
+            </div>
+          </div>
 
           {session?.user && <LatestPost />}
         </div>

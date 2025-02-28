@@ -103,6 +103,35 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }));
 
+export const bookmarks = createTable(
+  "bookmark",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    createdById: text("created_by", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    url: text("url", { length: 2048 }).notNull(),
+    title: text("title", { length: 512 }).notNull(),
+    description: text("description", { length: 2048 }),
+    tags: text("tags", { length: 2048 }), // JSON文字列として保存
+    parentId: text("parent_id", { length: 255 }), // Chromeブックマークの親フォルダID
+    index: int("index", { mode: "number" }), // フォルダ内での並び順
+    dateAdded: int("date_added", { mode: "timestamp" }), // Chromeでの追加日時
+    createdAt: int("created_at", { mode: "timestamp" })
+      .default(sql`(unixepoch())`)
+      .notNull(),
+  },
+  (bookmark) => ({
+    createdByIdIdx: index("bookmark_created_by_idx").on(bookmark.createdById),
+    urlIndex: index("bookmark_url_idx").on(bookmark.url),
+    parentIdIdx: index("bookmark_parent_id_idx").on(bookmark.parentId),
+  })
+);
+
+export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
+  createdBy: one(users, { fields: [bookmarks.createdById], references: [users.id] }),
+}));
+
 export const verificationTokens = createTable(
   "verification_token",
   {

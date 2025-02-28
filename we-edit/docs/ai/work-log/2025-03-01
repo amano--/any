@@ -1,0 +1,20 @@
+# 2025年3月1日の作業ログ
+
+## 実装内容
+
+### ブックマーク機能の実装
+- ブックマークコンポーネントの作成 (`src/app/_components/bookmark.tsx`)
+- ブックマークAPIルーターの実装 (`src/server/api/routers/bookmark.ts`)
+- ブックマーク編集ページの作成 (`src/app/bookmark/edit/page.tsx`)
+- データベーススキーマの更新 (`src/server/db/schema.ts`)
+
+## 技術的な詳細
+- Next.jsのApp Routerを活用したページ構造の実装
+- tRPCを使用したタイプセーフなAPIエンドポイントの作成
+- Drizzle ORMを使用したデータベース操作の実装
+- shadcn/uiコンポーネントを活用したUI実装
+
+## 次のステップ
+- [ ] ブックマークのCRUD操作のテスト実装
+- [ ] Chrome拡張機能とのブックマーク同期機能の実装
+- [ ] ブックマークの一覧表示機能の改善
