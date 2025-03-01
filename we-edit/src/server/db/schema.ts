@@ -113,6 +113,7 @@ export const bookmarks = createTable(
     url: text("url", { length: 2048 }).notNull(),
     title: text("title", { length: 512 }).notNull(),
     description: text("description", { length: 2048 }),
+    icon: text("icon", { length: 2048 }), // アイコンのURL
     tags: text("tags", { length: 2048 }), // JSON文字列として保存
     parentId: text("parent_id", { length: 255 }), // Chromeブックマークの親フォルダID
     index: int("index", { mode: "number" }), // フォルダ内での並び順
@@ -130,6 +131,49 @@ export const bookmarks = createTable(
 
 export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
   createdBy: one(users, { fields: [bookmarks.createdById], references: [users.id] }),
+}));
+
+/**
+ * ブックマークツリー用のテーブル定義
+ * 階層構造を表現するために自己参照する
+ */
+export const bookmarkTrees = createTable(
+  "bookmark_tree",
+  {
+    id: text("id", { length: 255 })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    name: text("name", { length: 255 }).notNull(),
+    parentId: text("parent_id", { length: 255 }),  // 参照は relations で設定
+    position: int("position", { mode: "number" }).notNull(),
+    userId: text("user_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    createdAt: int("created_at", { mode: "timestamp" })
+      .default(sql`(unixepoch())`)
+      .notNull(),
+    updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
+      () => new Date()
+    ),
+  },
+  (table) => ({
+    parentIdIdx: index("bookmark_tree_parent_id_idx").on(table.parentId),
+    userIdIdx: index("bookmark_tree_user_id_idx").on(table.userId),
+    positionIdx: index("bookmark_tree_position_idx").on(table.position),
+  })
+);
+
+export const bookmarkTreesRelations = relations(bookmarkTrees, ({ one, many }) => ({
+  parent: one(bookmarkTrees, {
+    fields: [bookmarkTrees.parentId],
+    references: [bookmarkTrees.id],
+  }),
+  children: many(bookmarkTrees),
+  user: one(users, {
+    fields: [bookmarkTrees.userId],
+    references: [users.id],
+  }),
 }));
 
 export const verificationTokens = createTable(

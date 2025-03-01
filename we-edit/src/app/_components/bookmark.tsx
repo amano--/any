@@ -1,4 +1,5 @@
 import { type FC } from "react";
+import { Link } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -22,9 +23,44 @@ const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark }) => {
   const tags = bookmark.tags ? JSON.parse(bookmark.tags) as string[] : [];
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-lg">
+    <Card className="w-full flex">
+      <div className="p-6">
+        {bookmark.icon ? (
+          <img
+            src={bookmark.icon}
+            alt={`${bookmark.title} favicon`}
+            className="w-16 h-16 object-contain"
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              const parent = e.currentTarget.parentElement;
+              if (parent) {
+                const fallback = document.createElement('div');
+                fallback.className = 'w-16 h-16 flex items-center justify-center';
+                const icon = document.createElement('div');
+                icon.className = 'text-muted-foreground';
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('width', '24');
+                svg.setAttribute('height', '24');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('fill', 'none');
+                svg.setAttribute('stroke', 'currentColor');
+                svg.setAttribute('stroke-width', '2');
+                svg.setAttribute('stroke-linecap', 'round');
+                svg.setAttribute('stroke-linejoin', 'round');
+                svg.innerHTML = '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>';
+                icon.appendChild(svg);
+                fallback.appendChild(icon);
+                parent.appendChild(fallback);
+              }
+            }}
+          />
+        ) : (
+          <Link className="w-16 h-16 text-muted-foreground" />
+        )}
+      </div>
+      <CardHeader className="flex-1">
+        <CardTitle className="text-xl">
           <a
             href={bookmark.url}
             target="_blank"
@@ -50,7 +86,7 @@ const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark }) => {
           </div>
         )}
       </CardHeader>
-      <CardFooter className="text-sm text-muted-foreground">
+      <CardFooter className="text-sm text-muted-foreground self-center ml-auto pr-6">
         {new Date(bookmark.createdAt).toLocaleDateString()}
       </CardFooter>
     </Card>
@@ -62,16 +98,17 @@ export const BookmarkList: FC = () => {
 
   if (isLoading) {
     return (
-      <div className="grid gap-4 px-4 py-16 sm:grid-cols-2 md:grid-cols-3">
+      <div className="flex flex-col gap-4 px-4 py-16">
         {Array.from({ length: 6 }).map((_, i) => (
-          <Card key={i} className="w-full animate-pulse">
-            <CardHeader>
+          <Card key={i} className="w-full flex animate-pulse">
+            <div className="p-6">
+              <div className="h-16 w-16 bg-muted rounded" />
+            </div>
+            <CardHeader className="flex-1">
               <div className="h-6 w-3/4 bg-muted rounded" />
               <div className="h-4 w-1/2 bg-muted rounded mt-2" />
+              <div className="h-4 w-24 bg-muted rounded mt-4" />
             </CardHeader>
-            <CardFooter>
-              <div className="h-4 w-24 bg-muted rounded" />
-            </CardFooter>
           </Card>
         ))}
       </div>
@@ -87,7 +124,7 @@ export const BookmarkList: FC = () => {
   }
 
   return (
-    <div className="grid gap-4 px-4 py-16 sm:grid-cols-2 md:grid-cols-3">
+    <div className="flex flex-col gap-4 px-4 py-16">
       {bookmarks.map((bookmark) => (
         <BookmarkCard key={bookmark.id} bookmark={bookmark} />
       ))}

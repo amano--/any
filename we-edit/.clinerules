@@ -10,17 +10,19 @@
 
 ----
 
-# AI Coding with Deno: ベストプラクティス
+# 共通処理
 
-これは Deno と AI を駆使してコードを書く際の使い方についてまとめた資料。人間が読む以外に、コーディングエージェントがプロンプトとして読むことを想定する。
+あらゆるUIコンポーネントは、docs/i18n-implementation-plan.md に基づきi18n対応する必要がある。
 
-本プロジェクトでは、
+# 作業終了記録
 
-- スクリプトモード
-- テストファーストモード
-- モジュールモード
+本日の作業の終了が指示されたら、以下の作業を行ってください。
 
-複数のモードを想定する。以下に解説する。
+- ai/work-log/以下に。月毎の YYYY-MM.md ファイルを作成し、今日の作業内容の要約の追記をお願いします。追加順序は日付けが遅い方が上に表示されるようにしてください。
+
+- ai/adr 以下に　本日の作業内容から　Architecture Decision Record　を作成してください。
+
+- 作業内容に従い、メモリバンクの更新もお願いします。
 
 # Clineのメモリバンク
 
@@ -199,10 +201,10 @@ flowchart TD
    ```bash
    # 未追跡ファイルと変更の確認
    git status
-   
+
    # 変更内容の詳細確認
    git diff
-   
+
    # コミットメッセージのスタイル確認
    git log
    ```
@@ -246,13 +248,13 @@ flowchart TD
    ```bash
    # 未コミットの変更確認
    git status
-   
+
    # 変更内容の確認
    git diff
-   
+
    # mainからの差分確認
    git diff main...HEAD
-   
+
    # コミット履歴の確認
    git log
    ```
@@ -400,7 +402,7 @@ TypeScriptでのコーディングにおける一般的なベストプラクテ�
    ```ts
    import { Result, ok, err } from "npm:neverthrow";
 
-   type ApiError = 
+   type ApiError =
      | { type: "network"; message: string }
      | { type: "notFound"; message: string }
      | { type: "unauthorized"; message: string };
@@ -458,9 +460,9 @@ TypeScriptでのコーディングにおける一般的なベストプラクテ�
 
    class TimeBasedCache<T> implements Cache<T> {
      private items = new Map<string, { value: T; expireAt: number; }>();
-     
+
      constructor(private ttlMs: number) {}
-     
+
      get(key: string): T | undefined {
        const item = this.items.get(key);
        if (!item || Date.now() > item.expireAt) {
@@ -468,7 +470,7 @@ TypeScriptでのコーディングにおける一般的なベストプラクテ�
        }
        return item.value;
      }
-     
+
      set(key: string, value: T): void {
        this.items.set(key, {
          value,
