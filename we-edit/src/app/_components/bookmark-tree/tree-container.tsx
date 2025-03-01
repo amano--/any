@@ -6,7 +6,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  UniqueIdentifier,
+  type UniqueIdentifier,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -24,7 +24,10 @@ import { useText } from "~/i18n/text";
 
 const MAX_DEPTH = 5;
 
-const findItemById = (items: TreeItemType[], id: UniqueIdentifier): TreeItemType | null => {
+const findItemById = (
+  items: TreeItemType[],
+  id: UniqueIdentifier,
+): TreeItemType | null => {
   for (const item of items) {
     if (item.id === String(id)) return item;
     if (item.children) {
@@ -73,7 +76,7 @@ export function TreeContainer() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { tree, moveItem, addItem, setTree } = useBookmarkTreeStore();
-  const {t} = useText();
+  const { t } = useText();
 
   const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -83,9 +86,9 @@ export function TreeContainer() {
       const bookmarks = await importFromJson(file);
       const treeItems = convertFromChrome(bookmarks);
       setTree(treeItems);
-      toast.success(t.common.bookmarks.importSuccess);
+      toast.success(t.bookmarks.importSuccess);
     } catch (error) {
-      toast.error(t.common.bookmarks.importSuccess);
+      toast.error(t.bookmarks.importSuccess);
     }
 
     // ファイル選択をリセット
@@ -97,9 +100,9 @@ export function TreeContainer() {
   const handleExport = () => {
     try {
       exportToJson(tree);
-      toast.success(t.common.bookmarks.exportSuccess);
+      toast.success(t.bookmarks.exportSuccess);
     } catch (error) {
-      toast.error(t.common.bookmarks.exportSuccess);
+      toast.error(t.bookmarks.exportSuccess);
     }
   };
 
@@ -108,15 +111,21 @@ export function TreeContainer() {
       activationConstraint: {
         distance: 8,
       },
-    })
+    }),
   );
 
   // バリデーション関数
-  const validateMove = (sourceId: UniqueIdentifier, destinationId: UniqueIdentifier | null): boolean => {
+  const validateMove = (
+    sourceId: UniqueIdentifier,
+    destinationId: UniqueIdentifier | null,
+  ): boolean => {
     if (!destinationId) return true;
 
     // 循環参照チェック
-    const isCircular = (itemId: UniqueIdentifier, targetId: UniqueIdentifier): boolean => {
+    const isCircular = (
+      itemId: UniqueIdentifier,
+      targetId: UniqueIdentifier,
+    ): boolean => {
       const item = findItemById(tree, targetId);
       if (!item) return false;
       if (item.id === String(itemId)) return true;
@@ -131,13 +140,13 @@ export function TreeContainer() {
     };
 
     if (isCircular(sourceId, destinationId)) {
-      toast.error(t.common.bookmarks.validation.circularRef);
+      toast.error(t.bookmarks.validation.circularRef);
       return false;
     }
 
     const newDepth = getDepth(destinationId) + 1;
     if (newDepth > MAX_DEPTH) {
-      toast.error(t.common.bookmarks.validation.maxDepth(MAX_DEPTH));
+      toast.error(t.bookmarks.validation.maxDepth(MAX_DEPTH));
       return false;
     }
 
@@ -165,7 +174,7 @@ export function TreeContainer() {
   const handleCreateFolder = () => {
     const newFolder: TreeItemType = {
       id: crypto.randomUUID(),
-      name: t.common.bookmarks.newFolder,
+      name: t.bookmarks.newFolder,
       isExpanded: true,
       position: tree.length,
       parentId: null,
@@ -177,7 +186,7 @@ export function TreeContainer() {
   return (
     <div className="flex flex-col gap-4">
       <Button onClick={handleCreateFolder} className="w-full">
-        {t.common.bookmarks.newFolder}
+        {t.bookmarks.newFolder}
       </Button>
 
       <div className="flex-1 overflow-auto p-4">
@@ -188,7 +197,7 @@ export function TreeContainer() {
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={tree.map(item => item.id)}
+            items={tree.map((item) => item.id)}
             strategy={verticalListSortingStrategy}
           >
             <AnimatePresence>

@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../tabstock"
+		},
+		{
+			"path": "../../texts"
+		},
+		{
+			"path": "../../research"
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"shadcn"
+		]
+	}
+}

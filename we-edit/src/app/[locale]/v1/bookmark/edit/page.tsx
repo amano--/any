@@ -16,14 +16,14 @@ import { useText } from "~/i18n/text";
  * 下部: コメントパネル
  */
 export default function BookmarkEditPage() {
-  const {t} = useText(); 
+  const { t } = useText();
 
   const showSuccess = () => {
     toast.success("サンプルデータが登録されました");
   };
 
   const showError = () => {
-    toast.error(t.common.errors.general);
+    toast.error(t.errors.general);
   };
   const utils = api.useContext();
   const { mutate: createSample, isPending } =
