@@ -6,7 +6,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  type UniqueIdentifier,
+  type UniqueIdentifier
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -17,12 +17,31 @@ import { toast } from "sonner";
 import { Button } from "~/shadcn/components/ui/button";
 import { TreeItem } from "./tree-item";
 import { useBookmarkTreeStore } from "~/store/bookmark-tree";
-import type { TreeItem as TreeItemType } from "~/types/bookmark-tree";
-import type { DragStartEvent, DragEndEvent } from "~/types/drag-events";
+import type {
+  TreeItem as TreeItemType,
+  FolderTreeItem,
+  BookmarkTreeItem,
+  TreeItemUpdates,
+} from "~/types/bookmark-tree";
+import type {
+  DragStartEvent,
+  DragEndEvent,
+  DraggableItemData,
+  DropTargetData,
+} from "~/types/drag-events";
 import { exportToJson, importFromJson, convertFromChrome } from "./utils";
 import { useText } from "~/i18n/text";
+import { cn } from "~/shadcn/lib/utils";
 
 const MAX_DEPTH = 5;
+
+const isFolderItem = (item: TreeItemType): item is FolderTreeItem => {
+  return item.type === "folder";
+};
+
+const clampDepth = (depth: number): 0 | 1 | 2 | 3 | 4 | 5 => {
+  return Math.max(0, Math.min(5, depth)) as 0 | 1 | 2 | 3 | 4 | 5;
+};
 
 const findItemById = (
   items: TreeItemType[],
@@ -30,7 +49,7 @@ const findItemById = (
 ): TreeItemType | null => {
   for (const item of items) {
     if (item.id === String(id)) return item;
-    if (item.children) {
+    if (isFolderItem(item) && item.children) {
       const found = findItemById(item.children, id);
       if (found) return found;
     }
@@ -45,35 +64,72 @@ interface TreeNodeProps {
 
 const TreeNode = ({ item, depth }: TreeNodeProps) => {
   const { updateItem } = useBookmarkTreeStore();
+  const { t } = useText();
+
+  if (isFolderItem(item)) {
+    return (
+      <TreeItem
+        id={item.id}
+        name={item.name}
+        type="folder"
+        depth={depth}
+        isExpanded={item.isExpanded}
+        onToggle={() => {
+          const updates: TreeItemUpdates = {
+            type: "folder",
+            isExpanded: !item.isExpanded,
+          };
+          updateItem(item.id, updates);
+        }}
+        onNameChange={(newName) => {
+          const updates: TreeItemUpdates = {
+            type: "folder",
+            name: newName,
+          };
+          updateItem(item.id, updates);
+        }}
+        aria-label={t.bookmarks.dragDrop.aria.dropTarget}
+      >
+        {item.isExpanded && item.children && item.children.length > 0 && (
+          <div className="pl-6">
+            {item.children.map((child) => (
+              <TreeNode
+                key={child.id}
+                item={child}
+                depth={clampDepth(depth + 1)}
+              />
+            ))}
+          </div>
+        )}
+      </TreeItem>
+    );
+  }
 
   return (
     <TreeItem
-      {...item}
+      id={item.id}
+      name={item.name}
+      type="bookmark"
       depth={depth}
-      onToggle={() => {
-        updateItem(item.id, { isExpanded: !item.isExpanded });
-      }}
+      url={item.url}
+      icon={item.icon}
+      description={item.description}
+      tags={item.tags}
       onNameChange={(newName) => {
-        updateItem(item.id, { name: newName });
+        const updates: TreeItemUpdates = {
+          type: "bookmark",
+          name: newName,
+        };
+        updateItem(item.id, updates);
       }}
-    >
-      {item.isExpanded && item.children && item.children.length > 0 && (
-        <div className="pl-6">
-          {item.children.map((child) => (
-            <TreeNode
-              key={child.id}
-              item={child}
-              depth={(depth + 1) as 0 | 1 | 2 | 3 | 4 | 5}
-            />
-          ))}
-        </div>
-      )}
-    </TreeItem>
+      aria-label={t.bookmarks.dragDrop.aria.dropTarget}
+    />
   );
 };
 
 export function TreeContainer() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+  const [isDraggingFromList, setIsDraggingFromList] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { tree, moveItem, addItem, setTree } = useBookmarkTreeStore();
   const { t } = useText();
@@ -88,10 +144,9 @@ export function TreeContainer() {
       setTree(treeItems);
       toast.success(t.bookmarks.importSuccess);
     } catch (error) {
-      toast.error(t.bookmarks.importSuccess);
+      toast.error(t.bookmarks.dragDrop.errors.systemError);
     }
 
-    // ファイル選択をリセット
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -102,7 +157,7 @@ export function TreeContainer() {
       exportToJson(tree);
       toast.success(t.bookmarks.exportSuccess);
     } catch (error) {
-      toast.error(t.bookmarks.exportSuccess);
+      toast.error(t.bookmarks.dragDrop.errors.systemError);
     }
   };
 
@@ -114,14 +169,20 @@ export function TreeContainer() {
     }),
   );
 
-  // バリデーション関数
   const validateMove = (
     sourceId: UniqueIdentifier,
     destinationId: UniqueIdentifier | null,
+    sourcePanel: "list" | "tree",
   ): boolean => {
     if (!destinationId) return true;
 
-    // 循環参照チェック
+    const targetItem = findItemById(tree, destinationId);
+    
+    if (sourcePanel === "list" && (!targetItem || !isFolderItem(targetItem))) {
+      toast.error(t.bookmarks.dragDrop.errors.invalidTarget);
+      return false;
+    }
+
     const isCircular = (
       itemId: UniqueIdentifier,
       targetId: UniqueIdentifier,
@@ -132,21 +193,20 @@ export function TreeContainer() {
       return item.parentId ? isCircular(itemId, item.parentId) : false;
     };
 
-    // 深さチェック
+    if (isCircular(sourceId, destinationId)) {
+      toast.error(t.bookmarks.dragDrop.errors.circularRef);
+      return false;
+    }
+
     const getDepth = (itemId: UniqueIdentifier | null): number => {
       if (!itemId) return 0;
       const item = findItemById(tree, itemId);
       return item ? getDepth(item.parentId) + 1 : 0;
     };
 
-    if (isCircular(sourceId, destinationId)) {
-      toast.error(t.bookmarks.validation.circularRef);
-      return false;
-    }
-
     const newDepth = getDepth(destinationId) + 1;
     if (newDepth > MAX_DEPTH) {
-      toast.error(t.bookmarks.validation.maxDepth(MAX_DEPTH));
+      toast.error(t.bookmarks.dragDrop.errors.maxDepth(MAX_DEPTH));
       return false;
     }
 
@@ -154,26 +214,63 @@ export function TreeContainer() {
   };
 
   const handleDragStart = (event: DragStartEvent) => {
+    if (!event.active.data.current) return;
+    
+    const dragData = event.active.data.current;
+    setIsDraggingFromList(dragData.sourcePanel === "list");
     setActiveId(event.active.id);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+    const dragData = event.active.data.current;
+    const dropData = event.over?.data.current;
 
-    if (over && active.id !== over.id) {
-      const isValid = validateMove(active.id, over.id);
-      if (!isValid) return;
+    if (!dragData || !event.over) {
+      setActiveId(null);
+      setIsDraggingFromList(false);
+      return;
+    }
 
-      const index = over.data?.current?.sortable?.index ?? 0;
-      moveItem(String(active.id), String(over.id), index);
+    const isValid = validateMove(
+      event.active.id,
+      event.over.id,
+      dragData.sourcePanel
+    );
+    
+    if (!isValid) {
+      setActiveId(null);
+      setIsDraggingFromList(false);
+      return;
+    }
+
+    const index = dropData?.sortable?.index ?? 0;
+    
+    if (dragData.sourcePanel === "list" && dragData.bookmarkData) {
+      const newBookmark: BookmarkTreeItem = {
+        id: String(event.active.id),
+        type: "bookmark",
+        name: dragData.bookmarkData.title,
+        position: index,
+        parentId: String(event.over.id),
+        url: dragData.bookmarkData.url,
+        icon: dragData.bookmarkData.icon,
+        description: dragData.bookmarkData.description,
+        tags: dragData.bookmarkData.tags,
+      };
+      addItem(newBookmark);
+      toast.success(t.bookmarks.dragDrop.end.success);
+    } else {
+      moveItem(String(event.active.id), String(event.over.id), index);
     }
 
     setActiveId(null);
+    setIsDraggingFromList(false);
   };
 
   const handleCreateFolder = () => {
-    const newFolder: TreeItemType = {
+    const newFolder: FolderTreeItem = {
       id: crypto.randomUUID(),
+      type: "folder",
       name: t.bookmarks.newFolder,
       isExpanded: true,
       position: tree.length,
@@ -189,7 +286,12 @@ export function TreeContainer() {
         {t.bookmarks.newFolder}
       </Button>
 
-      <div className="flex-1 overflow-auto p-4">
+      <div 
+        className={cn(
+          "flex-1 overflow-auto p-4",
+          isDraggingFromList && "bg-muted/50 border-2 border-dashed border-primary/50"
+        )}
+      >
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -216,15 +318,30 @@ export function TreeContainer() {
 
           <DragOverlay>
             {activeId && (
-              <div className="opacity-50">
+              <div 
+                className={cn(
+                  "opacity-50",
+                  isDraggingFromList && "bg-background shadow-lg"
+                )}
+              >
                 {(() => {
                   const item = findItemById(tree, activeId);
-                  return item ? <TreeNode item={item} depth={0} /> : null;
+                  if (!item) return null;
+                  return <TreeNode item={item} depth={0} />;
                 })()}
               </div>
             )}
           </DragOverlay>
         </DndContext>
+
+        {tree.length === 0 && (
+          <div className="flex items-center justify-center h-32 text-muted-foreground">
+            {isDraggingFromList 
+              ? t.bookmarks.dragDrop.during.overFolder
+              : t.bookmarks.bookmarkEditPage.dragHint
+            }
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,14 +1,37 @@
 import { create } from 'zustand';
-import type { TreeItem } from '~/types/bookmark-tree';
+import type {
+  TreeItem,
+  TreeItemUpdates,
+  FolderTreeItem,
+  BookmarkTreeItem,
+  FolderTreeItemUpdates,
+  BookmarkTreeItemUpdates,
+} from '~/types/bookmark-tree';
 
 interface BookmarkTreeState {
   tree: TreeItem[];
   moveItem: (sourceId: string, destinationId: string | null, index: number) => void;
   addItem: (item: TreeItem) => void;
-  updateItem: (id: string, updates: Partial<Omit<TreeItem, 'id'>>) => void;
+  updateItem: (id: string, updates: TreeItemUpdates) => void;
   removeItem: (id: string) => void;
   setTree: (items: TreeItem[]) => void;
 }
+
+const isFolderItem = (item: TreeItem): item is FolderTreeItem => {
+  return item.type === "folder";
+};
+
+const isFolderUpdates = (updates: TreeItemUpdates): updates is FolderTreeItemUpdates => {
+  return 'type' in updates && updates.type === 'folder';
+};
+
+const isBookmarkUpdates = (updates: TreeItemUpdates): updates is BookmarkTreeItemUpdates => {
+  return 'type' in updates && updates.type === 'bookmark';
+};
+
+const ensureValidItem = <T extends TreeItem>(item: T | null | undefined): item is T => {
+  return item !== null && item !== undefined;
+};
 
 export const useBookmarkTreeStore = create<BookmarkTreeState>((set) => ({
   tree: [],
@@ -19,7 +42,7 @@ export const useBookmarkTreeStore = create<BookmarkTreeState>((set) => ({
     set((state) => {
       const newTree = [...state.tree];
       const sourceItem = findItemRecursive(newTree, sourceId);
-      if (!sourceItem) return state;
+      if (!ensureValidItem(sourceItem)) return state;
 
       removeItemFromParent(newTree, sourceId);
 
@@ -29,11 +52,8 @@ export const useBookmarkTreeStore = create<BookmarkTreeState>((set) => ({
       } else {
         // 他のアイテムの子として移動
         const destinationItem = findItemRecursive(newTree, destinationId);
-        if (!destinationItem) return state;
+        if (!ensureValidItem(destinationItem) || !isFolderItem(destinationItem)) return state;
 
-        if (!destinationItem.children) {
-          destinationItem.children = [];
-        }
         destinationItem.children.splice(index, 0, sourceItem);
       }
 
@@ -46,17 +66,41 @@ export const useBookmarkTreeStore = create<BookmarkTreeState>((set) => ({
     }),
 
   addItem: (item) =>
-    set((state) => ({
-      tree: [...state.tree, item],
-    })),
+    set((state) => {
+      if (item.parentId === null) {
+        return {
+          tree: [...state.tree, item],
+        };
+      }
+
+      const newTree = [...state.tree];
+      const parentItem = findItemRecursive(newTree, item.parentId);
+      
+      if (ensureValidItem(parentItem) && isFolderItem(parentItem)) {
+        parentItem.children = [...parentItem.children, item];
+        return { tree: newTree };
+      }
+
+      return state;
+    }),
 
   updateItem: (id, updates) =>
     set((state) => {
       const newTree = [...state.tree];
       const item = findItemRecursive(newTree, id);
-      if (!item) return state;
+      if (!ensureValidItem(item)) return state;
 
-      Object.assign(item, updates);
+      if (isFolderItem(item) && isFolderUpdates(updates)) {
+        // フォルダの更新
+        Object.assign(item, updates);
+      } else if (!isFolderItem(item) && isBookmarkUpdates(updates)) {
+        // ブックマークの更新
+        Object.assign(item, updates);
+      } else if (!('type' in updates)) {
+        // 共通プロパティの更新
+        Object.assign(item, updates);
+      }
+
       return { tree: newTree };
     }),
 
@@ -70,9 +114,12 @@ export const useBookmarkTreeStore = create<BookmarkTreeState>((set) => ({
 
 // ヘルパー関数
 function findItemRecursive(items: TreeItem[], id: string): TreeItem | null {
+  if (!Array.isArray(items)) return null;
+  
   for (const item of items) {
+    if (!item) continue;
     if (item.id === id) return item;
-    if (item.children?.length) {
+    if (isFolderItem(item)) {
       const found = findItemRecursive(item.children, id);
       if (found) return found;
     }
@@ -81,26 +128,33 @@ function findItemRecursive(items: TreeItem[], id: string): TreeItem | null {
 }
 
 function removeItemFromParent(items: TreeItem[], id: string): boolean {
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    if (item.id === id) {
-      items.splice(i, 1);
-      return true;
-    }
-    if (item.children && item.children.length > 0) {
+  if (!Array.isArray(items)) return false;
+
+  const index = items.findIndex(item => item?.id === id);
+  if (index !== -1) {
+    items.splice(index, 1);
+    return true;
+  }
+
+  for (const item of items) {
+    if (item && isFolderItem(item)) {
       if (removeItemFromParent(item.children, id)) {
         return true;
       }
     }
   }
+  
   return false;
 }
 
 function updatePositions(items: TreeItem[], parentId: string | null = null) {
+  if (!Array.isArray(items)) return;
+
   items.forEach((item, index) => {
+    if (!item) return;
     item.position = index;
     item.parentId = parentId;
-    if (item.children?.length) {
+    if (isFolderItem(item)) {
       updatePositions(item.children, item.id);
     }
   });

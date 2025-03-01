@@ -81,7 +81,7 @@ export default async function Home() {
                 </Link>
                 <Link
                   className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-                  href="bookmark/edit"
+                  href="ja/bookmark/edit"
                 >
                   ブックマーク
                 </Link>

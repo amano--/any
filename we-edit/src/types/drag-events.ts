@@ -1,23 +1,126 @@
-import type { UniqueIdentifier } from "@dnd-kit/core";
+import type { 
+  DragStartEvent as DndDragStartEvent, 
+  DragEndEvent as DndDragEndEvent, 
+  Active, 
+  Over,
+  DataRef
+} from "@dnd-kit/core";
+import type { MutableRefObject } from "react";
+import type { TreeItem, BookmarkTreeItem } from "./bookmark-tree";
 
-export interface DragStartEvent {
-  active: {
-    id: UniqueIdentifier;
+/**
+ * パネルの種類を表す型
+ */
+export type PanelType = "list" | "tree";
+
+/**
+ * ドラッグ可能なアイテムのデータ型
+ */
+export interface DraggableItemData {
+  type: "bookmark" | "folder";
+  sourcePanel: PanelType;
+  bookmarkData?: {
+    title: string;
+    url: string;
+    icon?: string;
+    description?: string;
+    tags?: string[];
   };
+  treeItem?: TreeItem;
 }
 
-export interface DragEndEvent {
-  active: {
-    id: UniqueIdentifier;
+/**
+ * ドラッグデータの参照型
+ */
+export type DraggableDataRef = DataRef<DraggableItemData>;
+
+/**
+ * ドロップターゲットのデータ型
+ */
+export interface DropTargetData {
+  sortable?: {
+    index?: number;
   };
-  over: {
-    id: UniqueIdentifier;
-    data?: {
-      current?: {
-        sortable?: {
-          index?: number;
-        };
-      };
-    };
-  } | null;
+  type?: "bookmark" | "folder";
+  panel?: PanelType;
+}
+
+/**
+ * Active要素の型
+ */
+export interface DraggableActive extends Omit<Active, 'data'> {
+  data: MutableRefObject<DraggableItemData | undefined>;
+}
+
+/**
+ * Over要素の型
+ */
+export interface DraggableOver extends Omit<Over, 'data'> {
+  data: MutableRefObject<DropTargetData | undefined>;
+}
+
+/**
+ * ドラッグ開始イベントの型
+ */
+export interface DragStartEvent extends Omit<DndDragStartEvent, 'active'> {
+  active: DraggableActive;
+}
+
+/**
+ * ドラッグ終了イベントの型
+ */
+export interface DragEndEvent extends Omit<DndDragEndEvent, 'active' | 'over'> {
+  active: DraggableActive;
+  over: DraggableOver | null;
+}
+
+/**
+ * パネル間のドラッグ開始イベント
+ */
+export interface PanelDragStartEvent extends DragStartEvent {
+  source: PanelType;
+}
+
+/**
+ * パネル間のドラッグ終了イベント
+ */
+export interface PanelDragEndEvent extends DragEndEvent {
+  source: PanelType;
+  destination: PanelType | null;
+}
+
+/**
+ * ドロップ結果の型
+ */
+export interface DropResult {
+  success: boolean;
+  error?: string;
+  item?: BookmarkTreeItem;
+}
+
+/**
+ * ドラッグ＆ドロップの検証エラー型
+ */
+export type DragValidationError =
+  | "MAX_DEPTH_EXCEEDED"
+  | "CIRCULAR_REFERENCE"
+  | "INVALID_TARGET"
+  | "INVALID_OPERATION";
+
+/**
+ * ドラッグ＆ドロップのバリデーション結果
+ */
+export interface DragValidationResult {
+  isValid: boolean;
+  error?: DragValidationError;
+  errorMessage?: string;
+}
+
+/**
+ * ドラッグ＆ドロップの操作結果
+ */
+export interface DragOperationResult {
+  success: boolean;
+  error?: string;
+  affectedItems?: TreeItem[];
 }

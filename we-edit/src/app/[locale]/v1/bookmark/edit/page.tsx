@@ -10,7 +10,8 @@ import { api } from "~/trpc/react";
 import { useText } from "~/i18n/text";
 
 /**
- * {t("bookmarkEditPage.title")}
+ * ブックマーク編集ページ
+ * レイアウトは以下の通り
  * 左側: 一覧パネル
  * 右側: ツリーパネル
  * 下部: コメントパネル

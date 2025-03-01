@@ -10,20 +10,66 @@ import {
 import { api } from "~/trpc/react";
 import { type inferRouterOutputs } from "@trpc/server";
 import { type AppRouter } from "~/server/api/root";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+import { useText } from "~/i18n/text";
+import { cn } from "~/shadcn/lib/utils";
+import type { DraggableItemData } from "~/types/drag-events";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Bookmark = RouterOutput["bookmark"]["getAll"][number];
 
 interface BookmarkCardProps {
   bookmark: Bookmark;
+  className?: string;
 }
 
-const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark }) => {
-  // タグを配列に変換
+const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark, className }) => {
+  const { t } = useText();
   const tags = bookmark.tags ? JSON.parse(bookmark.tags) as string[] : [];
 
+  const dragData: DraggableItemData = {
+    type: "bookmark",
+    sourcePanel: "list",
+    bookmarkData: {
+      title: bookmark.title,
+      url: bookmark.url,
+      icon: bookmark.icon ?? undefined,
+      description: bookmark.description ?? undefined,
+      tags: tags,
+    },
+  };
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    isDragging,
+  } = useDraggable({
+    id: bookmark.id,
+    data: dragData,
+  });
+
+  const style = transform ? {
+    transform: CSS.Transform.toString(transform),
+    zIndex: isDragging ? 50 : undefined,
+  } : undefined;
+
   return (
-    <Card className="w-full flex">
+    <Card 
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "w-full flex cursor-move",
+        isDragging && "opacity-50 border-dashed",
+        className
+      )}
+      {...attributes}
+      {...listeners}
+      aria-label={t.bookmarks.dragDrop.start.bookmark}
+      data-draggable="true"
+    >
       <div className="p-6">
         {bookmark.icon ? (
           <img
@@ -66,6 +112,8 @@ const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-600 hover:underline"
+            onClick={(e) => isDragging && e.preventDefault()}
+            aria-label={isDragging ? t.bookmarks.dragDrop.aria.draggable : undefined}
           >
             {bookmark.title}
           </a>
@@ -94,6 +142,7 @@ const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark }) => {
 };
 
 export const BookmarkList: FC = () => {
+  const { t } = useText();
   const { data: bookmarks, isLoading } = api.bookmark.getAll.useQuery();
 
   if (isLoading) {
@@ -118,15 +167,21 @@ export const BookmarkList: FC = () => {
   if (!bookmarks?.length) {
     return (
       <div className="flex items-center justify-center px-4 py-16">
-        <p className="text-muted-foreground">ブックマークがありません</p>
+        <p className="text-muted-foreground">{t.bookmarks.bookmarkEditPage.listTitle}</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4 px-4 py-16">
+    <div 
+      className="flex flex-col gap-4 px-4 py-16"
+      role="list"
+      aria-label={t.bookmarks.bookmarkEditPage.listTitle}
+    >
       {bookmarks.map((bookmark) => (
-        <BookmarkCard key={bookmark.id} bookmark={bookmark} />
+        <div key={bookmark.id} role="listitem">
+          <BookmarkCard bookmark={bookmark} />
+        </div>
       ))}
     </div>
   );

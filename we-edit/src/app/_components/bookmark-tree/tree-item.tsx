@@ -6,34 +6,61 @@ import {
   ChevronDown,
   Folder,
   GripVertical,
+  Link,
 } from "lucide-react";
 import { Button } from "~/shadcn/components/ui/button";
 import { Input } from "~/shadcn/components/ui/input";
 import { treeItemStyles } from "./styles";
 import { useText } from "~/i18n/text";
 
-export interface TreeItemProps {
+/**
+ * 共通のTreeItemプロパティ
+ */
+interface BaseTreeItemProps {
   id: string;
   name: string;
-  isExpanded: boolean;
   depth: 0 | 1 | 2 | 3 | 4 | 5;
-  onToggle: () => void;
   onNameChange: (name: string) => void;
   children?: React.ReactNode;
+  "aria-label"?: string;
 }
 
-export function TreeItem({
-  id,
-  name,
-  isExpanded,
-  depth,
-  onToggle,
-  onNameChange,
-  children,
-}: TreeItemProps): JSX.Element {
+/**
+ * フォルダ用のTreeItemプロパティ
+ */
+interface FolderTreeItemProps extends BaseTreeItemProps {
+  type: "folder";
+  isExpanded: boolean;
+  onToggle: () => void;
+}
+
+/**
+ * ブックマーク用のTreeItemプロパティ
+ */
+interface BookmarkTreeItemProps extends BaseTreeItemProps {
+  type: "bookmark";
+  url: string;
+  icon?: string;
+  description?: string;
+  tags?: string[];
+}
+
+/**
+ * TreeItemのプロパティ型
+ */
+export type TreeItemProps = FolderTreeItemProps | BookmarkTreeItemProps;
+
+/**
+ * 型ガード関数
+ */
+const isFolderProps = (props: TreeItemProps): props is FolderTreeItemProps => {
+  return props.type === "folder";
+};
+
+export function TreeItem(props: TreeItemProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState(name);
-  const {t} = useText();
+  const [editName, setEditName] = useState(props.name);
+  const { t } = useText();
 
   const {
     attributes,
@@ -42,7 +69,7 @@ export function TreeItem({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id: props.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -55,8 +82,8 @@ export function TreeItem({
 
   const handleNameSubmit = () => {
     setIsEditing(false);
-    if (editName !== name) {
-      onNameChange(editName);
+    if (editName !== props.name) {
+      props.onNameChange(editName);
     }
   };
 
@@ -65,7 +92,7 @@ export function TreeItem({
       handleNameSubmit();
     } else if (e.key === "Escape") {
       setIsEditing(false);
-      setEditName(name);
+      setEditName(props.name);
     }
   };
 
@@ -75,7 +102,7 @@ export function TreeItem({
       style={style}
       className={treeItemStyles({
         isDragging,
-        depth,
+        depth: props.depth,
       })}
       {...attributes}
     >
@@ -91,21 +118,27 @@ export function TreeItem({
           <GripVertical className="h-4 w-4" />
         </Button>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-6 w-6"
-          onClick={onToggle}
-          title={isExpanded ? t.common.actions.collapse : t.common.actions.expand}
-        >
-          {isExpanded ? (
-            <ChevronDown className="h-4 w-4" />
-          ) : (
-            <ChevronRight className="h-4 w-4" />
-          )}
-        </Button>
+        {isFolderProps(props) ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={props.onToggle}
+            title={props.isExpanded ? t.common.actions.collapse : t.common.actions.expand}
+          >
+            {props.isExpanded ? (
+              <ChevronDown className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+          </Button>
+        ) : null}
 
-        <Folder className="h-4 w-4 text-muted-foreground" />
+        {isFolderProps(props) ? (
+          <Folder className="h-4 w-4 text-muted-foreground" />
+        ) : (
+          <Link className="h-4 w-4 text-muted-foreground" />
+        )}
 
         {isEditing ? (
           <Input
@@ -126,12 +159,12 @@ export function TreeItem({
             title={t.common.actions.doubleClickToEdit}
             aria-label={t.common.actions.doubleClickToEdit}
           >
-            {name}
+            {props.name}
           </span>
         )}
       </div>
 
-      {children}
+      {props.children}
     </div>
   );
 }
