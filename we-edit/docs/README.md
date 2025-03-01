@@ -27,7 +27,8 @@ docs/
 │   ├── scalability.md # Scalability design
 │   └── tech-stack.md # Technology stack
 ├── guidelines/      # Development guidelines
-│   └── i18n-guidelines.md # Internationalization guide
+│   ├── i18n-guidelines.md # Internationalization guide
+│   └── ai-development.md  # AI development guidelines
 └── logs/           # Development logs
     ├── ai/         # AI-assisted development logs
     │   ├── adr/    # Architecture Decision Records
@@ -105,6 +106,7 @@ docs/
 
 - [Architecture Documentation](./architecture/index.md)
 - [i18n Guidelines](./guidelines/i18n-guidelines.md)
+- [AI Development Guidelines](./guidelines/ai-development.md)
 - [API Documentation](../src/server/api/README.md)
 - [Contributing Guide](../CONTRIBUTING.md)
 
@@ -135,7 +137,8 @@ docs/
 │   ├── scalability.md # スケーラビリティ設計
 │   └── tech-stack.md # 技術スタック
 ├── guidelines/      # 開発ガイドライン
-│   └── i18n-guidelines.md # 国際化ガイド
+│   ├── i18n-guidelines.md # 国際化ガイド
+│   └── ai-development.md  # AI開発ガイドライン
 └── logs/           # 開発ログ
     ├── ai/         # AI支援開発ログ
     │   ├── adr/    # アーキテクチャ決定記録
@@ -213,5 +216,6 @@ docs/
 
 - [アーキテクチャドキュメント](./architecture/index.md)
 - [i18nガイドライン](./guidelines/i18n-guidelines.md)
+- [AI開発ガイドライン](./guidelines/ai-development.md)
 - [APIドキュメント](../src/server/api/README.md)
 - [コントリビューションガイド](../CONTRIBUTING.md)
