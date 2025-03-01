@@ -22,14 +22,26 @@ const initialDragState: DragState = {
 
 /**
  * @ai_implementation
- * 実装計画: src/app/_components/bookmark-tree/ai-logs/2025-03-02_04_18-bookmark-drag-and-drop-revision.md
- * 
+ * 実装計画: src/app/_components/bookmark-tree/ai-logs/2025-03-02_06_52-root-folder-implementation.md
+ *
  * BookmarkTreeStore の拡張
- * - ドラッグ状態の管理を追加
- * - ツリー構造の更新ロジックを改善
+ * - ドラッグ状態の管理
+ * - ツリー構造の更新ロジック
+ * - ルートフォルダの初期化機能
  * - パフォーマンス最適化
+ *
+ * @ai_decision
+ * 選択した実装アプローチ: デフォルトルートフォルダの遅延初期化
+ * 理由:
+ * 1. コンポーネントのマウント時に初期化することで、既存のデータとの競合を防ぐ
+ * 2. useEffectでの初期化により、SSRとの互換性を確保
+ *
+ * 検討した代替案:
+ * - 案1: ストア作成時に初期化 - 不採用理由: SSRでの問題が発生する可能性
+ * - 案2: APIからの取得時に初期化 - 不採用理由: APIの応答を待つ必要があり、UX低下
  */
 interface BookmarkTreeState extends TreeState {
+  // ツリー操作
   // ツリー操作
   moveItem: (sourceId: string, targetId: string | null, position: DropPosition) => void;
   addItem: (item: TreeItem) => void;

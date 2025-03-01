@@ -1,4 +1,5 @@
 export const bookmarks = {
+  "rootFolder": "My Bookmarks",
   "newFolder": "New Folder",
   "newBookmark": "New Bookmark",
   "deleteConfirm": "Are you sure you want to delete?",

@@ -1,4 +1,5 @@
 export const bookmarks = {
+  "rootFolder": "マイブックマーク",
   "newFolder": "新しいフォルダ",
   "newBookmark": "新しいブックマーク",
   "deleteConfirm": "本当に削除しますか？",

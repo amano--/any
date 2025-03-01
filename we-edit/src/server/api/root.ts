@@ -1,5 +1,5 @@
 import { postRouter } from "~/server/api/routers/post";
-import { bookmarkRouter } from "~/server/api/routers/bookmark";
+import { bookmarkRouter } from "~/server/features/bookmarks/router";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
