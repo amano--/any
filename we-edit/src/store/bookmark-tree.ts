@@ -6,15 +6,40 @@ import type {
   BookmarkTreeItem,
   FolderTreeItemUpdates,
   BookmarkTreeItemUpdates,
+  TreeState,
+  DragState,
+  DropPosition,
 } from '~/types/bookmark-tree';
 
-interface BookmarkTreeState {
-  tree: TreeItem[];
-  moveItem: (sourceId: string, destinationId: string | null, index: number) => void;
+const initialDragState: DragState = {
+  isDragging: false,
+  sourceId: null,
+  targetId: null,
+  position: null,
+  sourceType: null,
+  parentId: null,
+};
+
+/**
+ * @ai_implementation
+ * 実装計画: src/app/_components/bookmark-tree/ai-logs/2025-03-02_04_18-bookmark-drag-and-drop-revision.md
+ * 
+ * BookmarkTreeStore の拡張
+ * - ドラッグ状態の管理を追加
+ * - ツリー構造の更新ロジックを改善
+ * - パフォーマンス最適化
+ */
+interface BookmarkTreeState extends TreeState {
+  // ツリー操作
+  moveItem: (sourceId: string, targetId: string | null, position: DropPosition) => void;
   addItem: (item: TreeItem) => void;
   updateItem: (id: string, updates: TreeItemUpdates) => void;
   removeItem: (id: string) => void;
   setTree: (items: TreeItem[]) => void;
+
+  // ドラッグ状態管理
+  setDragState: (state: Partial<DragState>) => void;
+  resetDragState: () => void;
 }
 
 const isFolderItem = (item: TreeItem): item is FolderTreeItem => {
@@ -33,52 +58,76 @@ const ensureValidItem = <T extends TreeItem>(item: T | null | undefined): item i
   return item !== null && item !== undefined;
 };
 
-export const useBookmarkTreeStore = create<BookmarkTreeState>((set) => ({
-  tree: [],
+export const useBookmarkTreeStore = create<BookmarkTreeState>((set, get) => ({
+  // 初期状態
+  items: [],
+  selectedId: null,
+  draggingItem: null,
+  dragState: initialDragState,
 
-  setTree: (items) => set({ tree: items }),
+  // ツリー操作メソッド
+  setTree: (items) => set({ items }),
 
-  moveItem: (sourceId, destinationId, index) =>
+  moveItem: (sourceId, targetId, position) =>
     set((state) => {
-      const newTree = [...state.tree];
+      const newTree = [...state.items];
       const sourceItem = findItemRecursive(newTree, sourceId);
       if (!ensureValidItem(sourceItem)) return state;
 
       removeItemFromParent(newTree, sourceId);
 
-      if (destinationId === null) {
+      if (!targetId) {
         // ルートレベルに移動
+        const index = getInsertIndex(newTree, position, 0);
         newTree.splice(index, 0, sourceItem);
+        sourceItem.parentId = null;
       } else {
-        // 他のアイテムの子として移動
-        const destinationItem = findItemRecursive(newTree, destinationId);
-        if (!ensureValidItem(destinationItem) || !isFolderItem(destinationItem)) return state;
+        const targetItem = findItemRecursive(newTree, targetId);
+        if (!ensureValidItem(targetItem)) return state;
 
-        destinationItem.children.splice(index, 0, sourceItem);
+        if (position === "inside" && isFolderItem(targetItem)) {
+          // フォルダの中に移動
+          targetItem.children.push(sourceItem);
+          sourceItem.parentId = targetItem.id;
+        } else {
+          // 前後に移動
+          const parentId = targetItem.parentId;
+          const siblings = parentId ? 
+            (findItemRecursive(newTree, parentId) as FolderTreeItem)?.children : 
+            newTree;
+          
+          if (!siblings) return state;
+          
+          const targetIndex = siblings.findIndex(item => item.id === targetId);
+          const index = position === "before" ? targetIndex : targetIndex + 1;
+          siblings.splice(index, 0, sourceItem);
+          sourceItem.parentId = parentId;
+        }
       }
-
-      sourceItem.parentId = destinationId;
 
       // positionの更新
       updatePositions(newTree);
 
-      return { tree: newTree };
+      return { 
+        items: newTree,
+        dragState: initialDragState
+      };
     }),
 
   addItem: (item) =>
     set((state) => {
       if (item.parentId === null) {
         return {
-          tree: [...state.tree, item],
+          items: [...state.items, item],
         };
       }
 
-      const newTree = [...state.tree];
+      const newTree = [...state.items];
       const parentItem = findItemRecursive(newTree, item.parentId);
       
       if (ensureValidItem(parentItem) && isFolderItem(parentItem)) {
         parentItem.children = [...parentItem.children, item];
-        return { tree: newTree };
+        return { items: newTree };
       }
 
       return state;
@@ -86,7 +135,7 @@ export const useBookmarkTreeStore = create<BookmarkTreeState>((set) => ({
 
   updateItem: (id, updates) =>
     set((state) => {
-      const newTree = [...state.tree];
+      const newTree = [...state.items];
       const item = findItemRecursive(newTree, id);
       if (!ensureValidItem(item)) return state;
 
@@ -101,15 +150,26 @@ export const useBookmarkTreeStore = create<BookmarkTreeState>((set) => ({
         Object.assign(item, updates);
       }
 
-      return { tree: newTree };
+      return { items: newTree };
     }),
 
   removeItem: (id) =>
     set((state) => {
-      const newTree = [...state.tree];
+      const newTree = [...state.items];
       removeItemFromParent(newTree, id);
-      return { tree: newTree };
+      return { items: newTree };
     }),
+
+  // ドラッグ状態管理
+  setDragState: (dragStateUpdates) =>
+    set((state) => ({
+      dragState: {
+        ...state.dragState,
+        ...dragStateUpdates,
+      },
+    })),
+
+  resetDragState: () => set({ dragState: initialDragState }),
 }));
 
 // ヘルパー関数
@@ -160,6 +220,18 @@ function updatePositions(items: TreeItem[], parentId: string | null = null) {
   });
 }
 
+function getInsertIndex(items: TreeItem[], position: DropPosition, defaultIndex: number): number {
+  if (position === "after") {
+    return defaultIndex + 1;
+  }
+  return defaultIndex;
+}
+
 export const findItemById = (items: TreeItem[], id: string): TreeItem | null => {
   return findItemRecursive(items, id);
 };
+
+// セレクタ関数
+export const selectDragState = (state: BookmarkTreeState) => state.dragState;
+export const selectItems = (state: BookmarkTreeState) => state.items;
+export const selectSelectedId = (state: BookmarkTreeState) => state.selectedId;

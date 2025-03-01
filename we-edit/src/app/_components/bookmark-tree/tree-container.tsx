@@ -16,12 +16,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import { Button } from "~/shadcn/components/ui/button";
 import { TreeItem } from "./tree-item";
-import { useBookmarkTreeStore } from "~/store/bookmark-tree";
+import { useBookmarkTreeStore, selectItems } from "~/store/bookmark-tree";
 import type {
   TreeItem as TreeItemType,
   FolderTreeItem,
   BookmarkTreeItem,
   TreeItemUpdates,
+  DropPosition,
 } from "~/types/bookmark-tree";
 import type {
   DragStartEvent,
@@ -131,7 +132,8 @@ export function TreeContainer() {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [isDraggingFromList, setIsDraggingFromList] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { tree, moveItem, addItem, setTree } = useBookmarkTreeStore();
+  const { moveItem, addItem, setTree } = useBookmarkTreeStore();
+  const items = useBookmarkTreeStore(selectItems);
   const { t } = useText();
 
   const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,7 +156,7 @@ export function TreeContainer() {
 
   const handleExport = () => {
     try {
-      exportToJson(tree);
+      exportToJson(items);
       toast.success(t.bookmarks.exportSuccess);
     } catch (error) {
       toast.error(t.bookmarks.dragDrop.errors.systemError);
@@ -176,7 +178,7 @@ export function TreeContainer() {
   ): boolean => {
     if (!destinationId) return true;
 
-    const targetItem = findItemById(tree, destinationId);
+    const targetItem = findItemById(items, destinationId);
     
     if (sourcePanel === "list" && (!targetItem || !isFolderItem(targetItem))) {
       toast.error(t.bookmarks.dragDrop.errors.invalidTarget);
@@ -187,7 +189,7 @@ export function TreeContainer() {
       itemId: UniqueIdentifier,
       targetId: UniqueIdentifier,
     ): boolean => {
-      const item = findItemById(tree, targetId);
+      const item = findItemById(items, targetId);
       if (!item) return false;
       if (item.id === String(itemId)) return true;
       return item.parentId ? isCircular(itemId, item.parentId) : false;
@@ -200,7 +202,7 @@ export function TreeContainer() {
 
     const getDepth = (itemId: UniqueIdentifier | null): number => {
       if (!itemId) return 0;
-      const item = findItemById(tree, itemId);
+      const item = findItemById(items, itemId);
       return item ? getDepth(item.parentId) + 1 : 0;
     };
 
@@ -243,14 +245,12 @@ export function TreeContainer() {
       return;
     }
 
-    const index = dropData?.sortable?.index ?? 0;
-    
     if (dragData.sourcePanel === "list" && dragData.bookmarkData) {
       const newBookmark: BookmarkTreeItem = {
         id: String(event.active.id),
         type: "bookmark",
         name: dragData.bookmarkData.title,
-        position: index,
+        position: dropData?.sortable?.index ?? 0,
         parentId: String(event.over.id),
         url: dragData.bookmarkData.url,
         icon: dragData.bookmarkData.icon,
@@ -260,7 +260,14 @@ export function TreeContainer() {
       addItem(newBookmark);
       toast.success(t.bookmarks.dragDrop.end.success);
     } else {
-      moveItem(String(event.active.id), String(event.over.id), index);
+      const targetItem = findItemById(items, event.over.id)!;
+      const position: DropPosition = isFolderItem(targetItem)
+        ? "inside"
+        : dropData?.sortable?.index !== undefined
+        ? "after"
+        : "before";
+
+      moveItem(String(event.active.id), String(event.over.id), position);
     }
 
     setActiveId(null);
@@ -273,7 +280,7 @@ export function TreeContainer() {
       type: "folder",
       name: t.bookmarks.newFolder,
       isExpanded: true,
-      position: tree.length,
+      position: items.length,
       parentId: null,
       children: [],
     };
@@ -299,11 +306,11 @@ export function TreeContainer() {
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={tree.map((item) => item.id)}
+            items={items.map((item) => item.id)}
             strategy={verticalListSortingStrategy}
           >
             <AnimatePresence>
-              {tree.map((item) => (
+              {items.map((item) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, y: -10 }}
@@ -325,7 +332,7 @@ export function TreeContainer() {
                 )}
               >
                 {(() => {
-                  const item = findItemById(tree, activeId);
+                  const item = findItemById(items, activeId);
                   if (!item) return null;
                   return <TreeNode item={item} depth={0} />;
                 })()}
@@ -334,7 +341,7 @@ export function TreeContainer() {
           </DragOverlay>
         </DndContext>
 
-        {tree.length === 0 && (
+        {items.length === 0 && (
           <div className="flex items-center justify-center h-32 text-muted-foreground">
             {isDraggingFromList 
               ? t.bookmarks.dragDrop.during.overFolder

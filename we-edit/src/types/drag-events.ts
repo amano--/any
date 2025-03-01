@@ -14,6 +14,23 @@ import type { TreeItem, BookmarkTreeItem } from "./bookmark-tree";
 export type PanelType = "list" | "tree";
 
 /**
+ * ドロップ位置の種類を表す型
+ */
+export type DropPosition = "before" | "after" | "inside" | null;
+
+/**
+ * ドラッグ状態を表す型
+ */
+export interface DragState {
+  isDragging: boolean;
+  sourceId: string | null;
+  targetId: string | null;
+  position: DropPosition;
+  sourceType: "bookmark" | "folder" | null;
+  parentId: string | null;
+}
+
+/**
  * ドラッグ可能なアイテムのデータ型
  */
 export interface DraggableItemData {
@@ -43,6 +60,7 @@ export interface DropTargetData {
   };
   type?: "bookmark" | "folder";
   panel?: PanelType;
+  parentId?: string | null;
 }
 
 /**

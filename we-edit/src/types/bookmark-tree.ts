@@ -66,6 +66,23 @@ export interface BookmarkTreeItem extends BaseTreeItemProps {
 export type TreeItem = FolderTreeItem | BookmarkTreeItem;
 
 /**
+ * ドロップ位置の種類
+ */
+export type DropPosition = "before" | "after" | "inside" | null;
+
+/**
+ * ドラッグ状態を表す型
+ */
+export interface DragState {
+  isDragging: boolean;
+  sourceId: string | null;
+  targetId: string | null;
+  position: DropPosition;
+  sourceType: "bookmark" | "folder" | null;
+  parentId: string | null;
+}
+
+/**
  * 共通の更新用プロパティ
  */
 export interface BaseTreeItemUpdates {
@@ -167,6 +184,17 @@ export interface TreeState {
   items: TreeItem[];
   draggingItem: DraggingState | null;
   selectedId: string | null;
+  dragState: DragState;
+}
+
+/**
+ * ドロップ位置の計算パラメータ
+ */
+export interface DropPositionParams {
+  targetRect: DOMRect;
+  mouseY: number;
+  isFolder: boolean;
+  threshold?: number;
 }
 
 /**
@@ -178,4 +206,45 @@ export const isFolder = (item: TreeItem): item is FolderTreeItem => {
 
 export const isBookmark = (item: TreeItem): item is BookmarkTreeItem => {
   return item.type === "bookmark";
+};
+
+/**
+ * ドロップ位置を計算するユーティリティ関数
+ */
+export const calculateDropPosition = ({
+  targetRect,
+  mouseY,
+  isFolder,
+  threshold = 0.25
+}: DropPositionParams): DropPosition => {
+  const { top, height } = targetRect;
+  const relativeY = mouseY - top;
+  const percentage = relativeY / height;
+
+  if (percentage < threshold) {
+    return "before";
+  } else if (percentage > 1 - threshold) {
+    return "after";
+  } else if (isFolder) {
+    return "inside";
+  }
+  
+  return "after";
+};
+
+/**
+ * ツリーの深さを計算するユーティリティ関数
+ */
+export const calculateTreeDepth = (item: TreeItem, items: TreeItem[]): number => {
+  let depth = 0;
+  let currentItem = item;
+
+  while (currentItem.parentId) {
+    depth++;
+    const parent = items.find(i => i.id === currentItem.parentId);
+    if (!parent) break;
+    currentItem = parent;
+  }
+
+  return depth;
 };
