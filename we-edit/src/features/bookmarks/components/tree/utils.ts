@@ -1,4 +1,6 @@
-import type { ChromeBookmark, TreeItem } from "~/types/bookmark-tree";
+import type { ChromeBookmark } from "../../types/bookmark";
+import type { TreeItem, FolderTreeItem, BookmarkTreeItem } from "../../types/tree";
+import { isFolder } from "../../types/tree";
 
 /**
  * TreeItem配列をChromeブックマーク形式に変換する
@@ -15,7 +17,7 @@ export const convertToChrome = (items: TreeItem[]): ChromeBookmark[] => {
       result.parentId = item.parentId;
     }
 
-    if (item.children && item.children.length > 0) {
+    if (isFolder(item) && item.children.length > 0) {
       result.children = item.children.map(convert);
     }
 
@@ -30,14 +32,30 @@ export const convertToChrome = (items: TreeItem[]): ChromeBookmark[] => {
  */
 export const convertFromChrome = (items: ChromeBookmark[]): TreeItem[] => {
   const convert = (item: ChromeBookmark): TreeItem => {
-    return {
-      id: item.id,
-      name: item.title,
-      isExpanded: true,
-      position: item.index ?? 0,
-      parentId: item.parentId ?? null,
-      children: item.children ? item.children.map(convert) : [],
-    };
+    if (item.children) {
+      // フォルダとして扱う
+      const folder: FolderTreeItem = {
+        id: item.id,
+        type: "folder",
+        name: item.title,
+        isExpanded: true,
+        position: item.index ?? 0,
+        parentId: item.parentId ?? null,
+        children: item.children.map(convert),
+      };
+      return folder;
+    } else {
+      // ブックマークとして扱う
+      const bookmark: BookmarkTreeItem = {
+        id: item.id,
+        type: "bookmark",
+        name: item.title,
+        position: item.index ?? 0,
+        parentId: item.parentId ?? null,
+        url: "", // 必須フィールドだが、Chromeブックマークには対応するフィールドがないため空文字を設定
+      };
+      return bookmark;
+    }
   };
 
   return items.map(convert);

@@ -10,8 +10,8 @@ export const treeItemStyles = cva(
   {
     variants: {
       isDragging: {
-        true: "opacity-50",
-        false: "opacity-100",
+        true: "opacity-50 border border-dashed border-primary cursor-grabbing",
+        false: "opacity-100 cursor-grab",
       },
       isOver: {
         true: "bg-accent/50",

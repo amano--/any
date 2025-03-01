@@ -3,8 +3,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { BookmarkList } from "~/app/_components/bookmark";
-import { TreeContainer } from "~/app/_components/bookmark-tree/tree-container";
+import { BookmarkList, TreeContainer } from "~/features/bookmarks";
 import { Button } from "~/shadcn/components/ui/button";
 import { api } from "~/trpc/react";
 import { useText } from "~/i18n/text";
