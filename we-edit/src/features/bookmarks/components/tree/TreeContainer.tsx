@@ -1,4 +1,14 @@
-import { useEffect, useState } from "react";
+/**
+ * @link 実装計画書 src/features/bookmarks/logs/ai/2025-03-02_08_22-bookmark-tree-edit-functionality.md
+ *
+ * @ai_implementation
+ * ブックマークツリーのコンテナコンポーネント
+ * - フォルダに子要素を追加するイベントリスナーの実装
+ * - ドラッグアンドドロップ時のフォルダ自動展開機能
+ * - 視覚的フィードバックの改善
+ */
+
+import { useEffect, useState, useCallback } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -30,6 +40,7 @@ import type { TreeItem as TreeItemType } from "../../types";
  */
 export function TreeContainer() {
   const [isDraggingFromList, setIsDraggingFromList] = useState(false);
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
   const items = useBookmarkTree(selectItems);
   const { dragState, handleDragStart, handleDragEnd, handleDragOver } = useTreeDragDrop();
   const { createFolder, ensureRootFolder } = useBookmarkOperations();
@@ -40,6 +51,25 @@ export function TreeContainer() {
     ensureRootFolder(t.bookmarks.rootFolder);
   }, [ensureRootFolder, t.bookmarks.rootFolder]);
 
+  // フォルダに子要素を追加するイベントリスナー
+  useEffect(() => {
+    const handleAddToFolder = (event: Event) => {
+      const customEvent = event as CustomEvent<{ folderId: string }>;
+      const folderId = customEvent.detail.folderId;
+      setSelectedFolderId(folderId);
+      
+      // フォルダに新しい子フォルダを追加
+      createFolder(t.bookmarks.newFolder, folderId);
+      toast.success(t.bookmarks.folderCreated);
+    };
+
+    window.addEventListener('add-to-folder', handleAddToFolder as EventListener);
+    
+    return () => {
+      window.removeEventListener('add-to-folder', handleAddToFolder as EventListener);
+    };
+  }, [createFolder, t.bookmarks.newFolder, t.bookmarks.folderCreated]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -48,8 +78,10 @@ export function TreeContainer() {
     })
   );
 
+  // ルートレベルに新しいフォルダを作成
   const handleCreateFolder = () => {
     createFolder(t.bookmarks.newFolder);
+    toast.success(t.bookmarks.folderCreated);
   };
 
   const renderTreeNode = (item: TreeItemType, depth: 0 | 1 | 2 | 3 | 4 | 5) => {
@@ -83,6 +115,30 @@ export function TreeContainer() {
           collisionDetection={closestCenter}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
+          onDragOver={(event) => {
+            const { over } = event;
+            if (!over) return;
+            
+            const targetId = String(over.id);
+            const overData = over.data.current;
+            
+            if (overData && overData.type) {
+              handleDragOver(targetId, overData.type);
+              
+              // フォルダの上にドラッグした場合、自動的に展開
+              if (overData.type === 'folder') {
+                const targetItem = items.find(item => item.id === targetId);
+                if (targetItem && targetItem.type === 'folder' && !targetItem.isExpanded) {
+                  // フォルダが閉じている場合は開く
+                  const { updateItem } = useBookmarkTree.getState();
+                  updateItem(targetId, {
+                    type: "folder",
+                    isExpanded: true
+                  });
+                }
+              }
+            }
+          }}
         >
           <SortableContext
             items={items.map((item) => item.id)}

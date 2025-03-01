@@ -7,6 +7,8 @@ export const bookmarks = {
   "export": "エクスポート",
   "importSuccess": "インポートに成功しました",
   "exportSuccess": "エクスポートに成功しました",
+  "folderCreated": "フォルダを作成しました",
+  "addToFolder": "フォルダに追加",
   
   "validation": {
     "maxDepth": (depth:number) =>

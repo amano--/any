@@ -1,3 +1,19 @@
+/**
+ * @link 実装計画書 src/features/bookmarks/logs/ai/2025-03-02_08_22-bookmark-tree-edit-functionality.md
+ *
+ * @ai_implementation
+ * ブックマークツリーのドラッグ＆ドロップロジックを管理するカスタムフック
+ * - フォルダへのドロップ時の処理改善
+ * - ドラッグ中のフォルダ自動展開機能
+ *
+ * @ai_decision
+ * 選択した実装アプローチ: フォルダの場合は常に"inside"に設定
+ * 理由:
+ * 1. ユーザーの意図を明確に反映（フォルダにドロップ = 中に入れる）
+ * 2. 実装がシンプルで堅牢
+ * 3. ドラッグ中のフォルダを自動的に展開することでUXを向上
+ */
+
 import { useMemo } from 'react';
 import type {
   DragStartEvent,
@@ -47,9 +63,30 @@ export function useTreeDragDrop() {
           return;
         }
 
+        // ドロップ位置の決定
+        // フォルダの場合は中に追加、それ以外は後ろに追加
         let position: DropPosition = "after";
+        
         if (overData.type === "folder") {
+          // フォルダの場合は中に追加
           position = "inside";
+          
+          // ドラッグ中のフォルダを展開
+          const targetItem = items.find(item => item.id === targetId);
+          if (targetItem && targetItem.type === "folder" && !targetItem.isExpanded) {
+            // フォルダが閉じている場合は開く
+            moveItem(sourceId, targetId, position);
+            // フォルダを展開
+            setTimeout(() => {
+              const store = useBookmarkTree.getState();
+              store.updateItem(targetId, {
+                type: "folder",
+                isExpanded: true
+              });
+            }, 0);
+            setDragState({ isDragging: false });
+            return;
+          }
         }
 
         moveItem(sourceId, targetId, position);
