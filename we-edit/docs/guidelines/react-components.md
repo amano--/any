@@ -1,6 +1,7 @@
 # Reactコンポーネント実装ガイドライン
 
 ## 目次
+
 - [基本実装パターン](#基本実装パターン)
 - [型定義](#型定義)
 - [型安全性](#型安全性)
@@ -8,6 +9,81 @@
 - [コンポーネント分割](#コンポーネント分割)
 - [テスタビリティ](#テスタビリティ)
 - [再利用性](#再利用性)
+- [コア設計原則](#コア設計原則)
+
+## コア設計原則
+
+### 推奨される記法
+
+```typescript
+// ✅ 推奨: type + アロー関数コンポーネント
+type TreeItemProps = {
+  label: string
+  expanded?: boolean
+}
+
+const TreeItem = ({label, expanded = false}: TreeItemProps) => {
+  return <div>{label}</div>
+}
+
+// ✅ 推奨: カスタムフックもアロー関数で
+const useTreeState = (initialState: boolean) => {
+  const [isExpanded, setExpanded] = useState(initialState)
+  return { isExpanded, setExpanded }
+}
+
+// ✅ 推奨: バリデーションスキーマ
+import { z } from 'zod' // or yup
+
+const treeItemSchema = z.object({
+  label: z.string(),
+  expanded: z.boolean().optional()
+})
+```
+
+### 避けるべき記法
+
+```typescript
+// ❌ 避ける: interfaceの使用
+interface TreeItemProps {
+  label: string
+}
+
+// ❌ 避ける: クラスコンポーネント
+class TreeItem extends React.Component<TreeItemProps> {
+  render() {
+    return <div>{this.props.label}</div>
+  }
+}
+
+// ❌ 避ける: enumの使用
+enum TreeItemType {
+  Folder,
+  File
+}
+
+// ❌ 避ける: 通常の関数宣言
+function TreeItem(props: TreeItemProps) {
+  return <div>{props.label}</div>
+}
+```
+
+### 理由
+
+1. **シンプルさと一貫性**
+
+   - `type`と`const`の組み合わせで十分な表現力
+   - コードベース全体で一貫したパターン
+   - 理解しやすく保守しやすい
+
+2. **型の柔軟性**
+
+   - `type`は交差型(`&`)や共用型(`|`)との親和性が高い
+   - 型の合成や分解が容易
+
+3. **バンドルサイズの最適化**
+   - クラスコンポーネントよりも関数コンポーネントの方が小さい
+   - Tree Shakingの効率が向上
 
 ## 基本実装パターン
 
@@ -55,15 +131,11 @@ Component.displayName = 'Component'
 ### アンチパターン
 
 ```typescript
-// ❌ 避けるべきパターン
-type Props = {p: string}
-const Component: FC<Props> = ({p}) => {}
-
 // ❌ any型の使用
-const Component: FC<any> = (props) => {}
+const Component: FC<any> = (props) => {};
 
 // ❌ 不明確な型名
-type ComponentStuff = {}
+type ComponentStuff = {};
 ```
 
 ## 型定義
@@ -90,19 +162,19 @@ export const TreeItem: FC<TreeItemProps & SharedTreeProps> = ({...})
 
 ```typescript
 // src/types/components.ts
-export interface TreeNodeData {
-  id: string
-  label: string
-  children?: TreeNodeData[]
-}
+type TreeNodeData = {
+  id: string;
+  label: string;
+  children?: TreeNodeData[];
+};
 
-export type TreeProps = {
-  data: TreeNodeData
+type TreeProps = {
+  data: TreeNodeData;
   // 他の共通props
-}
+};
 
 // 使用側
-import type { TreeProps } from '@/types/components'
+import type { TreeProps } from "@/types/components";
 ```
 
 ## 型安全性
@@ -196,6 +268,7 @@ const LargeList: FC<LargeListProps> = ({items}) => {
 ### 分割の基準
 
 1. **単一責任の原則**
+
    ```typescript
    // ✅ 推奨: 機能ごとに分割
    const BookmarkTree = () => {
@@ -210,14 +283,15 @@ const LargeList: FC<LargeListProps> = ({items}) => {
    ```
 
 2. **再利用性**
+
    ```typescript
    // ✅ 推奨: 汎用コンポーネント
-   const Button: FC<ButtonProps> = ({
+   const Button = ({
      variant,
      size,
      children,
      ...props
-   }) => {
+   }: ButtonProps) => {
      return (
        <button className={`btn-${variant} btn-${size}`} {...props}>
          {children}
@@ -227,19 +301,20 @@ const LargeList: FC<LargeListProps> = ({items}) => {
    ```
 
 3. **複雑さの管理**
+
    ```typescript
    // ✅ 推奨: ロジックの分離
    const useTreeLogic = (initialData: TreeData) => {
      // 複雑なロジックをカスタムフックに分離
      return {
        // ツリー操作のメソッド群
-     }
-   }
+     };
+   };
 
-   const TreeView: FC<TreeViewProps> = ({data}) => {
-     const treeLogic = useTreeLogic(data)
+   const TreeView = ({ data }: TreeViewProps) => {
+     const treeLogic = useTreeLogic(data);
      // UIの実装
-   }
+   };
    ```
 
 ## テスタビリティ
@@ -248,11 +323,11 @@ const LargeList: FC<LargeListProps> = ({items}) => {
 
 ```typescript
 // ✅ 推奨: テスト可能な実装
-const TreeItem: FC<TreeItemProps> = ({
+const TreeItem = ({
   label,
   onSelect,
   testId = 'tree-item' // テスト用ID
-}) => {
+}: TreeItemProps) => {
   return (
     <div
       data-testid={testId}
@@ -269,7 +344,7 @@ describe('TreeItem', () => {
   it('calls onSelect when clicked', () => {
     const onSelect = vi.fn()
     render(<TreeItem label="Test" onSelect={onSelect} />)
-    
+
     userEvent.click(screen.getByTestId('tree-item'))
     expect(onSelect).toHaveBeenCalled()
   })
@@ -281,6 +356,7 @@ describe('TreeItem', () => {
 ### コンポーネント設計の原則
 
 1. **Compound Componentsパターン**
+
    ```typescript
    const Tree = {
      Root: ({children}: {children: React.ReactNode}) => {...},
@@ -297,17 +373,18 @@ describe('TreeItem', () => {
    ```
 
 2. **カスタマイズ可能なスタイリング**
+
    ```typescript
    type StyleProps = {
      className?: string
      style?: React.CSSProperties
    }
 
-   const TreeItem: FC<TreeItemProps & StyleProps> = ({
+   const TreeItem = ({
      className,
      style,
      ...props
-   }) => {
+   }: TreeItemProps & StyleProps) => {
      return (
        <div
          className={cn('tree-item', className)}
@@ -318,38 +395,42 @@ describe('TreeItem', () => {
    }
    ```
 
-3. **拡張可能なProps**
+3. **スキーマバリデーションの活用**
+
    ```typescript
-   type BaseProps = {
-     // 基本的なprops
-   }
+   import { z } from 'zod'
 
-   type ExtendedProps = BaseProps & {
-     // 追加のprops
-   }
+   // ✅ 推奨: バリデーションスキーマの定義
+   const treeItemSchema = z.object({
+     label: z.string().min(1),
+     expanded: z.boolean().optional(),
+     children: z.array(z.lazy(() => treeItemSchema)).optional()
+   })
 
-   // 基本コンポーネント
-   const BaseComponent: FC<BaseProps> = (props) => {...}
+   type TreeItemData = z.infer<typeof treeItemSchema>
 
-   // 拡張コンポーネント
-   const ExtendedComponent: FC<ExtendedProps> = (props) => {
-     return <BaseComponent {...props} />
+   const TreeItem = ({data}: {data: TreeItemData}) => {
+     // スキーマによって型安全性が保証される
+     return <div>{data.label}</div>
    }
    ```
 
 ## ベストプラクティスのまとめ
 
-1. **型安全性**
-   - 厳格な型チェックを有効化
-   - Props型を明確に定義
-   - ジェネリック型の適切な活用
+1. **シンプルな型システム**
+
+   - `type`と`const`を優先使用
+   - `interface`、`class`、`enum`、`function`は避ける
+   - スキーマバリデーションの活用
 
 2. **パフォーマンス**
+
    - 適切なメモ化の使用
    - 条件付きレンダリング
    - 仮想化の活用
 
 3. **メンテナンス性**
+
    - 単一責任の原則に従う
    - テスト可能な設計
    - 明確な命名規則
