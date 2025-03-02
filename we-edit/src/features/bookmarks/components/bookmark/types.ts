@@ -17,6 +17,7 @@ export type BookmarkViewMode = "card" | "list";
  */
 export type BookmarkViewProps = {
   className?: string;
+  items:TreeItem[];
 };
 
 /**

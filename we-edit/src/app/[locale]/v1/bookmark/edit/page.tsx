@@ -20,7 +20,6 @@ type ViewMode = "tree" | "list";
 
 export default function BookmarkEditPage() {
   const { t } = useText();
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const { items, isLoading, error } = useBookmarkData();
 
   // エラー表示
@@ -49,26 +48,8 @@ export default function BookmarkEditPage() {
         </h1>
       </div>
 
-      {/* 表示モード切り替えタブ */}
-      <div className="mb-4">
-        <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as ViewMode)}>
-          <TabsList>
-            <TabsTrigger value="list">
-              {t.bookmarks.viewMode.list}
-            </TabsTrigger>
-            <TabsTrigger value="tree">
-              {t.bookmarks.viewMode.tree}
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
-
-      {/* コンテンツ表示 */}
-      {viewMode === "tree" ? (
-        <TreeContainer items={items} />
-      ) : (
-        <BookmarkView />
-      )}
+     
+        <BookmarkView items={items}/>
     </div>
   );
 }

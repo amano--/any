@@ -9,7 +9,6 @@
  */
 
 import { api } from '~/trpc/react';
-import type { TreeItem } from '../types';
 import { transformDbDataToTreeItems } from '../utils/transform';
 import { useCallback } from 'react';
 
