@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /**
- * @ai_implementation
- * 実装計画: src/app/_components/bookmark-tree/ai-logs/2025-03-02_04_18-bookmark-drag-and-drop-revision.md
+ * @link 実装計画書 src/features/bookmarks/logs/ai/2025-03-02_15_07-bookmark-card-variants.md
  * 
- * 機能: ブックマークカードのドラッグ＆ドロップ並び替え
- * アプローチ: @dnd-kit/sortableを使用した実装
- * パフォーマンス考慮: 
- * - transform.scaleによるスムーズなアニメーション
- * - メモ化によるre-render最適化
+ * @ai_implementation
+ * 詳細表示用のブックマークカードコンポーネント
+ * - Cardコンポーネントを使用
+ * - ドラッグ＆ドロップ対応
+ * - アクセシビリティ対応
+ * - メモ化による最適化
  */
 
-import { type FC, useCallback } from "react";
+import { type FC, memo } from "react";
 import { Link, GripVertical } from "lucide-react";
 import {
   Card,
@@ -19,25 +18,12 @@ import {
   CardDescription,
   CardFooter,
 } from "~/shadcn/components/ui/card";
-import { api } from "~/trpc/react";
-import { type inferRouterOutputs } from "@trpc/server";
-import { type AppRouter } from "~/server/api/root";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useText } from "~/i18n/text";
 import { cn } from "~/shadcn/lib/utils";
 import type { DraggableItemData } from "~/types/drag-events";
-import { DndContext, closestCenter, type DragEndEvent } from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { useBookmarkTreeStore } from "~/features/bookmarks/store/bookmark-tree";
-
-type RouterOutput = inferRouterOutputs<AppRouter>;
-type Bookmark = RouterOutput["bookmark"]["getAll"][number];
-
-interface BookmarkCardProps {
-  bookmark: Bookmark;
-  className?: string;
-}
+import type { BookmarkCardProps } from "./types";
 
 const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark, className }) => {
   const { t } = useText();
@@ -161,72 +147,6 @@ const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark, className }) => {
   );
 };
 
-export const BookmarkList: FC = () => {
-  const { t } = useText();
-  const { data: bookmarks, isLoading } = api.bookmark.getAll.useQuery();
-  const moveItem = useBookmarkTreeStore((state) => state.moveItem);
+BookmarkCard.displayName = "BookmarkCard";
 
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id && bookmarks) {
-      const oldIndex = bookmarks.findIndex(item => item.id === active.id);
-      const newIndex = bookmarks.findIndex(item => item.id === over.id);
-      const position: "before" | "after" = oldIndex < newIndex ? "after" : "before";
-      
-      // Zustand storeの更新
-      moveItem(active.id as string, over.id as string, position);
-    }
-  }, [bookmarks, moveItem]);
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col gap-4 px-4 py-16">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <Card key={i} className="w-full flex animate-pulse">
-            <div className="p-6">
-              <div className="h-16 w-16 bg-muted rounded" />
-            </div>
-            <CardHeader className="flex-1">
-              <div className="h-6 w-3/4 bg-muted rounded" />
-              <div className="h-4 w-1/2 bg-muted rounded mt-2" />
-              <div className="h-4 w-24 bg-muted rounded mt-4" />
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
-    );
-  }
-
-  if (!bookmarks?.length) {
-    return (
-      <div className="flex items-center justify-center px-4 py-16">
-        <p className="text-muted-foreground">{t.bookmarks.bookmarkEditPage?.listTitle}</p>
-      </div>
-    );
-  }
-
-  return (
-    <DndContext
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext 
-        items={bookmarks.map(b => b.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        <div 
-          className="flex flex-col gap-4 px-4 py-16"
-          role="list"
-          aria-label={t.bookmarks.bookmarkEditPage.listTitle}
-        >
-          {bookmarks.map((bookmark) => (
-            <div key={bookmark.id} role="listitem">
-              <BookmarkCard bookmark={bookmark} />
-            </div>
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
-  );
-};
+export default memo(BookmarkCard);

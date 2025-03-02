@@ -1,79 +1,74 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/**
+ * @link 実装計画書 src/features/bookmarks/logs/ai/2025-03-02_08_47-bookmarks-refactoring.md
+ * 
+ * @ai_implementation
+ * ブックマーク編集ページ
+ * - カード表示とリスト表示の切り替え
+ * - 一覧表示とツリー表示の両方をサポート
+ */
+
 "use client";
 
-import { toast } from "sonner";
-import { BookmarkList, TreeContainer } from "~/features/bookmarks";
-import { Button } from "~/shadcn/components/ui/button";
-import { api } from "~/trpc/react";
+import React, { useState } from "react";
+import { Tabs, TabsList, TabsTrigger } from "~/shadcn/components/ui/tabs";
 import { useText } from "~/i18n/text";
+import { TreeContainer } from "~/features/bookmarks/components/tree";
+import BookmarkView from "~/features/bookmarks/components/bookmark/BookmarkView";
+import { useBookmarkData } from "~/features/bookmarks/hooks/useBookmarkData";
 
-/**
- * ブックマーク編集ページ
- * レイアウトは以下の通り
- * 左側: 一覧パネル
- * 右側: ツリーパネル
- * 下部: コメントパネル
- */
+type ViewMode = "tree" | "list";
+
 export default function BookmarkEditPage() {
   const { t } = useText();
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const { items, isLoading, error } = useBookmarkData();
 
-  const showSuccess = () => {
-    toast.success("サンプルデータが登録されました");
-  };
+  // エラー表示
+  if (error) {
+    return (
+      <div className="flex items-center justify-center px-4 py-16">
+        <p className="text-destructive">{t.bookmarks.status.error}</p>
+      </div>
+    );
+  }
 
-  const showError = () => {
-    toast.error(t.errors.general);
-  };
-  const utils = api.useContext();
-  const { mutate: createSample, isPending } =
-    api.bookmark.createSampleData.useMutation({
-      onSuccess: () => {
-        void utils.bookmark.getAll.invalidate();
-        showSuccess();
-      },
-      onError: () => {
-        showError();
-      },
-    });
+  // ローディング表示
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center px-4 py-16">
+        <p className="text-muted-foreground">{t.bookmarks.status.loading}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="grid min-h-screen grid-cols-1 md:grid-cols-3">
-      {/* 左パネル: ブックマーク一覧パネル */}
-      <div className="border-r">
-        <div className="sticky top-0 space-y-4 border-b bg-background p-4">
-          <h1 className="text-2xl font-bold">ブックマーク一覧</h1>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => createSample()}
-              disabled={isPending}
-            >
-              {isPending ? "登録中..." : "サンプルデータを登録"}
-            </Button>
-          </div>
-        </div>
-        <BookmarkList />
+    <div className="container py-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">
+          {t.bookmarks.bookmarkEditPage.title}
+        </h1>
       </div>
 
-      {/* 中央パネル: ツリーパネル */}
-      <div className="border-r">
-        <div className="sticky top-0 border-b bg-background p-4">
-          <h2 className="mb-4 text-xl font-bold">ブックマークツリー</h2>
-          <TreeContainer />
-        </div>
+      {/* 表示モード切り替えタブ */}
+      <div className="mb-4">
+        <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as ViewMode)}>
+          <TabsList>
+            <TabsTrigger value="list">
+              {t.bookmarks.viewMode.list}
+            </TabsTrigger>
+            <TabsTrigger value="tree">
+              {t.bookmarks.viewMode.tree}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
 
-      {/* 右パネル: コメントパネル */}
-      <div>
-        <div className="sticky top-0 border-b bg-background p-4">
-          <h2 className="text-xl font-bold">コメント</h2>
-          <p className="mt-4 text-muted-foreground">
-            コメント編集機能（準備中）
-          </p>
-        </div>
-      </div>
+      {/* コンテンツ表示 */}
+      {viewMode === "tree" ? (
+        <TreeContainer items={items} />
+      ) : (
+        <BookmarkView />
+      )}
     </div>
   );
 }

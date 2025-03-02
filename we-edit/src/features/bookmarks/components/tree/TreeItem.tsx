@@ -1,57 +1,54 @@
 /**
- * @link 実装計画書 src/features/bookmarks/logs/ai/2025-03-02_08_22-bookmark-tree-edit-functionality.md
- *
+ * @link 実装計画書 src/features/bookmarks/logs/ai/2025-03-02_08_47-bookmarks-refactoring.md
+ * 
  * @ai_implementation
- * ブックマークツリーの名前をダブルクリックで編集できる機能と
- * フォルダに子要素を追加できる機能の実装
- * - ダブルクリックで編集モードに切り替え
- * - 編集モード中はInputコンポーネントを表示
- * - フォルダの場合は子要素追加ボタンを表示
+ * ツリーアイテムコンポーネント
+ * - フォルダとブックマークの表示
+ * - ドラッグ＆ドロップ対応
+ * - アクセシビリティ対応
  */
 
-import { forwardRef, useState, useRef, useEffect } from 'react';
-import type { HTMLAttributes, KeyboardEvent } from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { cn } from '~/shadcn/lib/utils';
-import type { TreeComponentProps } from '../../types';
-import { Card } from '~/shadcn/components/ui/card';
-import { Label } from '~/shadcn/components/ui/label';
-import { Input } from '~/shadcn/components/ui/input';
-import { Button } from '~/shadcn/components/ui/button';
-import { PlusCircle } from 'lucide-react';
-import { useText } from '~/i18n/text';
+import { memo } from "react";
+import { Folder, FolderOpen, ChevronRight, ChevronDown, Link } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { Button } from "~/shadcn/components/ui/button";
+import { cn } from "~/shadcn/lib/utils";
+import { useText } from "~/i18n/text";
+import type { TreeItem as TreeItemType } from "../../types/tree";
+import type { DraggableItemData } from "~/types/drag-events";
 
-/**
- * @ai_implementation
- * ツリー項目のコンポーネント
- * - ドラッグ&ドロップ可能
- * - フォルダ/ブックマークの表示切り替え
- * - 展開/折りたたみの状態管理
- */
-export const TreeItem = forwardRef<
-  HTMLDivElement,
-  TreeComponentProps & HTMLAttributes<HTMLDivElement>
->(({
-  id,
-  name,
-  type,
-  depth,
+export type TreeItemProps = {
+  item: TreeItemType;
+  isSelected?: boolean;
+  isExpanded?: boolean;
+  onSelect?: (id: string) => void;
+  onExpand?: (id: string) => void;
+  onCollapse?: (id: string) => void;
+};
+
+const TreeItem = memo<TreeItemProps>(({
+  item,
+  isSelected,
   isExpanded,
-  children,
-  onToggle,
-  onNameChange,
-  url,
-  icon,
-  description,
-  tags,
-  className,
-  ...props
-}, ref) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState(name);
-  const inputRef = useRef<HTMLInputElement>(null);
+  onSelect,
+  onExpand,
+  onCollapse,
+}) => {
   const { t } = useText();
+
+  // DnDの設定
+  const dragData: DraggableItemData = {
+    type: item.type,
+    sourcePanel: "tree",
+    bookmarkData: item.type === "bookmark" ? {
+      title: item.name,
+      url: item.url,
+      icon: item.icon,
+      description: item.description,
+      tags: item.tags,
+    } : undefined,
+  };
 
   const {
     attributes,
@@ -60,146 +57,77 @@ export const TreeItem = forwardRef<
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({
+    id: item.id,
+    data: dragData,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    paddingLeft: `${depth * 1.5}rem`,
   };
 
-  const isFolder = type === 'folder';
-  const baseClasses = "relative mb-2 p-2";
-  const stateClasses = isDragging ? "opacity-50" : "";
-  const typeClasses = isFolder ? "bg-muted" : "";
+  // イベントハンドラ
+  const handleSelect = () => {
+    onSelect?.(item.id);
+  };
 
-  // 編集モードを開始
-  const handleDoubleClick = () => {
-    if (!isDragging) {
-      setIsEditing(true);
+  const handleToggle = () => {
+    if (isExpanded) {
+      onCollapse?.(item.id);
+    } else {
+      onExpand?.(item.id);
     }
   };
 
-  // 編集を保存
-  const saveEdit = () => {
-    if (editValue.trim() !== '' && editValue !== name) {
-      onNameChange?.(editValue.trim());
-    }
-    setIsEditing(false);
-  };
-
-  // キーボードイベント処理
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      saveEdit();
-    } else if (e.key === 'Escape') {
-      setEditValue(name);
-      setIsEditing(false);
-    }
-  };
-
-  // 編集モードになったらフォーカス
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
-    }
-  }, [isEditing]);
+  // アイコンの決定
+  const Icon = item.type === "folder"
+    ? (isExpanded ? FolderOpen : Folder)
+    : Link;
 
   return (
-    <Card
+    <div
       ref={setNodeRef}
       style={style}
       className={cn(
-        baseClasses,
-        stateClasses,
-        typeClasses,
-        className
+        "flex items-center gap-1 py-1 pl-2 pr-4 rounded-md",
+        isSelected && "bg-accent",
+        isDragging && "opacity-50"
       )}
-      {...props}
+      {...attributes}
+      {...listeners}
+      role={item.type === "folder" ? "treeitem" : "none"}
+      aria-expanded={item.type === "folder" ? isExpanded : undefined}
     >
-      <div
-        className="flex items-center gap-2 cursor-grab active:cursor-grabbing"
-        {...attributes}
-        {...listeners}
-      >
-        {/* アイコン */}
-        <div className="flex-shrink-0">
-          {isFolder ? (
-            <button
-              onClick={onToggle}
-              className="p-1 hover:bg-accent rounded"
-              aria-expanded={isExpanded}
-            >
-              {isExpanded ? "📂" : "📁"}
-            </button>
+      {item.type === "folder" && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-4 w-4"
+          onClick={handleToggle}
+          aria-label={isExpanded ? t.bookmarks.dragDrop.start.folder : undefined}
+        >
+          {isExpanded ? (
+            <ChevronDown className="h-3 w-3" />
           ) : (
-            <span role="img" aria-label="bookmark">
-              {icon ?? "🔖"}
-            </span>
+            <ChevronRight className="h-3 w-3" />
           )}
-        </div>
-
-        {/* 名前（編集モード/表示モード） */}
-        {isEditing ? (
-          <Input
-            ref={inputRef}
-            value={editValue}
-            onChange={(e) => setEditValue(e.target.value)}
-            onBlur={saveEdit}
-            onKeyDown={handleKeyDown}
-            className="flex-grow h-8 py-1"
-            autoFocus
-          />
-        ) : (
-          <Label
-            className="flex-grow cursor-text"
-            onDoubleClick={handleDoubleClick}
-          >
-            {name}
-          </Label>
+        </Button>
+      )}
+      <Icon className="h-4 w-4 text-muted-foreground" />
+      <button
+        className={cn(
+          "flex-1 text-left text-sm px-2 py-1 rounded-sm",
+          "hover:bg-accent/50 focus:outline-none focus:ring-2 focus:ring-ring"
         )}
-
-        {/* URLとタグ（ブックマークの場合） */}
-        {!isFolder && url && !isEditing && (
-          <div className="flex-shrink-0 text-sm text-muted-foreground">
-            {url}
-          </div>
-        )}
-
-        {/* フォルダの場合、子要素追加ボタン */}
-        {isFolder && !isEditing && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            title={t.bookmarks.addToFolder}
-            onClick={(e) => {
-              e.stopPropagation();
-              // フォルダに子要素を追加するためのコンテキストメニューを表示
-              // または直接子フォルダを追加
-              if (onToggle) {
-                // まずフォルダを展開
-                if (!isExpanded) {
-                  onToggle();
-                }
-                // 子フォルダ追加イベントを発火
-                const event = new CustomEvent('add-to-folder', {
-                  detail: { folderId: id }
-                });
-                window.dispatchEvent(event);
-              }
-            }}
-          >
-            <PlusCircle className="h-4 w-4" />
-          </Button>
-        )}
-      </div>
-
-      {/* 子要素 */}
-      {children}
-    </Card>
+        onClick={handleSelect}
+      >
+        {item.name}
+      </button>
+    </div>
   );
 });
 
-TreeItem.displayName = 'TreeItem';
+TreeItem.displayName = "TreeItem";
+
+export default TreeItem;
