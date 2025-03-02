@@ -7,95 +7,144 @@
 ```typescript
 @protocol[type_validation]
 {
-  components: {
-    props: "strict";
-    state: "explicit";
-    callbacks: "memoized";
-  },
-  
-  i18n: {
-    keys: "typed";
-    messages: "const";
-    validation: "zod";
-  },
-  
-  patterns: {
-    preferred: ["type", "const", "function"];
-    avoided: ["interface", "enum", "class"];
+  rules: {
+    props: {
+      naming: "ComponentNameProps",
+      location: "same_file",
+      format: "type_alias"
+    },
+
+    hooks: {
+      naming: "useHookName",
+      return_type: "explicit",
+      dependencies: "array_literal"
+    },
+
+    i18n: {
+      keys: "literal_union",
+      messages: "const_assertion",
+      params: "typed_function"
+    }
   }
 }
 ```
 
-## 2. コード生成検証
+## 2. コンポーネント構造検証
 
 ```typescript
-@protocol[code_generation]
+@protocol[component_structure]
 {
-  components: {
-    structure: `
-      imports
-      type_definitions
-      component_declaration
-      hooks_usage
-      render_logic
-    `,
-    naming: "PascalCase",
-    exports: "named_only"
+  layout: {
+    imports: "grouped_by_type",
+    types: "before_component",
+    hooks: "inside_component",
+    jsx: "last_section"
   },
-  
-  i18n: {
-    structure: "3_level_max",
-    format: "camelCase",
-    validation: "type_safe"
+
+  naming: {
+    files: "PascalCase.tsx",
+    components: "PascalCase",
+    functions: "camelCase",
+    constants: "UPPER_CASE"
   },
-  
-  optimization: {
-    memoization: ["heavy_compute", "callbacks"],
-    splitting: ["logical_boundaries", "features"],
-    lazy_loading: ["routes", "large_components"]
+
+  exports: {
+    type: "named",
+    memo: "required",
+    displayName: "set"
   }
 }
 ```
 
-## 3. 実装検証
-
-```typescript
-@protocol[implementation_validation]
-{
-  pre_check: {
-    memory_state: "complete",
-    type_definitions: "exists",
-    i18n_keys: "defined"
-  },
-
-  runtime_check: {
-    type_safety: true,
-    memory_usage: "optimal",
-    performance: "monitored"
-  },
-
-  post_check: {
-    documentation: "updated",
-    memory_bank: "synced",
-    commit_ready: true
-  }
-}
-```
-
-## 4. パフォーマンス検証
+## 3. パフォーマンス検証
 
 ```typescript
 @protocol[performance_validation]
 {
-  metrics: {
-    render_time: "< 16ms",
-    memory_usage: "< threshold",
-    bundle_size: "optimized"
+  memoization: {
+    check_deps: true,
+    validate_hooks: true,
+    prevent_rerenders: true
   },
 
-  checks: {
-    memoization: "correct",
-    lazy_loading: "implemented",
-    tree_shaking: "enabled"
+  code_splitting: {
+    check_imports: true,
+    validate_chunks: true,
+    optimize_size: true
+  },
+
+  rendering: {
+    measure_updates: true,
+    check_virtualization: true,
+    validate_effects: true
+  }
+}
+```
+
+## 4. i18n検証
+
+```typescript
+@protocol[i18n_validation]
+{
+  keys: {
+    check_existence: true,
+    validate_format: true,
+    prevent_hardcoding: true
+  },
+
+  structure: {
+    max_depth: 3,
+    group_by_feature: true,
+    require_typing: true
+  },
+
+  usage: {
+    hook_location: "component_top",
+    prevent_nested: true,
+    require_memoization: true
+  }
+}
+```
+
+## 5. アクセシビリティ検証
+
+```typescript
+@protocol[accessibility_validation]
+{
+  roles: {
+    check_exists: true,
+    validate_usage: true,
+    require_aria: true
+  },
+
+  keyboard: {
+    check_focus: true,
+    validate_handlers: true,
+    require_shortcuts: true
+  },
+
+  semantics: {
+    check_structure: true,
+    validate_landmarks: true,
+    require_labels: true
+  }
+}
+```
+
+## 6. エラー境界検証
+
+```typescript
+@protocol[error_boundary_validation]
+{
+  implementation: {
+    check_exists: true,
+    validate_handling: true,
+    require_recovery: true
+  },
+
+  fallbacks: {
+    check_ui: true,
+    validate_state: true,
+    require_reset: true
   }
 }
