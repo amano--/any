@@ -109,6 +109,29 @@ export function useBookmarkOperations() {
     }
   }, [items, createFolder]);
 
+  /**
+   * 既存のブックマークをフォルダに移動
+   */
+  const addBookmarkToFolder = useCallback((
+    bookmarkId: string,
+    targetFolderId: string
+  ) => {
+    const bookmark = items.find(item => item.id === bookmarkId);
+    const targetFolder = items.find(item =>
+      item.id === targetFolderId && item.type === "folder"
+    );
+
+    if (!bookmark || !targetFolder || targetFolder.type !== "folder") {
+      return;
+    }
+
+    // 親フォルダを更新
+    updateItem(bookmarkId, {
+      type: bookmark.type,
+      parentId: targetFolderId
+    });
+  }, [items, updateItem]);
+
   return {
     createBookmark,
     createFolder,
@@ -116,6 +139,7 @@ export function useBookmarkOperations() {
     updateFolder,
     deleteItem,
     getFolderContents,
-    ensureRootFolder
+    ensureRootFolder,
+    addBookmarkToFolder
   };
 }

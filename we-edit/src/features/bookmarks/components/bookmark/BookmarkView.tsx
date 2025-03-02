@@ -1,28 +1,3 @@
-/**
- * [実装計画書](../../logs/ai/2025-03-02_16_04-bookmark-3panel-layout.md)
- *
- * @ai_component_structure
- * レイアウト構成:
- * - BookmarkView: ブックマーク編集ページのメインコンテナ
- *   - 左パネル (1): ブックマーク一覧表示
- *     - TabsList: カード/リスト表示切り替え
- *     - BookmarkCard/BookmarkListItem: ブックマーク表示
- *   - 右パネル (2): ツリー表示
- *     - TreeContainer: ブックマークツリー
- *
- * 状態管理:
- * - mode: 表示モード（card/list）
- * - items: ブックマークデータ
- * - isLoading: データ読み込み状態
- * - error: エラー状態
- *
- * @ai_implementation
- * ブックマーク表示切り替えコンポーネント
- * - カード表示とリスト表示の切り替え
- * - レスポンシブ対応
- * - アクセシビリティ対応
- */
-
 import { type FC, useState, type HTMLAttributes, useCallback } from "react";
 import {
   DndContext,
@@ -48,13 +23,58 @@ type StatusProps = HTMLAttributes<HTMLDivElement> & {
   "aria-busy"?: boolean;
 };
 
+type DragState = {
+  type: "bookmark" | "tree";
+  sourceId: string | null;
+  targetId: string | null;
+};
+
 /**
  * ブックマーク表示切り替えコンポーネント
  */
-const BookmarkView: FC<BookmarkViewProps> = ({ className,items:bookmarks }) => {
+const BookmarkView: FC<BookmarkViewProps> = ({ className, items: bookmarks }) => {
   const { t } = useText();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [mode, setMode] = useState<BookmarkViewMode>("list");
+  const [dragState, setDragState] = useState<DragState>({
+    type: "bookmark",
+    sourceId: null,
+    targetId: null
+  });
+
+  const { addBookmarkToFolder } = useBookmarkOperations();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    const { active } = event;
+    setDragState(prev => ({
+      ...prev,
+      sourceId: active.id as string,
+      type: active.data.current?.type || "bookmark"
+    }));
+  }, []);
+
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (over && active.id !== over.id) {
+      // ブックマークをフォルダに追加
+      addBookmarkToFolder(active.id as string, over.id as string);
+    }
+
+    setDragState({
+      type: "bookmark",
+      sourceId: null,
+      targetId: null
+    });
+  }, [addBookmarkToFolder]);
   
   // データが空の場合
   if (!bookmarks?.length) {
@@ -72,79 +92,95 @@ const BookmarkView: FC<BookmarkViewProps> = ({ className,items:bookmarks }) => {
   }
 
   return (
-    <div className={cn("w-full grid grid-cols-[1fr_2fr] grid-rows-[1fr] gap-4 h-full", className)}>
-      {/* 左パネル: ブックマーク一覧 */}
-      <div className="col-span-1 row-span-1 overflow-auto border rounded-lg p-4">
-        {/* 表示モード切り替えタブ */}
-        <div className="mb-4 flex justify-end">
-          <Tabs
-            value={mode}
-            onValueChange={(value) => setMode(value as BookmarkViewMode)}
-            className="w-[200px]"
-          >
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger
-                value="list"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                {t.bookmarks.viewMode.list}
-              </TabsTrigger>
-              <TabsTrigger
-                value="card"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                disabled={isMobile}
-              >
-                {t.bookmarks.viewMode.card}
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-
-        {/* ブックマークリスト */}
-        <div
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <div className={cn("w-full grid grid-cols-[1fr_2fr] grid-rows-[1fr] gap-4 h-full", className)}>
+        {/* 左パネル: ブックマーク一覧 */}
+        <div 
           className={cn(
-            "flex flex-col",
-            mode === "list" ? "gap-2" : "gap-4"
+            "col-span-1 row-span-1 overflow-auto border rounded-lg p-4",
+            dragState.sourceId && "opacity-75"
           )}
-          role="list"
-          aria-label={t.bookmarks.bookmarkEditPage.listTitle}
         >
-          {bookmarks.map((bookmark) => (
-            <div
-              key={bookmark.id}
-              role="listitem"
+          {/* 表示モード切り替えタブ */}
+          <div className="mb-4 flex justify-end">
+            <Tabs
+              value={mode}
+              onValueChange={(value) => setMode(value as BookmarkViewMode)}
+              className="w-[200px]"
             >
-              {mode === "card" ? (
-                <BookmarkCard
-                  bookmark={bookmark}
-                  className="transition-all duration-200 hover:scale-[1.01]"
-                />
-              ) : (
-                <BookmarkListItem
-                  bookmark={bookmark}
-                  className="transition-all duration-200 hover:bg-accent/50"
-                />
-              )}
-            </div>
-          ))}
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger
+                  value="list"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  {t.bookmarks.viewMode.list}
+                </TabsTrigger>
+                <TabsTrigger
+                  value="card"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  disabled={isMobile}
+                >
+                  {t.bookmarks.viewMode.card}
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
+          {/* ブックマークリスト */}
+          <div
+            className={cn(
+              "flex flex-col",
+              mode === "list" ? "gap-2" : "gap-4"
+            )}
+            role="list"
+            aria-label={t.bookmarks.bookmarkEditPage.listTitle}
+          >
+            {bookmarks.map((bookmark) => (
+              <div
+                key={bookmark.id}
+                role="listitem"
+              >
+                {mode === "card" ? (
+                  <BookmarkCard
+                    bookmark={bookmark}
+                    className="transition-all duration-200 hover:scale-[1.01]"
+                  />
+                ) : (
+                  <BookmarkListItem
+                    bookmark={bookmark}
+                    className="transition-all duration-200 hover:bg-accent/50"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* 右パネル: ツリー表示 */}
-      <div className="col-span-1 row-span-1 overflow-auto border rounded-lg p-4">
-        <TreeContainer />
-      </div>
+        {/* 右パネル: ツリー表示 */}
+        <div className="col-span-1 row-span-1 overflow-auto border rounded-lg p-4">
+          <TreeContainer />
+        </div>
 
-    </div>
+        {/* ドラッグオーバーレイ */}
+        <DragOverlay>
+          {dragState.sourceId && bookmarks.find(b => b.id === dragState.sourceId) && (
+            <div className="opacity-50">
+              <BookmarkListItem
+                bookmark={bookmarks.find(b => b.id === dragState.sourceId)!}
+                className="bg-background shadow-lg"
+              />
+            </div>
+          )}
+        </DragOverlay>
+      </div>
+    </DndContext>
   );
 };
 
 BookmarkView.displayName = "BookmarkView";
 
 export default BookmarkView;
-
-/**
- * 実装履歴:
- * - 2025-03-02: [実装計画書](../../logs/ai/2025-03-02_16_04-bookmark-3panel-layout.md) - 3パネルレイアウトの実装
- * - 2025-03-02: [実装計画書](../../logs/ai/2025-03-02_15_07-bookmark-card-variants.md) - カード表示とリスト表示の実装
- */

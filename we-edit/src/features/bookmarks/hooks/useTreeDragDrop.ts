@@ -1,114 +1,81 @@
-/**
- * @link 実装計画書 src/features/bookmarks/logs/ai/2025-03-02_08_22-bookmark-tree-edit-functionality.md
- *
- * @ai_implementation
- * ブックマークツリーのドラッグ＆ドロップロジックを管理するカスタムフック
- * - フォルダへのドロップ時の処理改善
- * - ドラッグ中のフォルダ自動展開機能
- *
- * @ai_decision
- * 選択した実装アプローチ: フォルダの場合は常に"inside"に設定
- * 理由:
- * 1. ユーザーの意図を明確に反映（フォルダにドロップ = 中に入れる）
- * 2. 実装がシンプルで堅牢
- * 3. ドラッグ中のフォルダを自動的に展開することでUXを向上
- */
+import { useCallback, useState } from "react";
+import type { DragStartEvent, DragEndEvent, Active } from "@dnd-kit/core";
 
-import { useMemo } from 'react';
-import type {
-  DragStartEvent,
-  DragEndEvent,
-  DragState,
-  TreeItem,
-  FolderTreeItem,
-  DropPosition,
-} from '../types';
-import { useBookmarkTree } from './useBookmarkTree';
+interface DragData {
+  type: "tree" | "bookmark";
+  item?: TreeItem;
+}
+import { useBookmarkTree } from "./useBookmarkTree";
+import { isFolder } from "../types/tree";
+import type { TreeItem } from "../types/tree";
+
+export type DragState = {
+  sourceId: string | null;
+  targetId: string | null;
+  type: "tree" | "bookmark";
+};
 
 /**
- * @ai_implementation
- * ブックマークツリーのドラッグ＆ドロップロジックを管理するカスタムフック
+ * ツリーのドラッグ&ドロップを管理するフック
  */
-export function useTreeDragDrop() {
-  const { dragState, setDragState, moveItem, items } = useBookmarkTree();
+export const useTreeDragDrop = () => {
+  const [dragState, setDragState] = useState<DragState>({
+    sourceId: null,
+    targetId: null,
+    type: "tree"
+  });
 
-  const handlers = useMemo(
-    () => ({
-      handleDragStart: (event: DragStartEvent) => {
-        const { active } = event;
-        const dragData = active.data.current;
-        if (!dragData) return;
+  const { items, updateItem } = useBookmarkTree();
 
-        setDragState({
-          isDragging: true,
-          sourceId: String(active.id),
-          sourceType: dragData.type,
-          parentId: dragData.treeItem?.parentId ?? null,
-        });
-      },
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    const { active } = event;
+    setDragState(prev => ({
+      ...prev,
+      sourceId: active.id as string,
+      type: (active.data.current?.type as "tree" | "bookmark") ?? "tree"
+    }));
+  }, []);
 
-      handleDragEnd: (event: DragEndEvent) => {
-        const { active, over } = event;
-        if (!over) {
-          setDragState({ isDragging: false });
-          return;
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (over && active.id !== over.id) {
+      const overId = over.id.toString().replace("droppable-", "");
+      const targetItem = items.find(item => item.id === overId);
+      
+      if (targetItem && isFolder(targetItem)) {
+        // ドラッグ元の情報を取得
+        const data = active.data.current as DragData;
+        if (data?.type === "bookmark") {
+          const sourceId = active.id as string;
+          // 移動するアイテムの親フォルダを更新
+          updateItem(sourceId, {
+            type: "bookmark",
+            parentId: targetItem.id
+          });
         }
+      }
+    }
 
-        const sourceId = String(active.id);
-        const targetId = String(over.id);
-        const overData = over.data.current;
+    setDragState({
+      sourceId: null,
+      targetId: null,
+      type: "tree"
+    });
+  }, [items, updateItem]);
 
-        if (!overData) {
-          setDragState({ isDragging: false });
-          return;
-        }
-
-        // ドロップ位置の決定
-        // フォルダの場合は中に追加、それ以外は後ろに追加
-        let position: DropPosition = "after";
-        
-        if (overData.type === "folder") {
-          // フォルダの場合は中に追加
-          position = "inside";
-          
-          // ドラッグ中のフォルダを展開
-          const targetItem = items.find(item => item.id === targetId);
-          if (targetItem && targetItem.type === "folder" && !targetItem.isExpanded) {
-            // フォルダが閉じている場合は開く
-            moveItem(sourceId, targetId, position);
-            // フォルダを展開
-            setTimeout(() => {
-              const store = useBookmarkTree.getState();
-              store.updateItem(targetId, {
-                type: "folder",
-                isExpanded: true
-              });
-            }, 0);
-            setDragState({ isDragging: false });
-            return;
-          }
-        }
-
-        moveItem(sourceId, targetId, position);
-        setDragState({ isDragging: false });
-      },
-
-      handleDragOver: (overId: string | null, type: "folder" | "bookmark") => {
-        setDragState({
-          targetId: overId,
-          position: type === "folder" ? "inside" : "after",
-        });
-      },
-
-      handleDragCancel: () => {
-        setDragState({ isDragging: false });
-      },
-    }),
-    [setDragState, moveItem, items]
-  );
+  const handleDragOver = useCallback((event: DragEndEvent) => {
+    const { over } = event;
+    setDragState(prev => ({
+      ...prev,
+      targetId: over?.id as string | null
+    }));
+  }, []);
 
   return {
     dragState,
-    ...handlers,
+    handleDragStart,
+    handleDragEnd,
+    handleDragOver
   };
-}
+};

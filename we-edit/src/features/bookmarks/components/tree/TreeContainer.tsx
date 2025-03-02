@@ -89,6 +89,7 @@ const TreeContainerBase = ({ className }: TreeContainerProps) => {
           collisionDetection={closestCenter}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
         >
           <SortableContext
             items={items.map((item) => item.id)}
@@ -99,21 +100,26 @@ const TreeContainerBase = ({ className }: TreeContainerProps) => {
             </AnimatePresence>
           </SortableContext>
 
-          <DragOverlay>
-            {dragState.sourceId && (
-              <div 
-                className={cn(
-                  "opacity-50",
-                  isDraggingFromList && "bg-background shadow-lg"
-                )}
-              >
-                {(() => {
-                  const item = items.find(i => i.id === dragState.sourceId);
-                  if (!item) return null;
-                  return renderTreeNode(item, 0);
-                })()}
-              </div>
-            )}
+          <DragOverlay dropAnimation={{
+            duration: 200,
+            easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
+          }}>
+            {dragState.sourceId && (() => {
+              const item = items.find(i => i.id === dragState.sourceId);
+              if (!item) return null;
+              return (
+                <div
+                  className={cn(
+                    "opacity-75",
+                    dragState.type === "bookmark" && "bg-background shadow-lg rounded-lg p-2",
+                    "transform-gpu scale-95",
+                    "transition-transform duration-200"
+                  )}
+                >
+                  {renderTreeNode(item, 0)}
+                </div>
+              );
+            })()}
           </DragOverlay>
         </DndContext>
 

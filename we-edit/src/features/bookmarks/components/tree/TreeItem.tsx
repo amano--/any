@@ -1,5 +1,6 @@
 import { forwardRef, memo } from "react";
 import type { HTMLAttributes } from "react";
+import { useDroppable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "~/shadcn/lib/utils";
@@ -67,24 +68,36 @@ const TreeItemComponent = forwardRef<HTMLDivElement, TreeItemComponentProps>(({
     listeners,
     setNodeRef,
     transform,
-    transition,
     isDragging,
   } = useSortable({ id });
 
-  const style = {
+  const { isOver, setNodeRef: setDroppableRef } = useDroppable({
+    id: `droppable-${id}`,
+    data: {
+      type,
+      accepts: ["bookmark", "tree"]
+    }
+  });
+
+  const style = transform ? {
     transform: CSS.Transform.toString(transform),
-    transition,
-  };
+    zIndex: isDragging ? 50 : undefined,
+  } : undefined;
 
   const isFolder = type === "folder";
   
   return (
     <div
-      ref={setNodeRef}
+      ref={(node) => {
+        setNodeRef(node);
+        setDroppableRef(node);
+      }}
       style={style}
       className={cn(
-        "relative mb-2 transition-all",
-        isDragging ? "opacity-50 z-50" : "",
+        "relative mb-2",
+        "transition-all duration-200",
+        isDragging && "opacity-50 z-50",
+        isOver && isFolder && "ring-2 ring-primary ring-offset-2",
         className
       )}
       role="treeitem"

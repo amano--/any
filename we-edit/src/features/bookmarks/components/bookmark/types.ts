@@ -5,7 +5,7 @@
  * ブックマークコンポーネントの型定義
  */
 
-import type { TreeItem } from "../../types/tree";
+import type { BookmarkTreeItem, TreeItem } from "../../types/tree";
 
 /**
  * 表示モード
@@ -24,7 +24,7 @@ export type BookmarkViewProps = {
  * カード表示のProps
  */
 export type BookmarkCardProps = {
-  bookmark: TreeItem;
+  bookmark: BookmarkTreeItem;
   className?: string;
 };
 
@@ -32,6 +32,6 @@ export type BookmarkCardProps = {
  * リスト表示のProps
  */
 export type BookmarkListItemProps = {
-  bookmark: TreeItem;
+  bookmark: BookmarkTreeItem;
   className?: string;
 };
