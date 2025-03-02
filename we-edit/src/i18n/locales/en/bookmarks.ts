@@ -33,8 +33,8 @@ export const bookmarks = {
     error: "An error occurred"
   },
   viewMode: {
-    card: "Card View",
-    list: "List View",
+    card: "Details",
+    list: "List",
     tree: "Tree View"
   },
   comments: {
