@@ -214,6 +214,68 @@ export const List = <T extends {id: string}>({
 }
 ```
 
+## 機能別(src/features)の実装パターン
+
+### クライアントサイドの構造
+
+```
+src/features/
+  └── bookmarks/
+      ├── index.ts         # 公開APIの定義
+      ├── README.md        # 機能の説明とAPIドキュメント
+      ├── api/            # API関連の実装
+      ├── components/     # UIコンポーネント
+      │   ├── tree/      # ツリービュー関連
+      │   │   ├── index.ts
+      │   │   ├── TreeContainer.tsx
+      │   │   └── TreeItem.tsx
+      │   └── list/      # リスト表示関連
+      ├── constants/     # 定数定義
+      ├── hooks/         # カスタムフック
+      │   ├── index.ts
+      │   ├── useBookmarkOperations.ts
+      │   ├── useBookmarkTree.ts
+      │   └── useTreeDragDrop.ts
+      ├── logs/          # 開発ログ
+      │   ├── ai/        # AI開発ログ
+      │   └── prompt/    # プロンプト履歴
+      ├── store/         # 状態管理
+      ├── types/         # 型定義
+      │   ├── index.ts
+      │   ├── bookmark.ts
+      │   ├── events.ts
+      │   └── tree.ts
+      └── utils/         # ユーティリティ関数
+```
+
+### サーバーサイドの構造
+
+```
+src/server/features/
+  └── bookmarks/
+      ├── router.ts      # tRPCルーター定義
+      ├── schemas/       # バリデーションスキーマ
+      ├── services/      # ビジネスロジック
+      ├── repositories/  # データアクセス層
+      └── types/         # 型定義
+
+// router.tsの実装例
+export const bookmarksRouter = createTRPCRouter({
+  create: protectedProcedure
+    .input(createBookmarkSchema)
+    .mutation(async ({ ctx, input }) => {
+      // リポジトリを使用したデータ操作
+      return ctx.db.bookmark.create(...)
+    }),
+
+  list: protectedProcedure
+    .query(async ({ ctx }) => {
+      // ユーザーのブックマーク一覧を取得
+      return ctx.db.bookmark.findMany(...)
+    })
+})
+```
+
 ## パフォーマンス最適化
 
 ### メモ化の適切な使用
@@ -436,216 +498,9 @@ describe('TreeItem', () => {
    - 明確な命名規則
 
 4. **再利用性**
-    - 柔軟なカスタマイズ
-    - 拡張可能な設計
-    - 共通パターンの抽出
-
-## Featuresディレクトリの実装パターン
-
-### クライアントサイドの構造
-
-```
-src/features/
-  └── bookmarks/
-      ├── index.ts         # 公開APIの定義
-      ├── README.md        # 機能の説明とAPIドキュメント
-      ├── api/            # API関連の実装
-      ├── components/     # UIコンポーネント
-      │   ├── tree/      # ツリービュー関連
-      │   │   ├── index.ts
-      │   │   ├── TreeContainer.tsx
-      │   │   └── TreeItem.tsx
-      │   └── list/      # リスト表示関連
-      ├── constants/     # 定数定義
-      ├── hooks/         # カスタムフック
-      │   ├── index.ts
-      │   ├── useBookmarkOperations.ts
-      │   ├── useBookmarkTree.ts
-      │   └── useTreeDragDrop.ts
-      ├── logs/          # 開発ログ
-      │   ├── ai/        # AI開発ログ
-      │   └── prompt/    # プロンプト履歴
-      ├── store/         # 状態管理
-      ├── types/         # 型定義
-      │   ├── index.ts
-      │   ├── bookmark.ts
-      │   ├── events.ts
-      │   └── tree.ts
-      └── utils/         # ユーティリティ関数
-```
-
-### サーバーサイドの構造
-
-```
-src/server/features/
-  └── bookmarks/
-      ├── router.ts      # tRPCルーター定義
-      ├── schemas/       # バリデーションスキーマ
-      ├── services/      # ビジネスロジック
-      ├── repositories/  # データアクセス層
-      └── types/         # 型定義
-
-// router.tsの実装例
-export const bookmarksRouter = createTRPCRouter({
-  create: protectedProcedure
-    .input(createBookmarkSchema)
-    .mutation(async ({ ctx, input }) => {
-      // リポジトリを使用したデータ操作
-      return ctx.db.bookmark.create(...)
-    }),
-  
-  list: protectedProcedure
-    .query(async ({ ctx }) => {
-      // ユーザーのブックマーク一覧を取得
-      return ctx.db.bookmark.findMany(...)
-    })
-})
-```
-
-### コンポーネントの移行ガイドライン
-
-アプリケーションの成長に伴い、コンポーネントを適切な場所に移動することが重要です。以下は、`src/app/_components`から`src/features`への移行ガイドラインです。
-
-#### 移行前の構造
-
-```
-src/app/_components/
-  ├── bookmark.tsx
-  └── bookmark-tree/
-      ├── tree-container.tsx
-      ├── tree-item.tsx
-      ├── styles.ts
-      └── utils.ts
-```
-
-#### 移行後の構造
-
-```
-src/features/bookmarks/
-  ├── components/
-  │   ├── BookmarkItem.tsx  # 旧 bookmark.tsx
-  │   └── tree/
-  │       ├── index.ts
-  │       ├── TreeContainer.tsx  # 旧 tree-container.tsx
-  │       ├── TreeItem.tsx       # 旧 tree-item.tsx
-  │       ├── styles.ts
-  │       └── utils.ts
-  └── ...
-```
-
-#### 移行手順
-
-1. 新しい場所にファイルを作成
-2. インポートパスを更新
-3. コンポーネント名を標準化（PascalCase）
-4. 公開APIを`index.ts`で定義
-5. 古いコンポーネントから新しいコンポーネントへのリダイレクトを一時的に作成
-6. 依存関係を更新
-7. 古いコンポーネントを削除
-
-```typescript
-// src/features/bookmarks/components/tree/index.ts
-export { TreeContainer } from './TreeContainer'
-export { TreeItem } from './TreeItem'
-export type { TreeItemProps } from './TreeItem'
-
-// src/app/_components/bookmark-tree/tree-container.tsx (一時的なリダイレクト)
-export { TreeContainer as default } from '@/features/bookmarks/components/tree'
-```
-
-### 実装例
-
-```typescript
-// index.ts - 公開API
-export { BookmarkTree } from './components/tree'
-export { useBookmarkOperations } from './hooks'
-export type { BookmarkNode } from './types'
-
-// types/index.ts - 型定義の集約
-export * from './bookmark'
-export * from './events'
-export * from './tree'
-
-// hooks/useBookmarkTree.ts - 状態管理と操作
-export const useBookmarkTree = () => {
-  // 状態管理と操作メソッドの実装
-  return {
-    tree,
-    operations: {
-      addNode,
-      removeNode,
-      moveNode
-    }
-  }
-}
-```
-
-## 多言語対応（i18n）の実装パターン
-
-### ファイル構成
-
-```
-src/i18n/
-├── locales/
-│   ├── en/
-│   │   ├── bookmarks.ts  # ブックマーク機能の翻訳
-│   │   └── common.ts     # 共通の翻訳
-│   └── ja/
-│       ├── bookmarks.ts
-│       └── common.ts
-└── text.ts               # i18n実装の中核
-```
-
-### 翻訳データの構造化
-
-```typescript
-// src/i18n/locales/ja/bookmarks.ts
-export const bookmarks = {
-  tree: {
-    addFolder: 'フォルダを追加',
-    deleteConfirm: '本当に削除しますか？',
-    validation: {
-      maxDepth: (depth: number) => `最大${depth}階層まで作成できます`
-    }
-  }
-} as const
-```
-
-### コンポーネントでの使用
-
-```typescript
-import { useText } from "~/i18n/text";
-
-const TreeItem = () => {
-  const { t } = useText();
-  const [showConfirm, setShowConfirm] = useState(false);
-  
-  // 頻繁に使用する翻訳は分割代入
-  const { addFolder, deleteConfirm } = t.bookmarks.tree;
-  
-  // 動的な翻訳の例
-  const maxDepthMessage = useMemo(() => {
-    return t.bookmarks.tree.validation.maxDepth(5);
-  }, [t]);
-  
-  return (
-    <div>
-      <button onClick={() => setShowConfirm(true)}>
-        {addFolder}
-      </button>
-      
-      {showConfirm && (
-        <ConfirmDialog
-          message={deleteConfirm}
-          onConfirm={handleDelete}
-        />
-      )}
-      
-      <div role="alert">{maxDepthMessage}</div>
-    </div>
-  );
-};
-```
+   - 柔軟なカスタマイズ
+   - 拡張可能な設計
+   - 共通パターンの抽出
 
 ### パフォーマンス最適化
 
@@ -672,7 +527,7 @@ const LocalizedActions = () => {
 
 ```typescript
 // src/i18n/types.ts
-import type { bookmarks as en_bookmarks } from './locales/en/bookmarks';
+import type { bookmarks as en_bookmarks } from "./locales/en/bookmarks";
 
 // 翻訳キーの型を定義
 export type Bookmarks = typeof en_bookmarks;

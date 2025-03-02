@@ -34,7 +34,8 @@ export const bookmarks = {
   },
   viewMode: {
     card: "Card View",
-    list: "List View"
+    list: "List View",
+    tree: "Tree View"
   },
   comments: {
     comingSoon: "Comments feature coming soon"

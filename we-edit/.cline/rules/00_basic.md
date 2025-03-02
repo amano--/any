@@ -12,14 +12,15 @@
 
 # 共通処理
 
-あらゆるUIコンポーネントは、docs/i18n-implementation-plan.md に基づきi18n対応する必要がある。
+あらゆるUIコンポーネントは、docs/guidelines/i18n-guidelines.md に基づき多言語対応する必要がある。
+docs/guidelines は、実装する上で最重要ドキュメントなので、実装前は適宜確認してください。
 
 # 作業終了記録
 
 本日の作業の終了が指示されたら、以下の作業を行ってください。
 
-- ai/work-log/以下に。月毎の YYYY-MM.md ファイルを作成し、今日の作業内容の要約の追記をお願いします。追加順序は日付けが遅い方が上に表示されるようにしてください。
+- docs/logs/work-log/以下に。月毎の YYYY-MM.md ファイルを作成し、今日の作業内容の要約の追記をお願いします。追加順序は日付けが遅い方が上に表示されるようにしてください。
 
-- ai/adr 以下に　本日の作業内容から　Architecture Decision Record　を作成してください。
+- docs/logs/ai/adr 以下に　本日の作業内容から　Architecture Decision Record　を作成してください。
 
 - 作業内容に従い、メモリバンクの更新もお願いします。

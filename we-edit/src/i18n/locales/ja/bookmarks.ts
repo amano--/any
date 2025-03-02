@@ -34,7 +34,8 @@ export const bookmarks = {
   },
   viewMode: {
     card: "カード表示",
-    list: "リスト表示"
+    list: "リスト表示",
+    tree: "ツリー表示"
   },
   comments: {
     comingSoon: "コメント機能は近日公開予定です"
