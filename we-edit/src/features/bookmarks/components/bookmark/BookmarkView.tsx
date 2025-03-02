@@ -34,7 +34,7 @@ import { useBookmarkData } from "../../hooks/useBookmarkData";
 import type { BookmarkViewMode, BookmarkViewProps } from "./types";
 import BookmarkCard from "./BookmarkCard";
 import BookmarkListItem from "./BookmarkListItem";
-import TreeContainer from "../tree/TreeContainer";
+import {TreeContainer} from "../tree/TreeContainer";
 
 type StatusProps = HTMLAttributes<HTMLDivElement> & {
   "aria-live"?: "polite" | "assertive" | "off";
@@ -179,7 +179,7 @@ const BookmarkView: FC<BookmarkViewProps> = ({ className }) => {
 
       {/* 右パネル: ツリー表示 */}
       <div className="col-span-1 row-span-1 overflow-auto border rounded-lg p-4">
-        <TreeContainer items={bookmarks} />
+        <TreeContainer />
       </div>
 
       {/* 下部パネル: コメント表示 */}
