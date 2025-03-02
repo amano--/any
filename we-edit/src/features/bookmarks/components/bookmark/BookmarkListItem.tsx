@@ -88,7 +88,6 @@ const BookmarkListItem: FC<BookmarkListItemProps> = ({ bookmark, className }) =>
 
   return (
     <div className="flex items-center">
-      <GripVertical className="mr-2 h-4 w-4 cursor-move text-muted-foreground/50" />
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -105,6 +104,8 @@ const BookmarkListItem: FC<BookmarkListItemProps> = ({ bookmark, className }) =>
               aria-label={t.bookmarks.dragDrop.start.bookmark}
               data-draggable="true"
             >
+              <GripVertical className="mr-2 h-4 w-4 cursor-move text-muted-foreground/50" />
+      
               {bookmark.icon ? (
                 <img
                   src={bookmark.icon}

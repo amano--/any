@@ -1,8 +1,4 @@
-/**
- * @fileoverview
- * ブックマークツリー関連のコンポーネントをエクスポートする中央モジュール
- */
+import { TreeContainer } from "./TreeContainer";
+import { TreeItem } from "./TreeItem";
 
-export {  TreeContainer } from './TreeContainer';
-export {  TreeItem } from './TreeItem';
-
+export { TreeContainer, TreeItem };

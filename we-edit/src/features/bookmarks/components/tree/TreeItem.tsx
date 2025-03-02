@@ -1,11 +1,41 @@
-import { forwardRef } from 'react';
-import type { HTMLAttributes } from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { cn } from '~/shadcn/lib/utils';
-import type { TreeComponentProps } from '../../types';
-import { Card } from '~/shadcn/components/ui/card';
-import { Label } from '~/shadcn/components/ui/label';
+import { forwardRef, memo } from "react";
+import type { HTMLAttributes } from "react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { cn } from "~/shadcn/lib/utils";
+import type { TreeComponentProps } from "../../types";
+import { ChevronRight, ChevronDown, GripVertical } from "lucide-react";
+
+/**
+ * インデントガイド（垂直線）コンポーネントの型定義
+ */
+type IndentGuideProps = {
+  depth: number;
+};
+
+/**
+ * インデントガイド（垂直線）コンポーネント
+ */
+const IndentGuide = ({ depth }: IndentGuideProps) => {
+  if (depth === 0) return null;
+  
+  return Array.from({ length: depth }).map((_, index) => (
+    <div
+      key={index}
+      className="absolute w-px h-full bg-border"
+      style={{
+        left: `${(index + 1) * 1.5}rem`,
+      }}
+    />
+  ));
+};
+
+IndentGuide.displayName = "IndentGuide";
+
+/**
+ * ツリー項目コンポーネントの型定義
+ */
+type TreeItemComponentProps = TreeComponentProps & HTMLAttributes<HTMLDivElement>;
 
 /**
  * @ai_implementation
@@ -13,11 +43,10 @@ import { Label } from '~/shadcn/components/ui/label';
  * - ドラッグ&ドロップ可能
  * - フォルダ/ブックマークの表示切り替え
  * - 展開/折りたたみの状態管理
+ * - アクセシビリティ対応
+ * - キーボード操作
  */
-export const TreeItem = forwardRef<
-  HTMLDivElement,
-  TreeComponentProps & HTMLAttributes<HTMLDivElement>
->(({
+const TreeItemComponent = forwardRef<HTMLDivElement, TreeItemComponentProps>(({
   id,
   name,
   type,
@@ -45,65 +74,105 @@ export const TreeItem = forwardRef<
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    paddingLeft: `${depth * 1.5}rem`,
   };
 
-  const isFolder = type === 'folder';
-  const baseClasses = "relative mb-2 p-2";
-  const stateClasses = isDragging ? "opacity-50" : "";
-  const typeClasses = isFolder ? "bg-muted" : "";
-
+  const isFolder = type === "folder";
+  
   return (
-    <Card
+    <div
       ref={setNodeRef}
       style={style}
       className={cn(
-        baseClasses,
-        stateClasses,
-        typeClasses,
+        "relative mb-2 transition-all",
+        isDragging ? "opacity-50 z-50" : "",
         className
       )}
+      role="treeitem"
+      aria-expanded={isFolder ? isExpanded : undefined}
       {...props}
     >
+      {/* インデントガイド */}
+      <IndentGuide depth={depth} />
+
+      {/* コンテンツ */}
       <div
-        className="flex items-center gap-2 cursor-grab active:cursor-grabbing"
+        className={cn(
+          "flex items-center gap-2 p-2 rounded-lg",
+          "hover:bg-accent/50",
+          "relative ml-[1.5rem]",
+          `pl-[${(depth * 1.5)}rem]`
+        )}
         {...attributes}
         {...listeners}
       >
-        {/* アイコン */}
+        {/* ドラッグハンドル */}
+        <div className="flex-shrink-0">
+          <GripVertical className="w-4 h-4 text-muted-foreground" />
+        </div>
+
+        {/* フォルダ/ブックマークアイコン */}
         <div className="flex-shrink-0">
           {isFolder ? (
             <button
               onClick={onToggle}
-              className="p-1 hover:bg-accent rounded"
-              aria-expanded={isExpanded}
+              className={cn(
+                "p-1 rounded-sm transition-colors",
+                "hover:bg-accent focus:bg-accent focus:outline-none"
+              )}
+              aria-label={`${isExpanded ? "折りたたむ" : "展開する"}: ${name}`}
             >
-              {isExpanded ? "📂" : "📁"}
+              {isExpanded ? (
+                <ChevronDown className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
             </button>
           ) : (
-            <span role="img" aria-label="bookmark">
+            <span 
+              role="img" 
+              aria-label="ブックマーク"
+              className="w-4 h-4"
+            >
               {icon ?? "🔖"}
             </span>
           )}
         </div>
 
         {/* 名前 */}
-        <Label className="flex-grow">
+        <div className="flex-grow truncate font-medium">
           {name}
-        </Label>
+        </div>
 
         {/* URLとタグ（ブックマークの場合） */}
         {!isFolder && url && (
-          <div className="flex-shrink-0 text-sm text-muted-foreground">
+          <div className="flex-shrink-0 text-sm text-muted-foreground truncate max-w-[200px]">
             {url}
           </div>
         )}
       </div>
 
       {/* 子要素 */}
-      {children}
-    </Card>
+      {children && isExpanded && (
+        <div className="overflow-hidden">
+          {children}
+        </div>
+      )}
+    </div>
   );
 });
 
-TreeItem.displayName = 'TreeItem';
+TreeItemComponent.displayName = "TreeItemComponent";
+
+/**
+ * メモ化されたTreeItemコンポーネント
+ */
+export const TreeItem = memo(TreeItemComponent, (prev, next) => {
+  return (
+    prev.id === next.id &&
+    prev.name === next.name &&
+    prev.isExpanded === next.isExpanded &&
+    prev.depth === next.depth
+  );
+});
+
+TreeItem.displayName = "TreeItem";

@@ -61,7 +61,6 @@ const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark, className }) => {
 
   return (
     <div className="flex items-center">
-      <GripVertical className="mr-2 cursor-move" />
       <Card 
         ref={setNodeRef}
         style={style}
@@ -76,7 +75,8 @@ const BookmarkCard: FC<BookmarkCardProps> = ({ bookmark, className }) => {
         data-draggable="true"
       >
         <div className="p-6">
-          {bookmark.icon ? (
+        <GripVertical className="mr-2 cursor-move" />
+        {bookmark.icon ? (
             <img
               src={bookmark.icon}
               alt={`${bookmark.title} favicon`}

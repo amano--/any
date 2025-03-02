@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -11,15 +11,23 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { AnimatePresence, motion } from "framer-motion";
-import { toast } from "sonner";
+import { AnimatePresence } from "framer-motion";
 import { Button } from "~/shadcn/components/ui/button";
-import  {TreeItem}  from "./TreeItem";
+import { TreeItem } from "./TreeItem";
 import { useBookmarkOperations, useTreeDragDrop } from "../../hooks";
 import { useBookmarkTree, selectItems } from "../../hooks";
 import { useText } from "~/i18n/text";
 import { cn } from "~/shadcn/lib/utils";
 import type { TreeItem as TreeItemType } from "../../types";
+
+type TreeContainerProps = {
+  className?: string;
+};
+
+interface TreeNodeProps {
+  item: TreeItemType;
+  depth: 0 | 1 | 2 | 3 | 4 | 5;
+}
 
 /**
  * @ai_implementation
@@ -28,7 +36,7 @@ import type { TreeItem as TreeItemType } from "../../types";
  * - ツリー構造の表示
  * - 自動ルートフォルダ初期化
  */
-export function TreeContainer() {
+const TreeContainerBase = ({ className }: TreeContainerProps) => {
   const [isDraggingFromList, setIsDraggingFromList] = useState(false);
   const items = useBookmarkTree(selectItems);
   const { dragState, handleDragStart, handleDragEnd, handleDragOver } = useTreeDragDrop();
@@ -55,14 +63,11 @@ export function TreeContainer() {
   const renderTreeNode = (item: TreeItemType, depth: 0 | 1 | 2 | 3 | 4 | 5) => {
     if (!item) return null;
     return (
-      <motion.div
+      <TreeNode
         key={item.id}
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 10 }}
-      >
-        <TreeNode item={item} depth={depth} />
-      </motion.div>
+        item={item}
+        depth={depth}
+      />
     );
   };
 
@@ -75,7 +80,8 @@ export function TreeContainer() {
       <div 
         className={cn(
           "flex-1 overflow-auto p-4",
-          isDraggingFromList && "bg-muted/50 border-2 border-dashed border-primary/50"
+          isDraggingFromList && "bg-muted/50 border-2 border-dashed border-primary/50",
+          className
         )}
       >
         <DndContext
@@ -122,12 +128,7 @@ export function TreeContainer() {
       </div>
     </div>
   );
-}
-
-interface TreeNodeProps {
-  item: TreeItemType;
-  depth: 0 | 1 | 2 | 3 | 4 | 5;
-}
+};
 
 const TreeNode = ({ item, depth }: TreeNodeProps) => {
   const { updateItem } = useBookmarkTree();
@@ -188,3 +189,8 @@ const TreeNode = ({ item, depth }: TreeNodeProps) => {
     />
   );
 };
+
+TreeContainerBase.displayName = "TreeContainer";
+TreeNode.displayName = "TreeNode";
+
+export const TreeContainer = memo(TreeContainerBase);

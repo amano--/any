@@ -1,9 +1,9 @@
 /**
- * [実装計画書](../logs/ai/2025-03-02_16_04-bookmark-3panel-layout.md)
+ * [実装計画書](../../logs/ai/2025-03-02_16_04-bookmark-3panel-layout.md)
  *
  * @ai_component_structure
  * レイアウト構成:
- * - BookmarkView: ブックマーク編集ページのメインコンテナ（w-full）
+ * - BookmarkView: ブックマーク編集ページのメインコンテナ
  *   - 左パネル (1): ブックマーク一覧表示
  *     - TabsList: カード/リスト表示切り替え
  *     - BookmarkCard/BookmarkListItem: ブックマーク表示
@@ -23,7 +23,16 @@
  * - アクセシビリティ対応
  */
 
-import { type FC, useState, type HTMLAttributes } from "react";
+import { type FC, useState, type HTMLAttributes, useCallback } from "react";
+import {
+  DndContext,
+  DragOverlay,
+  useSensor,
+  useSensors,
+  PointerSensor,
+  type DragStartEvent,
+  type DragEndEvent
+} from "@dnd-kit/core";
 import { Tabs, TabsList, TabsTrigger } from "~/shadcn/components/ui/tabs";
 import { useText } from "~/i18n/text";
 import { cn } from "~/shadcn/lib/utils";
@@ -31,7 +40,8 @@ import { useMediaQuery } from "~/shadcn/hooks/use-media-query";
 import type { BookmarkViewMode, BookmarkViewProps } from "./types";
 import BookmarkCard from "./BookmarkCard";
 import BookmarkListItem from "./BookmarkListItem";
-import {TreeContainer} from "../tree/TreeContainer";
+import { TreeContainer } from "../tree/TreeContainer";
+import { useBookmarkOperations } from "../../hooks";
 
 type StatusProps = HTMLAttributes<HTMLDivElement> & {
   "aria-live"?: "polite" | "assertive" | "off";
@@ -135,6 +145,6 @@ export default BookmarkView;
 
 /**
  * 実装履歴:
- * - 2025-03-02: [実装計画書](../logs/ai/2025-03-02_16_04-bookmark-3panel-layout.md) - 3パネルレイアウトの実装
- * - 2025-03-02: [実装計画書](../logs/ai/2025-03-02_15_07-bookmark-card-variants.md) - カード表示とリスト表示の実装
+ * - 2025-03-02: [実装計画書](../../logs/ai/2025-03-02_16_04-bookmark-3panel-layout.md) - 3パネルレイアウトの実装
+ * - 2025-03-02: [実装計画書](../../logs/ai/2025-03-02_15_07-bookmark-card-variants.md) - カード表示とリスト表示の実装
  */
