@@ -1,25 +1,43 @@
-## 2025-03-03 06:38 feat: パネル間のドラッグ&ドロップ機能の実装
+## 2025-03-03 07:51 docs: AIガイドラインシステムの確立
 
-- パネル間のドラッグ&ドロップ機能を実装
-- ブックマークをフォルダに移動可能に
-- アニメーションとビジュアルフィードバックを改善
-- 型安全性の確保とエラーハンドリングを実装
+- AIガイドラインを docs/ai/guidelines/ に構造化
 
-### 関連ファイル
-- src/features/bookmarks/components/tree/TreeContainer.tsx
-- src/features/bookmarks/components/tree/TreeItem.tsx
-- src/features/bookmarks/components/bookmark/BookmarkListItem.tsx
-- src/features/bookmarks/hooks/useTreeDragDrop.ts
+  - execution.md: 実行プロトコル
+  - validation.md: 検証ルール
+  - errors.md: エラー処理
 
-### 実装詳細
-1. TreeItemの改善
-   - ドロップ可能エリアの実装
-   - アニメーションの追加
+- 人間用ドキュメントの整備
+  - docs/ai/docs/ai-guidelines-creation.md: 作成手順
+  - docs/guidelines/ai-development.md: 開発概要
 
-2. BookmarkListItemの改善
-   - ドラッグ可能な実装
-   - 不要なTooltipの削除
+### 主な改善点
 
-3. ドラッグ&ドロップロジック
-   - 型安全なデータ構造
-   - エラー処理の実装
+1. AIガイドラインの体系化
+
+   - プロトコルベースの実装規則
+   - 型安全な検証システム
+   - エラー処理の標準化
+
+2. メモリ管理の最適化
+
+   - 明確な更新トリガー
+   - 一貫した構造
+   - 効率的なアクセス
+
+3. ドキュメント整備
+   - ガイドライン作成手順の標準化
+   - AIと人間のインターフェース定義
+   - 開発フローの明確化
+
+### 実装の影響範囲
+
+- AIの実装効率向上
+- エラー検出の改善
+- メモリ管理の最適化
+- ガイドライン管理の一元化
+
+### 次のステップ
+
+1. ガイドラインの実践と検証
+2. フィードバックの収集
+3. 必要に応じた調整と改善

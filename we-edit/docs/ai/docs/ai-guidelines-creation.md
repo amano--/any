@@ -19,7 +19,7 @@
 
 変換手順書（このファイル）:
 
-- docs/ai/ai-guidelines-creation.md
+- docs/ai/docs/ai-guidelines-creation.md
 
 ## 1. 前提条件の整理
 

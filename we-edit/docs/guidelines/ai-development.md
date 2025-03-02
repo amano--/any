@@ -258,7 +258,7 @@ docs/ai/guidelines/
 
 AI実装ガイドラインを作成・更新する場合は、以下のドキュメントを参照してください：
 
-- docs/ai/ai-guidelines-creation.md
+- docs/ai/docs/ai-guidelines-creation.md
 
 ## メモリバンクとの連携
 
@@ -268,20 +268,6 @@ AIの実装は常にメモリバンク（.cline/memory/）と連携して動作�
 1. systemPatterns.mdにガイドラインの存在を記録
 2. activeContext.mdに変更内容を反映
 3. progress.mdに進捗を記録
-
-## 実装の優先順位
-
-1. 型安全性
-2. メモリ管理
-3. エラー処理
-4. パフォーマンス最適化
-
-## ログと記録
-
-AIの実装に関するログは以下の場所に保存されます：
-
-- docs/logs/ai/: 実装ログ
-- docs/logs/ai/adr/: アーキテクチャ決定記録
 
 ## 関連ファイル
 
