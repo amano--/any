@@ -9,9 +9,7 @@
 ### 必須の読み込み文書
 
 1. ユースケース実装計画書
-2. `docs/guidelines/mock-api-with-trpc.md`
-3. `docs/guidelines/react-components.md`
-4. その他の技術ガイドライン
+2. その他の技術ガイドライン
 
 ## 文書構造
 
@@ -60,9 +58,7 @@
 
 ### 2. APIモック
 
-- tRPCを意識した設計
-- エンドポイント定義
-- レスポンス型
+- docs/guidelines/implementation/mock-api-with-trpc.md　を読み込んで、モックデータを返す実装することを明記。
 
 ### 3. コンポーネント
 
