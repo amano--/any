@@ -7,24 +7,28 @@
 ## ガイドライン構成
 
 ### 1. マスターガイドライン
+
 - [実装プロセスマスターガイドライン](implementation-process-master.md)
   - 全体のプロセス管理
   - 文書体系の定義
   - フェーズ間の連携方法
 
 ### 2. 計画フェーズ
+
 - [ユースケース実装計画書ガイドライン](usecase-implementation-plan.md)
   - 要件分析手順
   - 実装計画の立案
   - リソース配分
 
 ### 3. 実装フェーズ
+
 - [機能実装指示書ガイドライン](feature-implementation-instruction.md)
   - 技術要件の定義
   - コーディング規約
   - 品質基準
 
 ### 4. 管理フェーズ
+
 - [文書トレーサビリティガイドライン](document-traceability.md)
   - 文書間の関連性管理
   - バージョン管理
@@ -41,25 +45,18 @@
 以下のガイドラインも必ず参照してください：
 
 1. docs/guidelines/
-   - react-components.md
-   - i18n-guidelines.md
-   - data-fetching.md
-   - implementation-planning.md
-
 2. docs/ai/guidelines/
-   - execution.md
-   - documentation.md
-   - validation.md
-   - errors.md
 
 ## 品質基準
 
 1. トレーサビリティ
+
    - すべての文書は関連文書への明示的な参照を含む
    - 変更履歴を明確に記録
    - 決定事項の根拠を文書化
 
 2. 一貫性
+
    - 統一された文書構造
    - 標準化された命名規則
    - 一貫したフォーマット

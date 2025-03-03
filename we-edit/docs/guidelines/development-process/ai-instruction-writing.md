@@ -61,7 +61,7 @@
 ```markdown
 を元にして、ユースケース実装計画書を作成してください。
 
-必ず以下のガイドラインを参照してください：
+必ず以下のガイドラインを読み込んでから始めてください：
 
 - docs/guidelines/development-process/implementation-planning-with-usecases.md
 ```
@@ -87,9 +87,7 @@
 
 必ず以下のガイドラインを読み込んでから始めてください：
 
-- docs/guidelines/development-process/ai-development.md
-- docs/guidelines/development-process/react-components.md
-- docs/guidelines/development-process/mock-api-with-trpc.md
+- docs/guidelines/implementation/for-ai.md
 ```
 
 ## 問題解決ガイド
