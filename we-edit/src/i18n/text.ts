@@ -1,33 +1,31 @@
-import { usePathname } from "next/navigation";
-import { common as common_en } from "./locales/en/common";
-import { bookmarks as bookmarks_en } from "./locales/en/bookmarks";
-import { errors as errors_en } from "./locales/en/errors";
+/**
+ * [実装計画書](../../docs/features/group/logs/ai/2025-03-03_18_27-group-implementation.md)
+ */
 
-import { common as common_ja } from "./locales/ja/common";
+// 各言語の翻訳ファイルをインポート
 import { bookmarks as bookmarks_ja } from "./locales/ja/bookmarks";
-import { errors as errors_ja } from "./locales/ja/errors";
+import { bookmarks as bookmarks_en } from "./locales/en/bookmarks";
+import { group as group_ja } from "./locales/ja/group";
+import { group as group_en } from "./locales/en/group";
 
-type Locale = keyof typeof locales
-
-// 各言語のメッセージを定義
+// 言語リソースの定義
 const locales = {
-  en: {
-    common: common_en,
-    bookmarks: bookmarks_en,
-    errors: errors_en
-  },
   ja: {
-    common: common_ja,
     bookmarks: bookmarks_ja,
-    errors: errors_ja
+    group: group_ja
+  },
+  en: {
+    bookmarks: bookmarks_en,
+    group: group_en
   }
-};
+} as const;
 
-export const text = (locale: Locale) => locales[locale];
+// 型の定義
+export type LocaleKey = keyof typeof locales;
+export type Messages = typeof locales.ja;
 
-export const useText = () => {
-  const pathname = usePathname();
-  const localeMatch = /^\/([a-z]{2})\//.exec(pathname || "");
-  const locale = Object.keys(locales).find(key => key === localeMatch?.[1]) as Locale;
-  return { t: text(locale ? locale:"ja") };
-};
+// 翻訳テキストを取得する関数
+export const text = (locale: LocaleKey = "ja") => locales[locale];
+
+// React Hooks用のユーティリティ
+export const useText = () => ({ t: text("ja") });
