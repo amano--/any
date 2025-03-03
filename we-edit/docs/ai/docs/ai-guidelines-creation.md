@@ -12,11 +12,14 @@
 ### 1.2 出力先の構造
 ```
 docs/ai/guidelines/
+├── index.md         # 実装ガイドライン索引
+├── meta.md          # ガイドライン生成メタデータ
 ├── execution.md     # 実行プロトコル
 ├── validation.md    # 検証ルール
 ├── errors.md        # エラー処理
 ├── data-fetching.md # データフェッチ
-└── documentation.md # ドキュメント管理
+├── documentation.md # ドキュメント管理
+└── decision-log.md  # 意思決定ログ
 ```
 
 ### 1.3 参照元と規則
@@ -135,6 +138,77 @@ docs/ai/guidelines/
 2. ランタイムチェック
 3. パフォーマンス測定
 
+## 7. 新たに学んだベストプラクティス
+
+### 7.1 メタ情報の構造化
+```typescript
+@protocol[meta_information] {
+  timestamp: string;    // 生成時刻
+  version: string;      // バージョン番号
+  source_files: {      // 元となるファイル
+    path: string;
+    priority: number;   // 優先度
+    extracted: string[];// 抽出した要素
+  }[];
+}
+```
+
+### 7.2 相互参照マップの作成
+```typescript
+@protocol[cross_reference_map] {
+  component_patterns: {
+    primary: string;      // 主要ドキュメント
+    references: string[]; // 関連参照
+  };
+  error_handling: {
+    primary: string;
+    references: string[];
+  };
+  // 他のカテゴリも同様
+}
+```
+
+### 7.3 判断基準の体系化
+1. 機能実装の優先順位
+   - セキュリティとデータ整合性
+   - 基本機能
+   - エラーハンドリング
+   - パフォーマンス最適化
+   - UX改善
+
+2. 技術選択の判断基準
+   - 既存パターンとの整合性
+   - メンテナンス性と拡張性
+   - パフォーマンスへの影響
+   - 学習曲線と実装コスト
+
+3. リファクタリングの判断基準
+   - コードの重複度
+   - パフォーマンスへの影響
+   - 機能拡張の容易性
+   - テストの保守性
+
+### 7.4 最適化メトリクス
+```typescript
+@protocol[optimization_metrics] {
+  code_patterns: {
+    duplication: "minimized";
+    consistency: "maximized";
+    clarity: "high";
+  };
+  validation_rules: {
+    coverage: "complete";
+    specificity: "high";
+    automation: "maximized";
+  };
+  documentation: {
+    structure: "hierarchical";
+    format: "machine_readable";
+    references: "explicit";
+  };
+}
+```
+
 ## まとめ
 
 AIガイドラインの作成は、以下の点を重視して行います：
@@ -143,22 +217,26 @@ AIガイドラインの作成は、以下の点を重視して行います：
    - すべてのガイドラインの読み込み
    - 暗黙知の明文化
    - 相互依存関係の把握
+   - メタ情報の構造化
 
 2. 構造化
    - プロトコルベースの定義
    - 明確な型システム
    - 検証可能なルール
+   - 相互参照マップの整備
 
 3. メンテナンス性
    - ファイル分割による管理
    - 更新手順の標準化
    - 自動検証の導入
+   - 最適化メトリクスの定義
 
 4. ドキュメント管理
    - 実装計画書の標準化
    - コメント構造の定義
    - ナレッジベースの構築
+   - 判断基準の体系化
 
 ---
 Version: 2025.03.03
-Last Updated: 2025.03.03 08:21 JST
+Last Updated: 2025.03.03 09:47 JST
