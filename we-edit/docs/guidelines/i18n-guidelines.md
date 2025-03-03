@@ -4,22 +4,13 @@
 
 私たちのi18n実装は、シンプルさと型安全性を重視しています。実装の中核は `src/i18n/text.ts` にあり、以下の特徴があります：
 
-```typescript
-// 言語ごとのメッセージを集約
-const locales = { en: { common: common_en }, ja: { common: common_ja } };
-
-// 型安全な翻訳関数
-export const text = (locale: keyof typeof locales) => locales[locale];
-
-// React Hooks用のユーティリティ
-export const useText = () => ({ t: text("ja") });
-```
-
-### 特徴
-
 - TypeScriptの型システムを活用し、翻訳キーの補完と型チェックを実現
 - 言語ファイルの分割管理による保守性の向上
 - シンプルなAPI設計による学習コストの低減
+
+## 1. 多言語対応
+
+多言語対応のためスキーマになりうる型にはかならずlang属性を追加する。
 
 ## 2. コンポーネントでの使用方法
 
@@ -104,6 +95,8 @@ src/i18n/
 │       ├── bookmarks.ts
 │       ├── settings.ts
 │       └── errors.ts
+└── resources.ts # 各機能のリソースをインポート
+│
 └── text.ts
 ```
 
@@ -115,7 +108,7 @@ src/i18n/
    - 機能固有のファイル（例：`bookmarks.ts`）
    - `errors.ts`: エラーメッセージ
 3. 各ファイルは既存の言語ファイルの構造を踏襲
-4. `text.ts`にインポートと型定義を追加
+4. `resources.ts`にインポートと型定義を追加
 
 ### ファイル分割のメリット
 

@@ -1,87 +1,73 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { LatestPost } from "~/app/_components/post";
-import { auth } from "~/server/auth";
-import { api, HydrateClient } from "~/trpc/server";
-
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-  const session = await auth();
-
-  if (session?.user) {
-    void api.post.getLatest.prefetch();
-  }
-
+export default function Home() {
   return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-8">We Edit Features</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* グループ機能 */}
+        <div className="border rounded-lg p-6 hover:shadow-md transition-shadow">
+          <h2 className="text-xl font-semibold mb-4">Group Management</h2>
+          <p className="text-gray-600 mb-4">
+            Create and manage groups, invite members, and control group settings.
+          </p>
+          <div className="space-y-2">
+            <Link 
+              href="/ja/v1/group"
+              className="block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center"
             >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
+              Open Group Management (ja)
             </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
+            <Link 
+              href="/en/v1/group"
+              className="block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 text-center"
             >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
+              Open Group Management (en)
             </Link>
           </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
-            </p>
-
-            <div className="flex flex-col items-center justify-center gap-4">
-              <p className="text-center text-2xl text-white">
-                {session && <span>Logged in as {session.user?.name}</span>}
-              </p>
-              <Link
-                href={session ? "/api/auth/signout" : "/api/auth/signin"}
-                className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-              >
-                {session ? "Sign out" : "Sign in"}
-              </Link>
-            </div>
-          </div>
-
-          <div>
-            <h2>テストリンク集</h2>
-            <div className="flex flex-col gap-4">
-              <Link
-                className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-                href="dashboard"
-              >
-                dashboard
-              </Link>
-              <Link
-                className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-                href="bookmark/edit"
-              >
-                ブックマーク
-              </Link>
-            </div>
-          </div>
-
-          {session?.user && <LatestPost />}
         </div>
-      </main>
-    </HydrateClient>
+
+        {/* ブックマーク機能 */}
+        <div className="border rounded-lg p-6 hover:shadow-md transition-shadow">
+          <h2 className="text-xl font-semibold mb-4">Bookmark Management</h2>
+          <p className="text-gray-600 mb-4">
+            Organize and share bookmarks within groups.
+          </p>
+          <div className="space-y-2">
+            <Link 
+              href="/ja/v1/bookmark"
+              className="block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center"
+            >
+              Open Bookmark Management (ja)
+            </Link>
+            <Link 
+              href="/en/v1/bookmark"
+              className="block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 text-center"
+            >
+              Open Bookmark Management (en)
+            </Link>
+          </div>
+        </div>
+
+        {/* その他の機能用のプレースホルダー */}
+        <div className="border rounded-lg p-6 bg-gray-50">
+          <h2 className="text-xl font-semibold mb-4 text-gray-400">Coming Soon</h2>
+          <p className="text-gray-400">
+            New features are under development...
+          </p>
+        </div>
+      </div>
+
+      {/* 開発者向け情報 */}
+      <div className="mt-12 p-4 bg-gray-50 rounded-lg">
+        <h2 className="text-lg font-semibold mb-2">Developer Notes</h2>
+        <ul className="list-disc list-inside space-y-1 text-gray-600">
+          <li>Feature implementations are in progress</li>
+          <li>Mock API is used for testing</li>
+          <li>Language switching is available for testing i18n</li>
+        </ul>
+      </div>
+    </div>
   );
 }

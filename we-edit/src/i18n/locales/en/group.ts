@@ -12,7 +12,8 @@ export const group = {
       all: "All",
       joined: "Joined",
       managed: "Managed",
-      public: "Public Groups"
+      public: "Public Group",
+      private: "Private Group"
     }
   },
   form: {
@@ -50,6 +51,7 @@ export const group = {
     title: "Member Management",
     empty: "No members found",
     invite: "Invite Members",
+    count: (count: number) => `Members: ${count}`,
     roles: {
       admin: "Administrator",
       editor: "Editor",
@@ -87,7 +89,7 @@ export const group = {
     addMember: "Failed to add member",
     removeMember: "Failed to remove member",
     changeRole: "Failed to change role",
-    notAuthorized: "You don't have permission to manage this group"
+    notAuthorized: "You don't have permission"
   },
   confirmations: {
     delete: "Are you sure you want to delete this group?\nThis action cannot be undone.",

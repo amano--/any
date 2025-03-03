@@ -12,7 +12,8 @@ export const group = {
       all: "すべて",
       joined: "参加中",
       managed: "管理中",
-      public: "公開グループ"
+      public: "公開グループ",
+      private: "非公開グループ"
     }
   },
   form: {
@@ -50,6 +51,7 @@ export const group = {
     title: "メンバー管理",
     empty: "メンバーがいません",
     invite: "メンバーを招待",
+    count: (count: number) => `メンバー: ${count}名`,
     roles: {
       admin: "管理者",
       editor: "編集者",

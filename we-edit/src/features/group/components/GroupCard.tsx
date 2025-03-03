@@ -8,9 +8,9 @@ import type { Group } from '../types/group';
 
 export type GroupCardProps = {
   group: Group;
+  onView?: (id: string) => void;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
-  onMemberManage?: (id: string) => void;
   className?: string;
 };
 
@@ -24,15 +24,15 @@ export type GroupCardProps = {
  */
 export const GroupCard: FC<GroupCardProps> = ({
   group,
+  onView,
   onEdit,
   onDelete,
-  onMemberManage,
   className = ''
 }) => {
   const { t } = useText();
 
   return (
-    <div className={`rounded-lg border p-4 shadow-sm ${className}`}>
+    <div className={`rounded-lg border p-4 shadow-sm hover:shadow-md transition-shadow ${className}`}>
       {/* ヘッダー */}
       <div className="flex items-center gap-3 mb-3">
         {group.icon && (
@@ -43,9 +43,19 @@ export const GroupCard: FC<GroupCardProps> = ({
           />
         )}
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">{group.name}</h3>
+          <h3 className="text-lg font-semibold">
+            <button 
+              onClick={() => onView?.(group.id)}
+              className="hover:text-blue-600 hover:underline"
+            >
+              {group.name}
+            </button>
+          </h3>
           <p className="text-sm text-gray-500">
-            {group.isPublic ? t.group.list.filter.public : '非公開グループ'}
+            {group.isPublic ? 
+              t.group.list.filter.public : 
+              t.group.list.filter.private
+            }
           </p>
         </div>
       </div>
@@ -56,20 +66,12 @@ export const GroupCard: FC<GroupCardProps> = ({
           {group.description}
         </p>
         <p className="text-sm text-gray-500 mt-2">
-          メンバー: {group.members.length}名
+          {t.group.members.count(group.members.length)}
         </p>
       </div>
 
       {/* フッター */}
       <div className="flex justify-end gap-2">
-        {onMemberManage && (
-          <button
-            onClick={() => onMemberManage(group.id)}
-            className="text-sm px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
-          >
-            {t.group.members.title}
-          </button>
-        )}
         {onEdit && (
           <button
             onClick={() => onEdit(group.id)}
@@ -80,11 +82,7 @@ export const GroupCard: FC<GroupCardProps> = ({
         )}
         {onDelete && (
           <button
-            onClick={() => {
-              if (window.confirm(t.group.confirmations.delete)) {
-                onDelete(group.id);
-              }
-            }}
+            onClick={() => onDelete(group.id)}
             className="text-sm px-3 py-1 rounded-md bg-red-100 hover:bg-red-200 text-red-700"
           >
             {t.group.form.edit.delete}
