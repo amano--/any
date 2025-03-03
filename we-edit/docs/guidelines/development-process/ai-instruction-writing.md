@@ -7,6 +7,7 @@
 ## 指示文の基本構造
 
 ### 1. 前提条件の指定
+
 ```markdown
 以下のドキュメントをよく読んでから始めてください：
 
@@ -16,6 +17,7 @@
 ```
 
 ### 2. タスクの定義
+
 ```markdown
 [機能名]の[ユースケース名]について、
 [計画書名]を元にして、
@@ -23,6 +25,7 @@
 ```
 
 ### 3. 具体的な指示
+
 ```markdown
 特に以下の点に注意して作成してください：
 
@@ -34,16 +37,19 @@
 ## 効果的な指示の原則
 
 ### 1. 明確性
+
 - 具体的な目標を示す
 - 必要な成果物を明示する
 - 制約条件を明記する
 
 ### 2. 文脈の提供
+
 - 関連文書への参照を含める
 - 背景情報を提供する
 - 既存の実装との関係を説明する
 
 ### 3. 優先順位の明示
+
 - 重要な要件を強調する
 - 順序付けられた手順を提供する
 - トレードオフの判断基準を示す
@@ -51,52 +57,60 @@
 ## 共通のユースケース
 
 ### 1. 実装計画書の作成依頼
+
 ```markdown
-会員管理システムのユースケース記述ファイル(docs/usecases/member-management.md)を元にして、ユースケース実装計画書を作成してください。
+を元にして、ユースケース実装計画書を作成してください。
 
 必ず以下のガイドラインを参照してください：
-- docs/guidelines/implementation-planning.md
-- docs/guidelines/ai-development.md
+
+- docs/guidelines/development-process/implementation-planning-with-usecases.md
 ```
 
 ### 2. 機能実装指示書の作成依頼
+
 ```markdown
 ユースケース実装計画書([計画書へのパス])を元にして、
 「グループを作成する」ユースケースに関する
 機能実装指示書を作成してください。
 
-特に以下の技術要件に注意してください：
-1. react-hook-formの使用
-2. tRPCによるAPI実装
-3. Next.jsのページコンポーネント作成
+必ず以下のガイドラインを読み込んでから始めてください：
+
+- docs/guidelines/development-process/feature-implementation-instruction.md
+- docs/guidelines/development-process/feature-implementation-instruction-template.md
 ```
 
 ### 3. コード実装の依頼
+
 ```markdown
 上記で生成された機能実装指示書を元にして、
 各機能のコードを実装してください。
 
-実装時は以下のガイドラインに従ってください：
-- docs/guidelines/ai-development.md
-- docs/guidelines/react-components.md
-- docs/guidelines/mock-api-with-trpc.md
+必ず以下のガイドラインを読み込んでから始めてください：
+
+- docs/guidelines/development-process/ai-development.md
+- docs/guidelines/development-process/react-components.md
+- docs/guidelines/development-process/mock-api-with-trpc.md
 ```
 
 ## 問題解決ガイド
 
 ### 1. AIが必要な情報を要求する場合
+
 ```markdown
 追加で必要な情報：
+
 1. [具体的な情報1]
 2. [具体的な情報2]
-に関する詳細を提供してください。
+   に関する詳細を提供してください。
 ```
 
 ### 2. 実装方針の選択が必要な場合
+
 ```markdown
 以下の実装方針を検討しています：
 
 1. 案A: [説明]
+
    - メリット: [...]
    - デメリット: [...]
 
@@ -108,11 +122,13 @@
 ```
 
 ### 3. エラーや問題が発生した場合
+
 ```markdown
 発生している問題：
 [問題の具体的な説明]
 
 試したこと：
+
 1. [対処1]
 2. [対処2]
 
@@ -123,16 +139,19 @@
 ## 品質チェックリスト
 
 ### 1. 指示文作成前
+
 - [ ] 必要な文書をすべて読んだ
 - [ ] 目標を明確に定義した
 - [ ] 制約条件を特定した
 
 ### 2. 指示文作成時
+
 - [ ] 明確で具体的な表現を使用
 - [ ] 必要な参照文書を含めた
 - [ ] 優先順位を明示した
 
 ### 3. 指示文確認時
+
 - [ ] 誤解の余地がないか
 - [ ] 必要な情報がすべて含まれているか
 - [ ] 制約条件が明確か

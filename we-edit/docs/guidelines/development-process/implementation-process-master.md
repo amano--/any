@@ -15,7 +15,7 @@
 
 ### 2. ユースケース実装計画書
 
-- 場所: `docs/usecases/logs/plan/[機能名]/YYYY-MM-DD_[計画名].md`
+- 場所: `docs/usecases/logs/plan/[機能名]/YYYY/YYYY-MM-DD_[計画名].md`
 - 目的: ユースケースの実装計画策定
 - 入力: ユースケース記述ファイル
 - 出力: 実装のための詳細計画
