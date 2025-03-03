@@ -9,9 +9,7 @@
 ### 必須の読み込み文書
 
 1. ユースケース実装計画書
-2. `docs/guidelines/mock-api-with-trpc.md`
-3. `docs/guidelines/react-components.md`
-4. その他の技術ガイドライン
+2. その他の技術ガイドライン
 
 ## 文書構造
 
@@ -26,8 +24,6 @@
 ## 参照文書
 
 - [ユースケース実装計画書](リンク)
-- [mock-api-with-trpc.md](リンク)
-- [react-components.md](リンク)
 ```
 
 ### 2. 実装概要
@@ -77,7 +73,7 @@
 
 ### 1. 型定義セクション
 
-```markdown
+````markdown
 ## 型定義
 
 ### データモデル
@@ -97,40 +93,41 @@
 \```typescript
 // コンポーネントProps
 \```
-```
+````
 
 ### 2. APIセクション
 
-```markdown
+````markdown
 ## API実装
 
 ### 2.1 モックデータストア
+
 1. データ構造の定義
    \```typescript
    // モックデータの型定義
    interface MockDataStore {
-     items: Item[];
-     metadata: {
-       lastUpdated: Date;
-       version: string;
-     };
+   items: Item[];
+   metadata: {
+   lastUpdated: Date;
+   version: string;
+   };
    }
-   
+
    // 初期データは必ず5件以上含める
    const createInitialData = (): MockDataStore => ({
-     items: [
-       {
-         id: 'item-1',
-         name: 'First Item',
-         status: 'active',
-         createdAt: new Date('2025-01-01')
-       },
-       // ... 他の初期データ
-     ],
-     metadata: {
-       lastUpdated: new Date(),
-       version: '1.0.0'
-     }
+   items: [
+   {
+   id: 'item-1',
+   name: 'First Item',
+   status: 'active',
+   createdAt: new Date('2025-01-01')
+   },
+   // ... 他の初期データ
+   ],
+   metadata: {
+   lastUpdated: new Date(),
+   version: '1.0.0'
+   }
    });
    \```
 
@@ -138,70 +135,69 @@
    \```typescript
    // インメモリデータストア
    export class MockStorage {
-     private data: MockDataStore;
-     
-     // CRUD操作のメソッド
-     async create(item: NewItem): Promise<Item> {
-       // 作成処理
-     }
-     
-     async read(id: string): Promise<Item> {
-       // 読み取り処理
-     }
-     
-     // ... 他のメソッド
+   private data: MockDataStore;
+   // CRUD操作のメソッド
+   async create(item: NewItem): Promise<Item> {
+   // 作成処理
+   }
+   async read(id: string): Promise<Item> {
+   // 読み取り処理
+   }
+   // ... 他のメソッド
    }
    \```
 
 ### 2.2 モックAPI操作
+
 1. 基本的なCRUD操作
    \```typescript
    export const mockOperations = {
-     // 作成操作
-     async create(input: CreateInput): Promise<Response> {
-       await simulateLatency();
-       try {
-         // バリデーション
-         // データ作成
-         // 結果返却
-       } catch (error) {
-         // エラー処理
-       }
-     },
-     
-     // 他の操作
-     async update(): Promise<Response> {
-       // 更新処理
-     }
+   // 作成操作
+   async create(input: CreateInput): Promise<Response> {
+   await simulateLatency();
+   try {
+   // バリデーション
+   // データ作成
+   // 結果返却
+   } catch (error) {
+   // エラー処理
+   }
+   },
+
+   // 他の操作
+   async update(): Promise<Response> {
+   // 更新処理
+   }
    };
    \```
 
 2. ネットワーク状態の模倣
    \```typescript
    // 遅延シミュレーション（200-500ms）
-   const simulateLatency = () => 
-     new Promise(resolve => 
-       setTimeout(resolve, 200 + Math.random() * 300)
-     );
-   
+   const simulateLatency = () =>
+   new Promise(resolve =>
+   setTimeout(resolve, 200 + Math.random() \* 300)
+   );
+
    // エラー発生シミュレーション（10%の確率）
    const simulateError = () => {
-     if (Math.random() < 0.1) {
-       throw new Error('Network Error');
-     }
+   if (Math.random() < 0.1) {
+   throw new Error('Network Error');
+   }
    };
    \```
 
 ### 2.3 tRPCルーター
+
 1. エンドポイント定義
    \```typescript
    export const router = createTRPCRouter({
-     create: protectedProcedure
-       .input(schema)
-       .mutation(async ({ input }) => {
-         // モック実装の呼び出し
-         return mockOperations.create(input);
-       })
+   create: protectedProcedure
+   .input(schema)
+   .mutation(async ({ input }) => {
+   // モック実装の呼び出し
+   return mockOperations.create(input);
+   })
    });
    \```
 
@@ -209,19 +205,19 @@
    \```typescript
    // エラー型の定義
    type ApiError = {
-     code: string;
-     message: string;
-     details?: unknown;
+   code: string;
+   message: string;
+   details?: unknown;
    };
-   
+
    // エラーハンドリング
    try {
-     // 操作の実行
+   // 操作の実行
    } catch (error) {
-     // エラーの変換と返却
+   // エラーの変換と返却
    }
    \```
-```
+````
 
 ### 3. コンポーネントセクション
 
@@ -243,7 +239,7 @@
 
 ### 4. フォームセクション
 
-```markdown
+````markdown
 ## フォーム実装
 
 ### react-hook-form設定
@@ -257,7 +253,7 @@
 \```typescript
 // バリデーションスキーマ
 \```
-```
+````
 
 ## 実装時の注意点
 
