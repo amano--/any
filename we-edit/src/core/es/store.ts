@@ -55,7 +55,7 @@ function createStoreError(error: unknown): EventStoreError {
   if (EventStoreError.isEventStoreError(error)) {
     return error;
   }
-  
+
   if (error instanceof Error) {
     return new EventStoreError(error.message);
   }
@@ -63,7 +63,7 @@ function createStoreError(error: unknown): EventStoreError {
   if (typeof error === "string") {
     return new EventStoreError(error);
   }
-    
+
   return new EventStoreError("Unknown error occurred");
 }
 
@@ -79,7 +79,7 @@ function tryCatch<T>(fn: () => T): Result<T, EventStoreError> {
 }
 
 // イベントIDの生成
-import { ulid } from 'ulid';
+import { ulid } from "ulid";
 
 import { type ULID } from "./event";
 
@@ -99,11 +99,14 @@ interface EventStoreState {
   saveReadEvent: (events: ReadEvent[]) => Result<void, EventStoreError>;
   getEvents: (aggregateId: string) => Result<Event[], EventStoreError>;
   getSnapshot: <T>(aggregateId: string) => Result<T | null, EventStoreError>;
-  saveSnapshot: <T>(aggregateId: string, snapshot: T) => Result<void, EventStoreError>;
+  saveSnapshot: <T>(
+    aggregateId: string,
+    snapshot: T,
+  ) => Result<void, EventStoreError>;
 }
 
 // Zustandストアの作成
-export const useEventStore = create<EventStoreState>((set, get) => ({
+const eventStore = create<EventStoreState>((set, get) => ({
   events: {},
   readEvents: {},
   snapshots: {},
@@ -112,15 +115,15 @@ export const useEventStore = create<EventStoreState>((set, get) => ({
   saveReadEvent: (events: ReadEvent[]) => {
     return tryCatch(() => {
       const newReadEvents = { ...get().readEvents };
-      
+
       for (const event of events) {
         const eventId = generateEventId(event);
         newReadEvents[eventId] = [event];
       }
-      
+
       set((state) => ({
         ...state,
-        readEvents: newReadEvents
+        readEvents: newReadEvents,
       }));
     });
   },
@@ -134,7 +137,10 @@ export const useEventStore = create<EventStoreState>((set, get) => ({
         const currentEvents = newEvents[eventId] ?? [];
         const expectedVersion = currentEvents.length;
 
-        if (currentEvents.length > 0 && expectedVersion !== currentEvents.length) {
+        if (
+          currentEvents.length > 0 &&
+          expectedVersion !== currentEvents.length
+        ) {
           throw new ConcurrencyError();
         }
 
@@ -175,3 +181,7 @@ export const useEventStore = create<EventStoreState>((set, get) => ({
     });
   },
 }));
+
+export const useEventStore = () => {
+  return { ...eventStore.getState() };
+};
