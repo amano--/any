@@ -4,18 +4,66 @@
 
 イベントソーシングは、アプリケーションの状態変更をイベントとして記録し、これらのイベントを再生することで現在の状態を再構築できるパターンです。このガイドラインでは、本プロジェクトでのイベントソーシングの実装方法について説明します。
 
+## ディレクトリ構造
+
+```
+src/
+├── core/
+│   └── es/
+│       ├── event.ts     # 基底イベント型の定義
+│       ├── store.ts     # イベントストアの実装
+│       └── index.ts     # public API
+└── features/
+    └── group/
+        └── types/
+            └── events.ts # 機能固有のイベント型定義
+```
+
 ## イベントの型定義
 
-### 判別可能なUnion型
+### 機能固有のイベント定義
 
-イベントは必ず判別可能なUnion型として定義する必要があります。これにより、型安全な方法でイベントの種類を区別し、適切な処理を行うことができます。
+各機能のイベントは、その機能のディレクトリ内で定義します。これにより：
+- 機能ごとの関心の分離
+- イベント定義の集約
+- コードの保守性向上
 
 ```typescript
-type MemberEvent = MemberAddEvent | MemberRemoveEvent;
-type GroupEvent = GroupAddEvent | GroupUpdateEvent;
+// src/features/group/types/events.ts
+export type GroupAddEvent = {
+  b: "m";      // bounded context
+  g: "g";      // group
+  f: "g";      // feature
+  a: "add";    // action
+  ei: ULID;    // event identifier
+  data: {
+    groupId: string;
+    name: string;
+  }
+};
 
-// 基底となるイベント型
+export type GroupEvent = GroupAddEvent;
+export type GroupReadEvent = GroupListEvent;
+```
+
+### 基底イベント型の定義
+
+コアのイベントモジュールでは、各機能のイベント型を集約して基底となるイベント型を定義します：
+
+```typescript
+// 各機能でイベント型を定義
+// e.g., src/features/group/types/events.ts
+export type GroupAddEvent = { b: "m"; g: "g"; f: "g"; a: "addGroup"; ei: ULID };
+export type GroupEvent = GroupAddEvent;
+
+// src/core/es/event.ts
+import { type GroupEvent, type GroupReadEvent } from "~/features/group";
+
+// Write Event（状態変更イベント）
 export type Event = MemberEvent | GroupEvent;
+
+// Read Event（状態参照イベント）
+export type ReadEvent = MemberListEvent | GroupReadEvent;
 ```
 
 ### イベント属性の構造
@@ -74,7 +122,7 @@ const addMember = async (memberId: string, groupId: string) => {
     data: { memberId, groupId }
   };
   
-  return useEventStore.getState().save([event]);
+  return useEventStore().save([event]);
 };
 ```
 
@@ -94,7 +142,7 @@ const listMembers = async (groupId: string) => {
     data: { groupId }
   };
   
-  return useEventStore.getState().saveReadEvent([event]);
+  return useEventStore().saveReadEvent([event]);
 };
 ```
 
@@ -159,7 +207,7 @@ describe('EventSourcing', () => {
       data: { memberId: "1", groupId: "1" }
     };
     
-    const result = useEventStore.getState().save([event]);
+    const result = useEventStore().save([event]);
     expect(result.isOk()).toBe(true);
   });
 });

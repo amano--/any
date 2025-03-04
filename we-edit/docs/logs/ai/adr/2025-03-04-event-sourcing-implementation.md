@@ -22,13 +22,21 @@ Accepted
    - 競合の可能性が極めて低い
    - データベースのインデックスに最適
 
-2. イベントを判別可能なUnion型として定義
+2. イベント定義の構造化と分離
+   - 各機能のイベントは機能ディレクトリ内で定義
+   - コアモジュールで基底イベント型を集約
    ```typescript
-   type Event = MemberEvent | GroupEvent;
-   type ReadEvent = MemberListEvent | GroupListEvent;
+   // src/features/group/types/events.ts
+   export type GroupEvent = GroupAddEvent;
+   export type GroupReadEvent = GroupListEvent;
+
+   // src/core/es/event.ts
+   import { type GroupEvent, type GroupReadEvent } from "~/features/group";
+   export type Event = MemberEvent | GroupEvent;        // Write Events
+   export type ReadEvent = MemberListEvent | GroupReadEvent;  // Read Events
    ```
 
-3. イベント属性の標準化
+3. イベント属性の標準化と型安全性の確保
    ```typescript
    type BaseEvent = {
      b: string; // bounded context

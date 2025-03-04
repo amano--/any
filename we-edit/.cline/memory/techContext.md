@@ -14,6 +14,13 @@
 - tRPC (APIレイヤー)
 - Drizzle ORM (データベース)
 - NextAuth (認証)
+- neverthrow (エラー処理)
+- ulid (イベントID生成)
+
+### イベントソーシング
+- Zustandベースのイベントストア
+- Write/Read Eventsの分離
+- ULIDによる時系列ソート
 
 ### 開発ツール
 - Storybook (UIコンポーネント開発)
