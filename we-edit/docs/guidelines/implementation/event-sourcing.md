@@ -21,9 +21,14 @@ src/
 
 ## イベントの型定義
 
+### 判別可能なUnion型
+
+イベントは必ず判別可能なUnion型として定義する必要があります。これにより、型安全な方法でイベントの種類を区別し、適切な処理を行うことができます。
+
 ### 機能固有のイベント定義
 
 各機能のイベントは、その機能のディレクトリ内で定義します。これにより：
+
 - 機能ごとの関心の分離
 - イベント定義の集約
 - コードの保守性向上
@@ -31,15 +36,15 @@ src/
 ```typescript
 // src/features/group/types/events.ts
 export type GroupAddEvent = {
-  b: "m";      // bounded context
-  g: "g";      // group
-  f: "g";      // feature
-  a: "add";    // action
-  ei: ULID;    // event identifier
+  b: "m"; // bounded context
+  g: "g"; // group
+  f: "g"; // feature
+  a: "add"; // action
+  ei: ULID; // event identifier
   data: {
     groupId: string;
     name: string;
-  }
+  };
 };
 
 export type GroupEvent = GroupAddEvent;
@@ -74,16 +79,16 @@ export type ReadEvent = MemberListEvent | GroupReadEvent;
 type BaseEvent = {
   // 境界付けられたコンテキスト(bounded context)の頭文字
   b: "m" | "g" | "b"; // member, group, bookmark など
-  
+
   // 機能グループ(group)の頭文字
   g: "m" | "g" | "b"; // management, general, basic など
-  
+
   // 機能(feature)の頭文字
   f: "m" | "g" | "b"; // member, group, bookmark など
-  
+
   // アクション(action)の識別子
   a: "add" | "update" | "remove" | "list";
-  
+
   // イベント識別子（ULID）
   ei: ULID;
 };
@@ -99,6 +104,7 @@ export type ULID = string;
 ```
 
 ULIDを使用する理由：
+
 1. 時系列順序付け - ULIDは生成時刻に基づいて自動的にソート可能
 2. ユニーク性保証 - 競合の可能性が極めて低い
 3. データベースのインデックスに最適 - 時系列順でインデックスが構築される
@@ -111,6 +117,7 @@ ULIDを使用する理由：
 データベースの状態を変更する操作を行う場合は、`save`メソッドを使用します：
 
 ```typescript
+const { save } = useEventStore();
 // 例：メンバーの追加
 const addMember = async (memberId: string, groupId: string) => {
   const event: MemberAddEvent = {
@@ -119,10 +126,10 @@ const addMember = async (memberId: string, groupId: string) => {
     f: "m", // member feature
     a: "add",
     ei: ulid(), // 新しいULIDを生成
-    data: { memberId, groupId }
+    data: { memberId, groupId },
   };
-  
-  return useEventStore().save([event]);
+
+  return save([event]);
 };
 ```
 
@@ -131,6 +138,7 @@ const addMember = async (memberId: string, groupId: string) => {
 データベースから情報を取得する操作を行う場合は、`saveReadEvent`メソッドを使用します：
 
 ```typescript
+const { saveReadEvent } = useEventStore();
 // 例：メンバーリストの取得
 const listMembers = async (groupId: string) => {
   const event: MemberListEvent = {
@@ -139,24 +147,27 @@ const listMembers = async (groupId: string) => {
     f: "m", // member feature
     a: "list",
     ei: ulid(), // 新しいULIDを生成
-    data: { groupId }
+    data: { groupId },
   };
-  
-  return useEventStore().saveReadEvent([event]);
+
+  return saveReadEvent([event]);
 };
 ```
 
 ## 実装のベストプラクティス
 
 1. イベントの不変性
+
    - イベントは一度保存されたら変更してはいけない
    - 必要な情報はすべてイベント生成時に含める
 
 2. イベントの粒度
+
    - 1つの論理的な操作に対して1つのイベント
    - 複数の変更が必要な場合は、複数のイベントをアトミックに保存
 
 3. イベントの順序性
+
    - ULIDにより自然な時系列順序が保証される
    - イベントの再生順序に依存する実装は避ける
 
@@ -185,10 +196,12 @@ const handleEvent = (event: Event): Result<void, EventStoreError> => {
 ## テスト戦略
 
 1. イベントの生成テスト
+
    - 正しい属性が設定されているか
    - ULIDが適切に生成されているか
 
 2. イベントの処理テスト
+
    - 状態が正しく更新されるか
    - エラーが適切に処理されるか
 
@@ -196,17 +209,17 @@ const handleEvent = (event: Event): Result<void, EventStoreError> => {
    - 同じイベント列から同じ状態が再構築できるか
 
 ```typescript
-describe('EventSourcing', () => {
-  it('should correctly handle member add event', () => {
+describe("EventSourcing", () => {
+  it("should correctly handle member add event", () => {
     const event: MemberAddEvent = {
       b: "m",
       g: "m",
       f: "m",
       a: "add",
       ei: ulid(),
-      data: { memberId: "1", groupId: "1" }
+      data: { memberId: "1", groupId: "1" },
     };
-    
+
     const result = useEventStore().save([event]);
     expect(result.isOk()).toBe(true);
   });
@@ -216,6 +229,7 @@ describe('EventSourcing', () => {
 ## パフォーマンスの考慮事項
 
 1. イベントの最適化
+
    - 必要な情報のみを含める
    - 大きなデータはリファレンスとして保存
 
