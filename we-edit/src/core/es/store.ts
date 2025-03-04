@@ -79,8 +79,12 @@ function tryCatch<T>(fn: () => T): Result<T, EventStoreError> {
 }
 
 // イベントIDの生成
-function generateEventId(event: Event | ReadEvent): string {
-  return `${event.b}-${event.g}-${event.f}-${event.a}`;
+import { ulid } from 'ulid';
+
+import { type ULID } from "./event";
+
+function generateEventId(_event: Event | ReadEvent): ULID {
+  return ulid();
 }
 
 // イベントストアの状態定義

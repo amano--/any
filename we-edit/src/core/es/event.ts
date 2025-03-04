@@ -1,5 +1,4 @@
 import { usePathname } from "next/navigation";
-import { resources } from "./resources";
 import { Group } from "../../features/group/types/group";
 
 /**
