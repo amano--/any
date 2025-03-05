@@ -136,9 +136,39 @@ class ArticleCreatedEvent implements DomainEvent {
    - エンドツーエンドシナリオ
    - パフォーマンス検証
 
+### 4. Draw.ioでのクラス図作成
+
+VSCodeでDraw.ioを使用したクラス図作成には、以下の2段階アプローチを採用します：
+
+1. テキストファイルとしての作成
+   ```xml
+   <mxfile>
+     <diagram>
+       <mxGraphModel>
+         <!-- クラス図の定義 -->
+       </mxGraphModel>
+     </diagram>
+   </mxfile>
+   ```
+   - 拡張子は一時的に.txtとして保存
+   - mxfile形式のXMLで記述
+   - クラス、関係、属性を明確に定義
+
+2. Draw.io形式への変換
+   - .txt → .drawioへリネーム
+   - VSCodeまたはDraw.ioで開いて編集可能に
+
+このアプローチにより、以下の利点があります：
+- VSCodeでの直接編集が可能
+- バージョン管理が容易
+- チーム間でのレビューが効率的
+
 ## 改訂履歴
 
 - 2025-03-06: 初版作成
   - overview.mdの分析結果を反映
   - 複数コンテキストの並行開発に関する知見を追加
   - モデリングプロセスの体系化
+- 2025-03-06: Draw.ioでのクラス図作成手順を追加
+  - 2段階アプローチの導入
+  - XML形式での定義方法を明確化

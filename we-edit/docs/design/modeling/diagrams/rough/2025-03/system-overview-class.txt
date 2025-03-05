@@ -1,0 +1,77 @@
+<mxfile host="app.diagrams.net" modified="2025-03-06T04:30:00.000Z" agent="Mozilla/5.0" version="21.0.0" type="device">
+<diagram name="System Overview" id="system-overview">
+<mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1500" math="0" shadow="0">
+<root>
+<mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+
+<!-- Actor Hierarchy -->
+<mxCell id="2" value="User" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="320" y="40" width="160" height="100" as="geometry"/>
+</mxCell>
+<mxCell id="3" value="+ id: string&#10;+ name: string&#10;+ email: string&#10;+ role: Role" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="2">
+<mxGeometry y="26" width="160" height="74" as="geometry"/>
+</mxCell>
+
+<mxCell id="4" value="&lt;&lt;enumeration&gt;&gt;&#10;Role" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="40" y="40" width="160" height="180" as="geometry"/>
+</mxCell>
+<mxCell id="5" value="SYSTEM_ADMIN&#10;DEVELOPMENT_STAFF&#10;STAFF_MANAGER&#10;STAFF&#10;GROUP_ADMIN&#10;GROUP_OPERATOR&#10;MEMBER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="4">
+<mxGeometry y="40" width="160" height="140" as="geometry"/>
+</mxCell>
+
+<!-- Bookmark System -->
+<mxCell id="6" value="Bookmark" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="40" y="280" width="160" height="150" as="geometry"/>
+</mxCell>
+<mxCell id="7" value="+ id: string&#10;+ title: string&#10;+ url: string&#10;+ folder: Folder&#10;+ category: Category&#10;+ tags: Tag[]&#10;+ owner: User | Group" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="6">
+<mxGeometry y="26" width="160" height="124" as="geometry"/>
+</mxCell>
+
+<!-- Article System -->
+<mxCell id="8" value="Article" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="320" y="280" width="160" height="150" as="geometry"/>
+</mxCell>
+<mxCell id="9" value="+ id: string&#10;+ title: string&#10;+ content: string&#10;+ newspaper: Newspaper&#10;+ category: Category&#10;+ tags: Tag[]&#10;+ owner: User | Group" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="8">
+<mxGeometry y="26" width="160" height="124" as="geometry"/>
+</mxCell>
+
+<!-- Newspaper System -->
+<mxCell id="10" value="Newspaper" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="600" y="280" width="160" height="150" as="geometry"/>
+</mxCell>
+<mxCell id="11" value="+ id: string&#10;+ title: string&#10;+ articles: Article[]&#10;+ category: Category&#10;+ tags: Tag[]&#10;+ owner: User | Group" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="10">
+<mxGeometry y="26" width="160" height="124" as="geometry"/>
+</mxCell>
+
+<!-- Group System -->
+<mxCell id="12" value="Group" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="880" y="280" width="160" height="150" as="geometry"/>
+</mxCell>
+<mxCell id="13" value="+ id: string&#10;+ name: string&#10;+ parent: Group&#10;+ children: Group[]&#10;+ members: User[]&#10;+ admin: User&#10;+ maxChildren: number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="12">
+<mxGeometry y="26" width="160" height="124" as="geometry"/>
+</mxCell>
+
+<!-- Supporting Systems -->
+<mxCell id="14" value="Point" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="40" y="480" width="160" height="150" as="geometry"/>
+</mxCell>
+<mxCell id="15" value="+ id: string&#10;+ amount: number&#10;+ type: PointType&#10;+ owner: User&#10;+ expiresAt: Date&#10;+ createdAt: Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="14">
+<mxGeometry y="26" width="160" height="124" as="geometry"/>
+</mxCell>
+
+<mxCell id="16" value="Notification" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="320" y="480" width="160" height="150" as="geometry"/>
+</mxCell>
+<mxCell id="17" value="+ id: string&#10;+ message: string&#10;+ sender: User&#10;+ receivers: User[]&#10;+ status: NotificationStatus&#10;+ priority: number&#10;+ createdAt: Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="16">
+<mxGeometry y="26" width="160" height="124" as="geometry"/>
+</mxCell>
+
+<mxCell id="18" value="Tag" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+<mxGeometry x="600" y="480" width="160" height="120" as="geometry"/>
+</mxCell>
+<mxCell id="19" value="+ id: string&#10;+ name: string&#10;+ type: TagType&#10;+ creator: User" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="18">
+<mxGeometry y="26" width="160" height="94" as="geometry"/>
+</mxCell>
+
+<mxCell id="20" value="Category" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
