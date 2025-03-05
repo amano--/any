@@ -40,20 +40,20 @@
 
 ### イベントシステム設計
 
-1. [設計概要](./we-edit/event/README.md)
+1. [設計概要](./modeling/event/README.md)
 
    - イベントソーシングパターン
    - イベント処理フロー
    - エラー処理戦略
 
-2. [型定義](./we-edit/event/type.md)
+2. [型定義](./modeling/event/type.md)
 
    - イベントの基本構造
    - イベントペイロード
    - バリデーション型
    - エラー型
 
-3. [データベース設計](./we-edit/event/schema.md)
+3. [データベース設計](./modeling/event/schema.md)
    - イベントストアのスキーマ
    - インデックス戦略
    - パーティショニング
@@ -61,20 +61,20 @@
 
 ### ノートシステム設計
 
-1. [設計概要](./we-edit/note/README.md)
+1. [設計概要](./modeling/note/README.md)
 
    - 基本機能
    - イベントソーシング統合
    - タグとカテゴリ管理
 
-2. [型定義](./we-edit/note/type.md)
+2. [型定義](./modeling/note/type.md)
 
    - ノートの基本構造
    - メタデータ
    - タグとカテゴリの型
    - 検索・フィルタリング型
 
-3. [データベース設計](./we-edit/note/schema.md)
+3. [データベース設計](./modeling/note/schema.md)
    - ノートテーブル
    - タグ・カテゴリテーブル
    - バージョン管理

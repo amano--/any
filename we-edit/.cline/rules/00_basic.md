@@ -21,6 +21,8 @@ docs/guidelines は、実装する上で最重要ドキュメントなので、�
 
 - docs/logs/work-log/以下に。月毎の YYYY-MM.md ファイルを作成し、今日の作業内容の要約の追記をお願いします。追加順序は日付けが遅い方が上に表示されるようにしてください。
 
+- docs/logs/ai/knowledge/[開発フェーズ]/YYYY-MM-DD-[内容のタイトルの英名].md 以下に各開発フェーズごとに、今日の作業を振り返り知見をまとめてください。
+
 - docs/logs/ai/adr 以下に　本日の作業内容から　Architecture Decision Record　を作成してください。
 
 - 作業内容に従い、メモリバンクの更新もお願いします。
