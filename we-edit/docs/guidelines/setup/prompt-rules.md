@@ -54,7 +54,7 @@ userName amano
 ### 2.1 知見のまとめ作成
 
 ```
-場所: docs/[teamName]/logs/ai/knowledge/[開発フェーズ]/YYYY-MM/YYYY-MM-DD-[内容のタイトルの英名].md
+場所: docs/[teamName]/logs/ai/knowledge/[開発フェーズ]/YYYY-MM/YYYY-MM-DD-HH-[内容のタイトルの英名].md
 手順:
 1. まとめ作業前の振り返り
    - 実施内容の全体像を確認
@@ -119,7 +119,7 @@ ADRステータス:
 ### 2.4 週報作成・更新
 
 ```
-場所: docs/[teamName]/logs/work-log/[userName]/[YYYY]/YYYY-MM_[週の番号].md
+場所: docs/team/[teamName]/logs/work-log/[userName]/[YYYY]/YYYY-MM_[週の番号].md
 注: 週の番号は月の最初の週を1とし、以降順番に2,3,4...と指定
 
 更新タイミング:
