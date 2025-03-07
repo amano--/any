@@ -59,9 +59,45 @@
 ### 2.2 メモリバンクの更新
 ```
 対象:
-- systemPatterns.md: 新しいパターンの追加
-- activeContext.md: 現在のコンテキスト更新
-- progress.md: 進捗状況の更新
+1. .cline/memory/base/foundation.md
+   - 基本となる原則の追加・更新
+   - 重要な判断基準の記録
+   - 長期的な方針の更新
+
+2. .cline/memory/system/patterns.md
+   - 新しいパターンの追加
+   - 既存パターンの改善
+   - パターン間の関係更新
+
+3. .cline/memory/system/rules.md
+   - システムルールの追加・更新
+   - 制約条件の明確化
+   - 例外処理の定義
+
+4. .cline/memory/context/active.md
+   - 現在の状況の更新
+   - アクティブな課題の記録
+   - 進行中の作業の状態
+
+5. .cline/memory/context/progress.md
+   - 進捗状況の更新
+   - マイルストーンの記録
+   - 次のステップの定義
+
+6. .cline/memory/knowledge/core.md
+   - コア知識の蓄積
+   - 重要な発見の記録
+   - 基本概念の更新
+
+7. .cline/memory/personas/team.md
+   - チームメンバーの情報
+   - 役割と責任の更新
+   - コミュニケーションパターン
+
+8. .cline/memory/architecture/current.md
+   - 現在のアーキテクチャ状態
+   - 設計決定の履歴
+   - 構造的な変更の記録
 ```
 
 ### 2.3 ADR作成
@@ -142,6 +178,11 @@ ADRステータス:
 ```
 
 ## 更新履歴
+
+- 2025-03-07: 改訂
+  - メモリバンクの更新対象を拡充
+  - 各メモリバンクファイルの目的を明確化
+  - 更新内容を具体化
 
 - 2025-03-07: 改訂
   - ADRのパス構造を変更
