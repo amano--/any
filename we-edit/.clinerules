@@ -437,8 +437,6 @@ flowchart TD
    - エラーケースの明示的な処理を強制
    - テストの改善
 
-   🤖 ${K4}で生成
-   Co-Authored-By: Claude noreply@anthropic.com
    EOF
    )"
    ```
