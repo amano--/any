@@ -17,22 +17,12 @@ userName amano
 
 反面、現在のコンテキストに応じた処理は苦手だ。コンテキストが不明瞭な時は、ユーザーに確認する。
 
-## 1. タスク完了時の自動コミット
+## 1. タスク完了時の自動コミット（自動検知または手動指示）
 
-### 1.1 実行タイミング
-
-attempt_completion ツールの使用時に、result と command の両方を指定します：
-
-```typescript
-<attempt_completion>
-<result>
-タスクの完了結果を記述
-</result>
-<command>
-git add [変更したファイル...] && git commit -m "[コミットメッセージ]"
-</command>
-</attempt_completion>
-```
+- トリガー：
+  1. 自動検知：attempt_completionツール使用時
+  2. 手動：タスク完了の明示的な指示時
+- 詳細：[auto-commit-by-task.md](docs/setup/cline/rules/task/auto-commit-by-task.md)
 
 ## 2. ルール改善時（自動検知または「ルール改善」）
 
