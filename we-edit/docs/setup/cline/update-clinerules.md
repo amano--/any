@@ -83,7 +83,7 @@ docs/setup/cline/rules/
 
 1. 保存先の指定
    ```
-   docs/setup/cline/rules/logs/ai/suggestion/YYYY-MM-DD-HH-[改善内容の英名].md
+   docs/setup/cline/rules/logs/ai/advice/YYYY-MM-DD-HH-[改善内容の英名].md
    
    例：
    2025-03-09-08-rule-structure-optimization.md
