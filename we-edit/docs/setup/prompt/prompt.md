@@ -1,3 +1,7 @@
+docs/setup/prompt/rules 以下を元に.clinerulesを作成するために使ったプロンプト
+
+---
+
 docs/setup/prompt/rules 以下のファイルを cat して繋げるシェルスクリプトを書いてください
 条件は以下の通り
 
@@ -11,3 +15,5 @@ project.md
 coding.md
 git-workflow.md
 cline-best-practices.md
+
+---
