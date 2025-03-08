@@ -32,6 +32,7 @@ declare -a FILES=(
     "rules/en/coding-for-project.md"
     "rules/en/coding-by-ai.md"
     "rules/en/git-workflow.md"
+    "rules/en/package-structure.md"
     "rules/en/tech-stack.md"
     "rules/en/cline-best-practices.md"
 )
