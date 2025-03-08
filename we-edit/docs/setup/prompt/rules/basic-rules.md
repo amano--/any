@@ -1,9 +1,4 @@
-# プロンプト基本ルール集
-
-## 個人情報設定
-
-teamName core
-userName amano
+# プロジェクト設定
 
 # セキュリティ
 

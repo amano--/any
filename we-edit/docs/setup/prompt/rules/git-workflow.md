@@ -1,4 +1,4 @@
-# プロンプト git workflow
+# git workflow
 
 ## コミットメッセージ規約
 
