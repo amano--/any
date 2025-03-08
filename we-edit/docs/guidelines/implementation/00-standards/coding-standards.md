@@ -168,7 +168,7 @@ const initialize = once(() => {
 ### 1.1 変数宣言
 
 - `type` と `const` のみを使用
-- `class` と `interface` と`enum` と`namespace` と `let` と `var` の使用を禁止
+- `class` と `interface` と`function` と`enum` と`namespace` と `let` と `var` の使用を禁止
 - すべての変数に明示的な型アノテーションを付与
 
 ```typescript
