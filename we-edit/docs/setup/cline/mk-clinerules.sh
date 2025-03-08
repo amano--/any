@@ -26,15 +26,15 @@ check_file() {
 
 # 入力ファイルの相対パス一覧
 declare -a FILES=(
-    "rules/personal.md"
-    "rules/project.md"
-    "rules/coding-standards.md"
-    "rules/coding-for-project.md"
-    "rules/coding-by-ai.md"
-    "rules/git-workflow.md"
-    "rules/package-structure.md"
-    "rules/tech-stack.md"
-    "rules/cline-best-practices.md"
+    "rules/en/personal.md"
+    "rules/en/project.md"
+    "rules/en/coding-standards.md"
+    "rules/en/coding-for-project.md"
+    "rules/en/coding-by-ai.md"
+    "rules/en/git-workflow.md"
+    "rules/en/package-structure.md"
+    "rules/en/tech-stack.md"
+    "rules/en/cline-best-practices.md"
 )
 
 echo "Checking files..."
