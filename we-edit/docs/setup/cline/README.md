@@ -102,8 +102,7 @@ cline/
    - プロンプトの最適化技術
    - テストと評価方法
    - セキュリティ考慮事項
-   
-2. Roo特化型ガイド（[roo-prompt-practices.md](./roo-prompt-practices.md)）
+2. Roo Code特化型ガイド（[roo-prompt-practices.md](./roo-prompt-practices.md)）
    - モード活用の最適化
    - ツール活用のベストプラクティス
    - コンテキスト管理とタスク実行
