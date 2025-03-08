@@ -64,3 +64,8 @@ git add [changed files...] && git commit -m "[commit message]"
    - Add new sections without modifying existing rules
    - Append to relevant rule files (without changing existing content)
    - Update related documentation (in append mode)
+   - Update English Version
+     1. Identify corresponding file in docs/setup/cline/rules/en/ directory
+     2. Translate added content to English
+     3. Append to English version file (without modifying existing content)
+     4. Run mk-clinerules.sh to update .clinerules
