@@ -28,17 +28,19 @@
 
 ### 1.1 定期更新トリガー
 
-1. 週報の定時更新（詳細: [weekly-report-update.md](docs/setup/cline/rules/task/weekly-report-update.md)）
-
-   - システムトリガー時刻: 9:00, 11:00, 13:00, 15:00, 17:00, 19:00, 21:00
-   - 手動トリガー: 「週報更新」
-
-2. 作業終了時（トリガー: 「おつかれ」）
-   - 知見のまとめ作成
-   - メモリバンクの更新
-   - ADR作成判断と作成（必要な場合のみ）
-   - 週報の最終更新
-   - コミットプッシュ
+- トリガー：
+  1. 週報の定時更新
+     - システムトリガー時刻: 9:00, 11:00, 13:00, 15:00, 17:00, 19:00, 21:00
+     - 手動トリガー: 「週報更新」
+  2. 作業終了時
+     - 手動トリガー: 「おつかれ」
+     - 実行内容:
+       - 知見のまとめ作成
+       - メモリバンクの更新
+       - ADR作成判断と作成（必要な場合のみ）
+       - 週報の最終更新
+       - コミットプッシュ
+- 詳細：[weekly-report-update.md](docs/setup/cline/rules/task/weekly-report-update.md)
 
 ### 1.2 知見更新時（自動検知または「知見更新」）
 
@@ -63,61 +65,13 @@
   2. 手動：「ADR作成」というキーワード
 - 詳細：[adr-creation.md](docs/setup/cline/rules/task/adr-creation.md)
 
-### 1.4 ガイドライン改訂時（トリガー: 「ガイド改訂」）
+### 1.4 ガイドライン改訂時（自動検知または「ガイド改訂」）
 
+- トリガー：
+  1. 自動検知：以下のキーワードを含む文章を検出した場合
+     - 「ガイドラインの問題点を発見しました」
+     - 「ガイドラインの改善が必要です」
+     - 「ガイドラインの更新を提案します」
+     - 「ガイドラインの見直しが必要です」
+  2. 手動：「ガイド改訂」というキーワード
 - 詳細：[guideline-revision.md](docs/setup/cline/rules/task/guideline-revision.md)
-
-## 2. 各作業の詳細
-
-詳細な週報の更新手順については [weekly-report-update.md](docs/setup/cline/rules/task/weekly-report-update.md) を参照してください。
-
-### 2.1 知見のまとめ作成
-
-詳細な手順については [knowledge-update.md](docs/setup/cline/rules/task/knowledge-update.md) を参照してください。
-
-### 2.2 メモリバンクの更新
-
-### 2.3 ADR作成
-
-```
-場所: docs/team/[teamName]/logs/ai/adr/[ADRステータス]/[開発フェーズ]/YYYY/YYYY-MM-DD-[決定内容の英名].md
-
-ADRステータス:
-- proposed: 提案中
-- accepted: 承認済み
-- rejected: 却下
-- deprecated: 廃止
-- superseded: 代替案採用
-
-条件: 以下のいずれかに該当する決定の場合に作成
-1. アーキテクチャに影響する決定
-   - システム構造の変更
-   - コンポーネント間の関係性の変更
-   - 重要なインターフェースの変更
-
-2. 重要なパターンや規約の変更
-   - 設計パターンの採用
-   - コーディング規約の変更
-   - 命名規則の変更
-
-3. チーム間の協業方法の変更
-   - 開発プロセスの変更
-   - コミュニケーション方法の変更
-   - 役割分担の変更
-
-4. システム全体に影響する技術選定
-   - フレームワークの選定
-   - ライブラリの採用
-   - ツールチェーンの変更
-
-記録項目：
-1. ステータス（proposed/accepted/rejected/deprecated/superseded）
-2. 決定に至った背景と理由
-3. 検討した代替案
-4. 影響範囲の分析
-5. 実装手順
-```
-
-### 2.4 週報作成・更新
-
-詳細な週報の作成・更新手順については [weekly-report-update.md](/docs/setup/cline/rules/task/weekly-report-update.md) を参照してください。
