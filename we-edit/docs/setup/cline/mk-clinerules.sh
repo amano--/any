@@ -42,7 +42,7 @@ for file in "${FILES[@]}"; do
     check_file "$SCRIPT_DIR/$file"
 done
 
-echo "Generating .clinerules.en..."
+echo "Generating .clinerules..."
 # 出力ディレクトリの存在確認
 if [ ! -d "$(dirname "$OUTPUT_FILE")" ]; then
     echo "Creating output directory: $(dirname "$OUTPUT_FILE")"
