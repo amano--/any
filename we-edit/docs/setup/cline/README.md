@@ -9,10 +9,15 @@ Clineは、AIアシスタントの動作を制御し、一貫性のある開発�
 ```
 cline/
 ├── rules/          # .clinerules に組み込むルール
-│   ├── personal.md       # 個人設定
-│   ├── project.md       # プロジェクトルール
-│   ├── coding-*.md      # コーディング規約
-│   └── README.md        # ルール一覧
+│   ├── [personal.md](./rules/personal.md)       # 個人設定
+│   ├── [project.md](./rules/project.md)       # プロジェクトルール
+│   ├── [coding-standards.md](./rules/coding-standards.md)   # 標準規約
+│   ├── [coding-for-project.md](./rules/coding-for-project.md) # プロジェクト固有
+│   ├── [coding-by-ai.md](./rules/coding-by-ai.md)     # AI実装規約
+│   ├── [git-workflow.md](./rules/git-workflow.md)     # Git運用
+│   ├── [package-structure.md](./rules/package-structure.md) # パッケージ構造
+│   ├── [tech-stack.md](./rules/tech-stack.md)       # 技術スタック
+│   └── [README.md](./rules/README.md)        # ルール一覧
 │
 ├── [prompt-engineering.md](./prompt-engineering.md)  # プロンプトエンジニアリング一般
 ├── [roo-prompt-practices.md](./roo-prompt-practices.md)  # Roo特化型プロンプト
@@ -92,13 +97,13 @@ cline/
 
 ### 2. プロンプトエンジニアリング
 
-1. 一般的なベストプラクティス（prompt-engineering.md）
+1. 一般的なベストプラクティス（[prompt-engineering.md](./prompt-engineering.md)）
    - 基本原則と構造化手法
    - プロンプトの最適化技術
    - テストと評価方法
    - セキュリティ考慮事項
    
-2. Roo特化型ガイド（roo-prompt-practices.md）
+2. Roo特化型ガイド（[roo-prompt-practices.md](./roo-prompt-practices.md)）
    - モード活用の最適化
    - ツール活用のベストプラクティス
    - コンテキスト管理とタスク実行
