@@ -1,29 +1,98 @@
-# Knowledge Update Task
+# 知見更新タスク
 
-## Overview
+## 0. AI重要ルール
 
-This task creates a knowledge summary when important discoveries, clarifications, or improvements are made during development.
+### 0.1 知見記録の必須チェック
 
-## File Location
+AIは以下の場合に知見の記録が必要か確認を行う：
+
+1. 重要な発見があった時
+2. 課題が明確になった時
+3. 改善点が見つかった時
+4. 知見が得られた時
+
+### 0.2 記録確認手順
+
+1. 実施内容の全体像確認
+2. 重要な判断ポイントの特定
+3. 発生した課題の整理
+4. 得られた知見の分析
+5. まとめの作成実行
+
+## 1. ファイル名と場所
 
 ```
-docs/team/[teamName]/logs/ai/knowledge/[developmentPhase]/YYYY-MM/YYYY-MM-DD-HH-[contentTitleInEnglish].md
+場所: docs/team/[teamName]/logs/ai/knowledge/[開発フェーズ]/YYYY-MM/YYYY-MM-DD-HH-[内容のタイトルの英名].md
+
+例：
+- フェーズ1の設計知見 → /phase1/2025-03/2025-03-09-10-design-patterns.md
+- 実装時の知見 → /implementation/2025-03/2025-03-09-14-error-handling.md
 ```
 
-## Procedure
+## 2. 更新手順
 
-### 1. Pre-summary Review
-- Review overall implementation content
-- List important decision points
-- Organize identified issues
+### 2.1 基本手順
 
-### 2. Contemplation Process
-- Deep dive into each decision's rationale
-- Organize options and comparison content
-- Analyze lessons learned
+1. 振り返りの準備
 
-### 3. Summary Creation
-- Specific issues and solutions
-- Technical decisions and their rationale
-- Improvement proposals and alternatives
-- Next step proposals
+   - 実施内容の全体像を確認
+   - 重要な判断ポイントを列挙
+   - 発生した課題を整理
+
+2. 内容の分析
+
+   - 各判断の根拠を深掘り
+   - 選択肢と比較検討内容を整理
+   - 得られた教訓を分析
+
+3. まとめの作成
+
+   - 具体的な課題と解決策の記録
+   - 技術的な判断とその根拠の説明
+   - 改善案や代替案の検討内容の記述
+   - 次のステップへの提案の追加
+
+### 2.2 チェックリスト
+
+作成時に確認する項目：
+
+```markdown
+振り返り確認:
+
+- [ ] 実施内容の全体像を把握したか
+- [ ] 重要な判断ポイントを特定したか
+- [ ] 発生した課題を整理したか
+
+分析確認:
+
+- [ ] 各判断の根拠を説明できるか
+- [ ] 代替案を検討したか
+- [ ] 得られた教訓を明確にしたか
+
+まとめ確認:
+
+- [ ] 課題と解決策は具体的か
+- [ ] 技術的判断の根拠は明確か
+- [ ] 改善案は実行可能か
+- [ ] 次のステップは明確か
+```
+
+## 3. エラー処理
+
+### 3.1 記録失敗時の対応
+
+1. 一時ファイルとしての保存
+2. ユーザーへの通知
+3. 記録再開のタイミング調整
+
+### 3.2 内容不足時の対応
+
+1. 不足情報の特定
+2. 追加情報の収集
+3. 再記録の実施
+
+### 3.3 フォーマット不整合時
+
+1. 一時保存の実施
+2. フォーマットの修正
+3. 再記録の実行
