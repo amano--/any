@@ -12,7 +12,8 @@ cat の順番は
 
 personal.md
 project.md
-coding.md
+coding-standards.md
+coding-for-project.md
 git-workflow.md
 tech-stack.md
 cline-best-practices.md
