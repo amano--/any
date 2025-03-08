@@ -40,6 +40,7 @@ personal.md
 project.md
 coding-standards.md
 coding-for-project.md
+coding-by-ai.md
 git-workflow.md
 package-structure.md
 tech-stack.md

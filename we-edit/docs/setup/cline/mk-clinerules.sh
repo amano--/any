@@ -30,6 +30,7 @@ declare -a FILES=(
     "$SCRIPT_DIR/project.md"
     "$SCRIPT_DIR/coding-standards.md"
     "$SCRIPT_DIR/coding-for-project.md"
+    "$SCRIPT_DIR/coding-for-ai.md"
     "$SCRIPT_DIR/git-workflow.md"
     "$SCRIPT_DIR/package-structure.md"
     "$SCRIPT_DIR/tech-stack.md"
