@@ -6,8 +6,8 @@ docs/setup/prompt/rules 以下のファイルを cat して繋げるシェルス
 
 cat の順番は
 
-- personal-rules.md
-- basic-rules.md
-- coding-rules.md
-- git-workflow.md
-- cline-best-practices.md
+personal.md
+project.md
+coding.md
+git-workflow.md
+cline-best-practices.md
