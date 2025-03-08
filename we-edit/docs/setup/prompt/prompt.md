@@ -14,6 +14,7 @@ personal.md
 project.md
 coding.md
 git-workflow.md
+tech-stack.md
 cline-best-practices.md
 
 ---
