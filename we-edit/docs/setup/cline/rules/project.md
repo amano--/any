@@ -61,12 +61,11 @@
      - 「〜に変更することにしました」
      - 「〜という方針で進めます」
   2. 手動：「ADR作成」というキーワード
-- 処理：ADR作成のみ実行
+- 詳細：[adr-creation.md](docs/setup/cline/rules/task/adr-creation.md)
 
 ### 1.4 ガイドライン改訂時（トリガー: 「ガイド改訂」）
 
-1. 作業の振り返りと熟考
-2. 既存ガイドラインを踏襲した改訂
+- 詳細：[guideline-revision.md](docs/setup/cline/rules/task/guideline-revision.md)
 
 ## 2. 各作業の詳細
 
