@@ -1,4 +1,5 @@
 # Dependencies
+
 node_modules/
 .pnpm-store/
 .yarn/
@@ -8,42 +9,47 @@ yarn.lock
 pnpm-lock.yaml
 
 # Build outputs
+
 .next/
 build/
 dist/
 out/
-*.tsbuildinfo
+\*.tsbuildinfo
 storybook-static/
 chrome-ext-build/
 
 # Environment and config
+
 .env
-.env.*
+.env._
 !.env.example
 .env.local
-.env.*.local
+.env._.local
 
 # IDE and Editor
+
 .idea/
-.vscode/*
+.vscode/_
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
-*.sublime-workspace
-*.sublime-project
+_.sublime-workspace
+\*.sublime-project
 .DS_Store
 Thumbs.db
 
 # Cache and Logs
+
 .cache/
-*.log
-npm-debug.log*
+_.log
+npm-debug.log_
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+.pnpm-debug.log\*
 
 # Test coverage
+
 coverage/
 .nyc_output/
 cypress/videos/
@@ -52,17 +58,20 @@ test-results/
 playwright-report/
 
 # Debug
-*.swp
-*.swo
-*.bak
-*.tmp
-*~
+
+_.swp
+_.swo
+_.bak
+_.tmp
+\*~
 
 # TypeScript
-*.tsbuildinfo
+
+\*.tsbuildinfo
 tsconfig.tsbuildinfo
 
 # Next.js
+
 .next/
 out/
 .vercel/
@@ -70,69 +79,78 @@ next-env.d.ts
 .turbo
 
 # Storybook
+
 storybook-static/
-.storybook/*.log
+.storybook/\*.log
 
 # Chrome Extension
-*.crx
-*.pem
+
+_.crx
+_.pem
 chrome-ext/build/
 
 # Project specific
-.cline-tmp/
-.memory-bank-tmp/
+
+.cline/\*
 
 # Security
+
 ## Certificates and keys
-*.key
-*.pem
-*.cert
-*.crt
-*.csr
-*.p12
-*.pfx
-*.keystore
-*.jks
+
+_.key
+_.pem
+_.cert
+_.crt
+_.csr
+_.p12
+_.pfx
+_.keystore
+\*.jks
 
 ## Authentication and tokens
+
 .npmrc
 .yarnrc
-.env*
+.env\*
 *.token
-*token*
-*password*
-*secret*
-*credential*
-*auth*
+*token\*
+_password_
+_secret_
+_credential_
+_auth_
 .netrc
 
 ## Debug and logs containing sensitive data
+
 debug.log
-*debug*.log
+_debug_.log
 npm-debug.log
 yarn-debug.log
-*.dump
+\*.dump
 .hypothesis/
 .pytest_cache/
 
 ## Personal and local config
+
 .ssh/
 .aws/
 .config/
 *.local
-*personal*
-*private*
+*personal\*
+_private_
 
 ## Backup files that might contain sensitive data
-*.bak
-*.backup
-*.swp
-*.swo
-*~
-.[#]*
-[#]*[#]
+
+_.bak
+_.backup
+_.swp
+_.swo
+_~
+.[#]_
+[#]\*[#]
 
 ## Database files
-*.sql
-*.sqlite
-*.db
+
+_.sql
+_.sqlite
+\*.db
