@@ -1,4 +1,4 @@
-# Cline Bast Practices
+# Cline が推奨するBast Practicesルール
 
 ## Clineのメモリバンク
 
