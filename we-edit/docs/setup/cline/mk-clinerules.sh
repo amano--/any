@@ -32,7 +32,6 @@ declare -a FILES=(
     "rules/en/coding-for-project.md"
     "rules/en/coding-by-ai.md"
     "rules/en/git-workflow.md"
-    "rules/en/package-structure.md"
     "rules/en/tech-stack.md"
     "rules/en/cline-best-practices.md"
 )
@@ -43,7 +42,7 @@ for file in "${FILES[@]}"; do
     check_file "$SCRIPT_DIR/$file"
 done
 
-echo "Generating .clinerules..."
+echo "Generating .clinerules.en..."
 # 出力ディレクトリの存在確認
 if [ ! -d "$(dirname "$OUTPUT_FILE")" ]; then
     echo "Creating output directory: $(dirname "$OUTPUT_FILE")"

@@ -1,151 +1,150 @@
-# 個人ルール設定
+# Personal Rule Settings
 
-## 個人情報
+## Personal Information
 
 teamName core
 userName amano
 
-## 重要
+## Important Notes
 
-ユーザーはRooよりプログラミングが得意だが、時短のためにRooにコーディングを依頼している。
+The user is more proficient in programming than Roo but delegates coding tasks to Roo for time efficiency.
 
-2回以上連続でテストを失敗した時は、現在の状況を整理して、一緒に解決方法を考える。仮説のないまま試行錯誤を繰り返すのは避ける。
+When tests fail consecutively two or more times, we should analyze the current situation and work together to find a solution. Avoid trial and error without a clear hypothesis.
 
-私は GitHub から学習した広範な知識を持っており、個別のアルゴリズムやライブラリの使い方は私が実装するよりも速い。
+I have extensive knowledge learned from GitHub, and I can implement specific algorithms and library usage faster than the user.
 
-テストコードを書いて動作確認しながら、ユーザーに説明しながらコードを書く。
+Write test code and verify functionality while explaining the code to the user.
 
-反面、現在のコンテキストに応じた処理は苦手だ。コンテキストが不明瞭な時は、ユーザーに確認する。
+However, I am not good at context-dependent processing. When the context is unclear, I should confirm with the user.
 
-## 1. タスク完了時の自動コミット
+## 1. Automatic Commit on Task Completion
 
-### 1.1 実行タイミング
+### 1.1 Execution Timing
 
-attempt_completion ツールの使用時に、result と command の両方を指定します：
+Specify both result and command when using the attempt_completion tool:
 
 ```typescript
 <attempt_completion>
 <result>
-タスクの完了結果を記述
+Describe the task completion result
 </result>
 <command>
-git add [変更したファイル...] && git commit -m "[コミットメッセージ]"
+git add [changed files...] && git commit -m "[commit message]"
 </command>
 </attempt_completion>
 ```
 
-## 2. ルール改善時（自動検知または「ルール改善」）
+## 2. Rule Improvement (Automatic Detection or "Rule Improvement")
 
-### 2.1 トリガー条件
+### 2.1 Trigger Conditions
 
-- 自動検知：以下のキーワードを含む文章を検出した場合
-  - 「ルールの問題点が見つかりました」
-  - 「ルールの改善が必要です」
-  - 「ルールの更新を提案します」
-  - 「ルールの矛盾を発見しました」
-  - 「ルールの最適化が可能です」
-- 手動：「ルール改善」というキーワード
+- Automatic detection: When text contains the following keywords
+  - "Rule issues have been found"
+  - "Rule improvements are needed"
+  - "Proposing rule updates"
+  - "Rule inconsistencies discovered"
+  - "Rule optimization is possible"
+- Manual: Using the keyword "Rule Improvement"
 
-### 2.2 処理手順
+### 2.2 Processing Steps
 
-1. 現状の振り返り
+1. Current State Review
 
-   - 既存ルールの確認
-   - 問題点の整理
-   - 改善ポイントの特定
+   - Check existing rules
+   - Organize identified issues
+   - Identify improvement points
 
-2. 改善案の作成
+2. Create Improvement Proposal
 
-   - 具体的な変更提案
-   - 影響範囲の分析
-   - 期待される効果
+   - Specific change proposals
+   - Impact analysis
+   - Expected benefits
 
-3. ドキュメント更新
-   - 既存のルールは変更せず、新しいセクションとして追記
-   - 該当ルールファイルへの追記（既存部分は変更しない）
-   - 関連ドキュメントの更新（追記形式）
+3. Document Updates
+   - Add new sections without modifying existing rules
+   - Append to relevant rule files (without changing existing content)
+   - Update related documentation (in append mode)
 
+# Project Rule Settings
 
-# プロジェクトルール設定
+# Security
 
-# セキュリティ
+## Confidential Files
 
-## 機密ファイル
+The following files are restricted from reading and modification:
 
-以下のファイルの読み取りと変更を禁止：
+- .env files
+- All files containing API keys, tokens, and authentication information
 
-- .env ファイル
-- APIキー、トークン、認証情報を含むすべてのファイル
+## Security Measures
 
-## セキュリティ対策
+- Never commit confidential files
+- Use environment variables for secret information
+- Do not include authentication information in logs or output
 
-- 機密ファイルを絶対にコミットしない
-- シークレット情報は環境変数を使用する
-- ログや出力に認証情報を含めない
+## 1. Prompt Trigger List
 
-## 1. プロンプトトリガー一覧
+### 1.1 Regular Update Triggers
 
-### 1.1 定期更新トリガー
+1. Weekly Report Regular Updates
 
-1. 週報の定時更新
+   - System automatically triggers periodically
+   - Trigger times: 9:00, 11:00, 13:00, 15:00, 17:00, 19:00, 21:00
+   - Timing and significance:
+     - 09:00: Start of morning work
+     - 11:00: Mid-morning
+     - 13:00: After lunch break
+     - 15:00: Mid-afternoon
+     - 17:00: Standard end of work
+     - 19:00: Overtime work
+     - 21:00: Late night work
+   - Manual trigger: "Update weekly report"
 
-   - システムが定期的に自動でトリガー
-   - トリガー時刻：9:00, 11:00, 13:00, 15:00, 17:00, 19:00, 21:00
-   - タイミングと意味：
-     - 09:00: 朝の作業開始時
-     - 11:00: 午前の中間
-     - 13:00: 昼休み後
-     - 15:00: 午後の中間
-     - 17:00: 標準終業時
-     - 19:00: 残業時
-     - 21:00: 深夜作業時
-   - 手動トリガー：「週報更新」
+2. At Work Completion (Trigger: "Good work")
+   - Create knowledge summary
+   - Update memory bank
+   - ADR creation decision and implementation (if necessary)
+   - Final weekly report update
+   - Commit and push
 
-2. 作業終了時（トリガー: 「おつかれ」）
-   - 知見のまとめ作成
-   - メモリバンクの更新
-   - ADR作成判断と作成（必要な場合のみ）
-   - 週報の最終更新
-   - コミットプッシュ
+### 1.2 Knowledge Update (Automatic Detection or "Knowledge Update")
 
-### 1.2 知見更新時（自動検知または「知見更新」）
+- Triggers:
+  1. Automatic detection: When text contains the following keywords
+     - "Issues have been clarified"
+     - "Important discovery made"
+     - "Knowledge gained"
+     - "Areas for improvement found"
+  2. Manual: Using the keyword "Knowledge Update"
+- Process: Execute knowledge summary creation only
 
-- トリガー：
-  1. 自動検知：以下のキーワードを含む文章を検出した場合
-     - 「課題が明確になりました」
-     - 「重要な発見がありました」
-     - 「知見が得られました」
-     - 「改善点が見つかりました」
-  2. 手動：「知見更新」というキーワード
-- 処理：知見のまとめ作成のみ実行
+### 1.3 ADR Creation (Automatic Detection or "Create ADR")
 
-### 1.3 ADR作成時（自動検知または「ADR作成」）
+- Triggers:
+  1. Automatic detection: When text contains the following keywords
+     - "Design policy has been decided"
+     - "Architecture change decided"
+     - "Important decision made"
+     - "Decided to change to ~"
+     - "Will proceed with ~ policy"
+  2. Manual: Using the keyword "Create ADR"
+- Process: Execute ADR creation only
 
-- トリガー：
-  1. 自動検知：以下のキーワードを含む文章を検出した場合
-     - 「設計方針を決定しました」
-     - 「アーキテクチャの変更を決定」
-     - 「重要な決定を行いました」
-     - 「〜に変更することにしました」
-     - 「〜という方針で進めます」
-  2. 手動：「ADR作成」というキーワード
-- 処理：ADR作成のみ実行
+### 1.4 Guideline Revision (Trigger: "Guide Revision")
 
-### 1.4 ガイドライン改訂時（トリガー: 「ガイド改訂」）
+1. Review and reflect on work
+2. Revise following existing guidelines
 
-1. 作業の振り返りと熟考
-2. 既存ガイドラインを踏襲した改訂
+## 2. Detailed Work Procedures
 
-## 2. 各作業の詳細
+## 1. Weekly Report Regular Updates
 
-## 1. 週報の定時更新
-
-### 1.1 更新時間
+### 1.1 Update Times
 
 ```mermaid
 flowchart TB
-    A[定時更新] --> B[午前]
-    A --> C[午後]
+    A[Regular Updates] --> B[Morning]
+    A --> C[Afternoon]
     B --> D[09:00]
     B --> E[11:00]
     C --> F[13:00]
@@ -155,337 +154,369 @@ flowchart TB
     C --> J[21:00]
 ```
 
-定時更新を以下の時間に実施：
+Regular updates are performed at the following times:
 
-- 09:00: 朝の作業開始時
-- 11:00: 午前の中間
-- 13:00: 昼休み後
-- 15:00: 午後の中間
-- 17:00: 標準終業時
-- 19:00: 残業時
-- 21:00: 深夜作業時
+- 09:00: Start of morning work
+- 11:00: Mid-morning
+- 13:00: After lunch break
+- 15:00: Mid-afternoon
+- 17:00: Standard end of work
+- 19:00: Overtime work
+- 21:00: Late night work
 
-### 1.2 更新手順
+### 1.2 Update Procedure
 
-1. 時間の確認
+1. Time Check
 
-   - 現在時刻の確認
-   - 次回更新時間の記録
+   - Confirm current time
+   - Record next update time
 
-2. 内容の収集
+2. Content Collection
 
-   - 前回更新からの作業内容
-   - コミット履歴
-   - 作成・更新したファイル
-   - 議論や決定事項
+   - Work content since last update
+   - Commit history
+   - Created/updated files
+   - Discussions and decisions
 
-3. 記録の更新
+3. Record Update
 
-   - 更新の準備
+   - Update Preparation
 
-     - 必ず既存の週報ファイルを read_file で確認
-     - 既存の内容を完全に保持することを確認
-     - 時系列順（新しい更新が上）を維持
+     - Always confirm existing weekly report file using read_file
+     - Ensure complete retention of existing content
+     - Maintain chronological order (newest updates at top)
 
-   - 内容の追記
+   - Content Addition
 
-     - タイムスタンプの記入（現在時刻）
-     - 作業時間の記録
-     - 実施内容の要約
-     - 成果物へのリンク
-     - 課題と次のステップ
+     - Enter timestamp (current time)
+     - Record work hours
+     - Summarize activities
+     - Link to deliverables
+     - Issues and next steps
 
-   - 更新の検証
-     - 既存の内容が保持されているか確認
-     - 新規追記内容の形式が正しいか確認
-     - 時系列順が維持されているか確認
+   - Update Verification
+     - Confirm existing content is retained
+     - Verify new content format is correct
+     - Confirm chronological order is maintained
 
-4. 次回更新の準備
-   - 次回更新時間の記録
-   - 通知設定の確認
+4. Next Update Preparation
+   - Record next update time
+   - Confirm notification settings
 
-### 1.3 チェックリスト
+### 1.3 Checklist
 
-更新時に確認する項目：
+Items to confirm during updates:
 
 ```markdown
-更新前の確認:
+Pre-update confirmation:
 
-- [ ] 既存の週報ファイルを read_file で確認したか
-- [ ] 既存の内容を保持する準備ができているか
-- [ ] 時系列順（新しい更新が上）を理解しているか
+- [ ] Confirmed existing weekly report file using read_file
+- [ ] Prepared to retain existing content
+- [ ] Understand chronological order (newest updates at top)
 
-更新内容の確認:
+Update content confirmation:
 
-- [ ] タイムスタンプは正確か
-- [ ] 作業時間は正しく記録されているか
-- [ ] すべての作業内容が含まれているか
-- [ ] 成果物へのリンクは有効か
-- [ ] 課題と次のステップは明確か
-- [ ] 次回更新時間は記録されているか
+- [ ] Timestamp is accurate
+- [ ] Work hours are correctly recorded
+- [ ] All work content is included
+- [ ] Links to deliverables are valid
+- [ ] Issues and next steps are clear
+- [ ] Next update time is recorded
 
-更新後の検証:
+Post-update verification:
 
-- [ ] 既存の内容がすべて保持されているか
-- [ ] 新規追記が正しい形式で行われているか
-- [ ] 時系列順が適切に維持されているか
+- [ ] All existing content is retained
+- [ ] New additions are in correct format
+- [ ] Chronological order is properly maintained
 ```
 
-### 1.4 通知の仕組み
+### 1.4 Notification System
 
-1. 更新時間の通知
+1. Update Time Notifications
 
-   - 更新時間の15分前に通知
-   - 更新時間に通知
-   - 更新忘れ防止の再通知
+   - Notify 15 minutes before update time
+   - Notify at update time
+   - Re-notify to prevent missed updates
 
-2. 通知内容
+2. Notification Content
 
-   - 現在時刻
-   - 前回の更新内容
-   - チェックリスト
+   - Current time
+   - Previous update content
+   - Checklist
 
-3. 通知の確認
-   - 通知受信の確認
-   - 更新作業の開始
-   - 完了の記録
+3. Notification Confirmation
+   - Confirm notification receipt
+   - Start update work
+   - Record completion
 
-## 2. 更新忘れ防止策
+## 2. Update Reminder System
 
-### 2.1 リマインダーの設定
+### 2.1 Task Execution Update Check
 
-1. 主要な更新タイミング
+1. Task Start Check
+   - Check last update time
+   - Check for missed regular updates
+   - Perform immediate update if necessary
 
-   - 9:00（作業開始時）
-   - 17:00（標準終業時）
-   - 21:00（深夜作業時）
+2. Task Execution Monitoring
+   - Check elapsed time every 30 minutes
+   - Display time remaining until next update
+   - Pre-notify scheduled update time
 
-2. 中間チェック
+3. Pre-Task Completion Check
+   - Check time elapsed since last update
+   - Check for missed regular updates
+   - Confirm update before attempt_completion
+
+### 2.2 System Level Prevention
+
+1. Multiple Notifications
+   - VSCode extension notifications
+   - System level notifications
+   - Browser notifications (when possible)
+
+2. Visualization and Monitoring
+   - Display update status in status bar
+   - Countdown to next update
+   - Warning display for missed updates
+
+3. Interrupt Function
+   - Force notification when update time is exceeded
+   - Update check at task switching
+   - Regular checks during long work sessions
+
+### 2.3 Reminder Settings
+
+1. Major Update Times
+
+   - 9:00 (Work start)
+   - 17:00 (Standard end of work)
+   - 21:00 (Late night work)
+
+2. Mid-point Checks
    - 11:00
    - 13:00
    - 15:00
    - 19:00
 
-### 2.1 知見のまとめ作成
+### 2.1 Knowledge Summary Creation
 
 ```
-場所: docs/team/[teamName]/logs/ai/knowledge/[開発フェーズ]/YYYY-MM/YYYY-MM-DD-HH-[内容のタイトルの英名].md
-手順:
-1. まとめ作業前の振り返り
-   - 実施内容の全体像を確認
-   - 重要な判断ポイントを列挙
-   - 発生した課題を整理
+Location: docs/team/[teamName]/logs/ai/knowledge/[developmentPhase]/YYYY-MM/YYYY-MM-DD-HH-[contentTitleInEnglish].md
+Procedure:
+1. Pre-summary Review
+   - Confirm overall picture of activities
+   - List key decision points
+   - Organize issues encountered
 
-2. 熟考のプロセス
-   - 各判断の根拠を深掘り
-   - 選択肢と比較検討内容を整理
-   - 得られた教訓を分析
+2. Reflection Process
+   - Deep dive into each decision's rationale
+   - Organize options and comparison details
+   - Analyze lessons learned
 
-3. まとめ作成
-   - 具体的な課題と解決策
-   - 技術的な判断とその根拠
-   - 改善案や代替案の検討内容
-   - 次のステップへの提案
+3. Summary Creation
+   - Specific issues and solutions
+   - Technical decisions and their rationale
+   - Improvement and alternative proposals
+   - Next step proposals
 ```
 
-### 2.2 メモリバンクの更新
+### 2.2 Memory Bank Update
 
-### 2.3 ADR作成
-
-```
-場所: docs/team/[teamName]/logs/ai/adr/[ADRステータス]/[開発フェーズ]/YYYY/YYYY-MM-DD-[決定内容の英名].md
-
-ADRステータス:
-- proposed: 提案中
-- accepted: 承認済み
-- rejected: 却下
-- deprecated: 廃止
-- superseded: 代替案採用
-
-条件: 以下のいずれかに該当する決定の場合に作成
-1. アーキテクチャに影響する決定
-   - システム構造の変更
-   - コンポーネント間の関係性の変更
-   - 重要なインターフェースの変更
-
-2. 重要なパターンや規約の変更
-   - 設計パターンの採用
-   - コーディング規約の変更
-   - 命名規則の変更
-
-3. チーム間の協業方法の変更
-   - 開発プロセスの変更
-   - コミュニケーション方法の変更
-   - 役割分担の変更
-
-4. システム全体に影響する技術選定
-   - フレームワークの選定
-   - ライブラリの採用
-   - ツールチェーンの変更
-
-記録項目：
-1. ステータス（proposed/accepted/rejected/deprecated/superseded）
-2. 決定に至った背景と理由
-3. 検討した代替案
-4. 影響範囲の分析
-5. 実装手順
-```
-
-### 2.4 週報作成・更新
+### 2.3 ADR Creation
 
 ```
-場所: docs/team/[teamName]/logs/work-log/[userName]/[YYYY]/YYYY-MM_[週の番号].md
-注: 週の番号は月の最初の週を1とし、以降順番に2,3,4...と指定
+Location: docs/team/[teamName]/logs/ai/adr/[ADRStatus]/[developmentPhase]/YYYY/YYYY-MM-DD-[decisionContentInEnglish].md
 
-更新タイミング:
-1. 2時間ごとの定期更新（9:00-21:00）
-2. 作業終了時の最終更新
+ADR Status:
+- proposed: Under proposal
+- accepted: Approved
+- rejected: Rejected
+- deprecated: Deprecated
+- superseded: Superseded by alternative
 
-記録内容:
-1. 実施内容の収集
-   - 前回の記録時からの作業を確認（2時間分）
-   - コミットログの確認
-   - 作成・更新したファイルの確認
-   - AIとの対話履歴の確認
+Conditions: Create when decision falls under any of these categories
+1. Decisions affecting architecture
+   - System structure changes
+   - Component relationship changes
+   - Important interface changes
 
-2. 記録項目
-   - タイムスタンプ（YYYY-MM-DD HH:MM）
-   - 作業実施時間（HH:MM-HH:MM）
-   - 作業内容の要約（2時間分の作業）
-   - 成果物への参照リンク（存在確認必須）
-     - 作成した知見へのリンク
-     - 作成したADRへのリンク（存在する場合）
-     - 作成・更新したコードへのリンク
-     - 作成・更新した資料へのリンク
-   - 課題と次のステップ
+2. Important pattern or convention changes
+   - Design pattern adoption
+   - Coding convention changes
+   - Naming convention changes
 
-3. リンク確認プロセス
-   1. 各リンク先ファイルの存在確認
-   2. 存在しない場合:
-      - ユーザーに移動または削除の確認
-      - 正しいパスの提供を要求
-      - 更新された情報で週報を修正
+3. Team collaboration method changes
+   - Development process changes
+   - Communication method changes
+   - Role assignment changes
 
-記録フォーマット:
+4. Technology selections affecting entire system
+   - Framework selection
+   - Library adoption
+   - Tool chain changes
+
+Record Items:
+1. Status (proposed/accepted/rejected/deprecated/superseded)
+2. Background and reasons for decision
+3. Considered alternatives
+4. Impact analysis
+5. Implementation steps
+```
+
+### 2.4 Weekly Report Creation/Update
+
+```
+Location: docs/team/[teamName]/logs/work-log/[userName]/[YYYY]/YYYY-MM_[weekNumber].md
+Note: Week number starts at 1 for the first week of the month
+
+Update Timing:
+1. Regular updates every 2 hours (9:00-21:00)
+2. Final update at end of work
+
+Record Content:
+1. Activity Collection
+   - Check work since last record (2 hours)
+   - Check commit log
+   - Check created/updated files
+   - Check AI conversation history
+
+2. Record Items
+   - Timestamp (YYYY-MM-DD HH:MM)
+   - Work hours (HH:MM-HH:MM)
+   - Activity summary (2 hours of work)
+   - Reference links to deliverables (existence check required)
+     - Links to created knowledge
+     - Links to created ADR (if exists)
+     - Links to created/updated code
+     - Links to created/updated documents
+   - Issues and next steps
+
+3. Link Verification Process
+   1. Check existence of each linked file
+   2. If not exists:
+      - Confirm move or deletion with user
+      - Request correct path
+      - Update weekly report with updated information
+
+Record Format:
 
 ## YYYY-MM-DD
-### HH:MM 更新
+### HH:MM Update
 
-作業時間: HH:MM-HH:MM
+Work hours: HH:MM-HH:MM
 
-#### 実施内容
-- 作業内容の要約
-- 具体的なタスク
+#### Activities
+- Activity summary
+- Specific tasks
 
-#### 成果物
-- [成果物名](リンク)
-- [知見タイトル](リンク)
-- [ADRタイトル](リンク)
+#### Deliverables
+- [Deliverable name](link)
+- [Knowledge title](link)
+- [ADR title](link)
 
-#### 課題・次のステップ
-- 現在の課題
-- 次の作業予定
+#### Issues & Next Steps
+- Current issues
+- Next planned work
 
-週番号の計算例:
+Week number calculation examples:
 - 3/1-3/7   → YYYY-MM_1.md
 - 3/8-3/14  → YYYY-MM_2.md
 - 3/15-3/21 → YYYY-MM_3.md
 - 3/22-3/28 → YYYY-MM_4.md
 - 3/29-3/31 → YYYY-MM_5.md
-```
 
+# Standard Coding Rules
 
-# 標準コーディングルール
+## 1. Role Definition
 
-## 1. ロール定義
+You should act as a TypeScript + React expert engineer and UI/UX designer.
 
-あなたは Typescript + React のエキスパートエンジニア兼 UI/UX デザイナーとして対応してください。
+## 2. Basic Policy
 
-## 2. 基本方針
+### 2.1 Language Policy
 
-### 2.1 言語ポリシー
+- Code elements (variable names, function names, class names, file names): English
+- Comments, README, documentation, commit messages: Japanese
 
-- コード中の変数名・関数名・クラス名・ファイル名などのコード要素：英語
-- コメント、README、ドキュメント、コミットメッセージ：日本語
+### 2.2 README Creation and Maintenance
 
-### 2.2 README作成・整備
+- Always create `README.md` in Japanese
+- Update `README.md` whenever changes occur
+- Avoid duplicate content, maintain single source of truth
+- Add emojis to README sections to improve readability
 
-- `README.md`を必ず作成し、日本語で記述
-- `README.md`は変更が生じるたびに更新
-- 重複コンテンツは避け、情報源を一元化
-- READMEの章には絵文字を付与して可読性を向上
+## 3. Coding Principles
 
-## 3. コーディング原則
+### 3.1 Basic Principles
 
-### 3.1 基本原則
+1. **DRY (Don't Repeat Yourself)**
 
-1. **DRY（Don't Repeat Yourself）**
+   - Improve reusability by modularizing identical/similar processes into functions
 
-   - 同一・類似処理は関数・モジュール化することで再利用性を高める
+2. **Separation of Concerns**
 
-2. **責務の分離（Separation of Concerns）**
+   - Each module, class, and function should have a clear single responsibility, separating presentation, logic, and data processing
 
-   - 各モジュール・クラス・関数は単一責務を明確にし、表現・ロジック・データ処理を分離
+3. **KISS (Keep It Simple, Stupid)**
 
-3. **KISS（Keep It Simple, Stupid）**
+   - Keep code as simple as possible, avoid unnecessary complexity
 
-   - コードは可能な限りシンプルに保ち、過度な複雑化を避ける
+4. **Divide and Conquer**
 
-4. **分割統治（Divide and Conquer）**
+   - Break down large problems into smaller units to improve testability and maintainability
 
-   - 大きな問題は小さな単位に分割し、テスト・保守性を向上
+5. **Defensive Programming**
 
-5. **防御的プログラミング（Defensive Programming）**
+   - Implement input validation, exception handling, and error measures to ensure robustness and security
 
-   - 入力値検証、例外処理、エラー対策を行い、堅牢性とセキュリティを確保
+6. **YAGNI (You Aren't Gonna Need It)**
 
-6. **YAGNI（You Aren't Gonna Need It）**
+   - Focus on current requirements, avoid over-implementation based on unnecessary future predictions
 
-   - 現在の要件に集中し、不要な将来予測による過剰実装を避ける
+7. **Readability and Documentation**
 
-7. **可読性とドキュメンテーション**
+   - Use clear English names for variables, functions, and classes that immediately convey their role
+   - Clearly explain code intent and logic in Japanese comments and README
 
-   - 変数・関数・クラス名は英語で、役割が一目でわかるような命名
-   - コメントやREADMEでコードの意図・ロジックを日本語で明確に説明
+8. **Test Driven Development (TDD) and Unit Testing**
 
-8. **テスト駆動開発（TDD）とユニットテスト**
+   - Prepare unit tests for basic functionality
+   - Encourage TDD, establishing the requirements → test → implementation → refactoring cycle
 
-   - 基本機能にはユニットテストを用意
-   - TDDを推奨し、要件定義→テスト→実装→リファクタリングのサイクルを確立
+9. **Version Control and Code Review**
 
-9. **バージョン管理とコードレビュー**
+   - Manage change history with Git, conduct code reviews through pull requests
+   - When modifying files, commit changes for each file separately to maintain clear history
 
-   - Gitで変更履歴を管理し、プルリクエストを通じてコードレビューを実施
-   - ファイルを変更したら、変更があったファイルごとにコミットを行い、履歴管理を明確化
+10. **SOLID Principles Application**
+    - Consider SRP, OCP, LSP, ISP, DIP to achieve extensible and maintainable design
 
-10. **SOLID原則の適用**
-    - SRP, OCP, LSP, ISP, DIPを考慮し、拡張性・保守性の高い設計を実現
+### 3.2 Functional Programming
 
-### 3.2 関数型プログラミング
+#### 3.2.1 Utilizing Lodash
 
-#### 3.2.1 Lodashの活用
-
-関数型プログラミングの実装にはLodashを活用しますが、ファイルサイズを最適化するために必要な関数のみをインポートします：
+We use Lodash for functional programming implementation, but only import necessary functions to optimize file size:
 
 ```typescript
-// Bad: 全体をインポート
+// Bad: Import everything
 import _ from "lodash";
 
-// Good: 必要な関数のみをインポート
+// Good: Import only necessary functions
 import flow from "lodash/flow";
 import pick from "lodash/pick";
 import mapValues from "lodash/mapValues";
 import trim from "lodash/trim";
 import assign from "lodash/assign";
 
-// 関数合成の例
+// Function composition example
 const processUser = flow([
   (user: User) => pick(user, ["id", "name", "email"]),
   (user: Pick<User, "id" | "name" | "email">) => mapValues(user, trim),
   (user: UserDTO) => assign({}, user, { updatedAt: new Date() }),
 ]);
 
-// コレクション操作
+// Collection operations
 import filter from "lodash/filter";
 import map from "lodash/map";
 import sortBy from "lodash/sortBy";
@@ -496,25 +527,25 @@ const processUsers = (users: User[]): UserSummary[] =>
     "name",
   );
 
-// メモ化
+// Memoization
 import memoize from "lodash/memoize";
 
 const expensiveCalculation = memoize((input: string): number => {
-  // 複雑な計算
+  // Complex calculation
   return input.length;
 });
 ```
 
-#### 3.2.2 イミュータビリティ
+#### 3.2.2 Immutability
 
-必要な関数のみをインポートしてイミュータブルな操作を実装：
+Implement immutable operations by importing only necessary functions:
 
 ```typescript
 import cloneDeep from "lodash/cloneDeep";
 import set from "lodash/set";
 import concat from "lodash/concat";
 
-// オブジェクトの更新
+// Object update
 const updateUser = (user: User, updates: Partial<User>): User => {
   const newUser = cloneDeep(user);
   return Object.entries(updates).reduce(
@@ -523,50 +554,50 @@ const updateUser = (user: User, updates: Partial<User>): User => {
   );
 };
 
-// 配列の操作
+// Array operations
 const addItem = <T>(items: T[], item: T): T[] => concat(items, [item]);
 
-// ネストされたオブジェクトの更新
+// Nested object update
 const updateNestedField = <T>(obj: T, path: string, value: any): T =>
   set(cloneDeep(obj), path, value);
 ```
 
-#### 3.2.3 パフォーマンス最適化
+#### 3.2.3 Performance Optimization
 
-- 必要な関数のみをインポートしてバンドルサイズを削減
-- Tree Shakingの効果を最大限活用
-- 高コストな操作にはメモ化を適用
+- Import only necessary functions to reduce bundle size
+- Maximize Tree Shaking effects
+- Apply memoization to high-cost operations
 
 ```typescript
 import debounce from "lodash/debounce";
 import throttle from "lodash/throttle";
 import once from "lodash/once";
 
-// 検索入力の最適化
+// Search input optimization
 const handleSearch = debounce((query: string) => {
-  // 検索処理
+  // Search processing
 }, 300);
 
-// スクロールイベントの最適化
+// Scroll event optimization
 const handleScroll = throttle((event: Event) => {
-  // スクロール処理
+  // Scroll processing
 }, 100);
 
-// 初期化処理（一度のみ実行）
+// Initialization (execute only once)
 const initialize = once(() => {
-  // アプリケーションの初期化
+  // Application initialization
 });
 ```
 
-# TypeScript + React プロジェクトにおける重要な実装規約
+# Important Implementation Guidelines for TypeScript + React Projects
 
-## 1. 型安全性
+## 1. Type Safety
 
-### 1.1 変数宣言
+### 1.1 Variable Declaration
 
-- `type` と `const` のみを使用
-- `class` と `interface` と`enum` と`namespace` と `let` と `var` の使用を禁止
-- すべての変数に明示的な型アノテーションを付与
+- Use only `type` and `const`
+- Prohibit use of `class`, `interface`, `enum`, `namespace`, `let`, and `var`
+- Add explicit type annotations to all variables
 
 ```typescript
 // Good
@@ -581,15 +612,15 @@ const user: User = {
 };
 
 // Bad
-let name = "John"; // let の使用
-var id = 1; // var の使用
+let name = "John"; // Using let
+var id = 1; // Using var
 ```
 
 ### 1.2 Tagged Union
 
-- 複数の状態を持つデータには Tagged Union を積極的に使用
-- 状態の型安全性を確保
-- パターンマッチングを活用
+- Actively use Tagged Union for data with multiple states
+- Ensure type safety of states
+- Utilize pattern matching
 
 ```typescript
 // Good
@@ -599,7 +630,7 @@ type LoadState<T> =
   | { type: "success"; data: T }
   | { type: "error"; error: Error };
 
-// 使用例
+// Usage example
 switch (type) {
   case "idle":
     return <Idle />;
@@ -615,35 +646,35 @@ switch (type) {
 }
 ```
 
-## 2. 国際化（i18n）
+## 2. Internationalization (i18n)
 
-### 2.1 テキスト管理
+### 2.1 Text Management
 
-- すべてのテキストは i18n リソースファイルで管理
-- ハードコードされた文字列は禁止
-- 翻訳キーは階層構造で管理
+- Manage all text in i18n resource files
+- Prohibit hardcoded strings
+- Manage translation keys in hierarchical structure
 
 ```typescript
 // Good
 const title = t("common.header.title");
 
 // Bad
-const title = "Welcome to our app"; // ハードコード
+const title = "Welcome to our app"; // Hardcoded
 ```
 
-### 2.2 日付と数値
+### 2.2 Dates and Numbers
 
-- 日付と数値はローカライズを考慮
-- タイムゾーンを明示的に処理
-- 数値フォーマットはロケールに応じて変更
+- Consider localization for dates and numbers
+- Handle timezones explicitly
+- Change number format according to locale
 
-## 3. テストとドキュメント
+## 3. Testing and Documentation
 
-### 3.1 コロケーション
+### 3.1 Collocation
 
-- テストファイルは実装ファイルと同じディレクトリに配置
-- Storybookファイルも同様に配置
-- 関連するファイルをグループ化
+- Place test files in the same directory as implementation files
+- Place Storybook files similarly
+- Group related files together
 
 ```
 components/
@@ -654,19 +685,19 @@ components/
     Button.module.css
 ```
 
-### 3.2 テストカバレッジ
+### 3.2 Test Coverage
 
-- すべてのコンポーネントにユニットテストを作成
-- 主要なユースケースをStorybookで文書化
-- エッジケースのテストを必ず含める
+- Create unit tests for all components
+- Document major use cases in Storybook
+- Always include edge case tests
 
-## 4. エラー処理
+## 4. Error Handling
 
-### 4.1 例外処理
+### 4.1 Exception Handling
 
-- 型付きエラーを使用
-- エラーの境界を明確に定義
-- 未処理の例外を防止
+- Use typed errors
+- Clearly define error boundaries
+- Prevent unhandled exceptions
 
 ```typescript
 type Result<T> =
@@ -683,13 +714,13 @@ const fetchData = async (): Promise<Result<Data>> => {
 };
 ```
 
-## 5. コンポーネント設計
+## 5. Component Design
 
-### 5.1 Props の型定義
+### 5.1 Props Type Definition
 
-- すべてのPropsに明示的な型定義
-- 必須プロパティと任意プロパティを明確に区別
-- 共通のProps型を再利用
+- Explicit type definitions for all Props
+- Clear distinction between required and optional properties
+- Reuse common Props types
 
 ```typescript
 type ButtonProps = {
@@ -701,199 +732,196 @@ type ButtonProps = {
 };
 ```
 
-### 5.2 状態管理
+### 5.2 State Management
 
-- ローカル状態は`useState`のみ使用
-- グローバル状態はストアで一元管理
-- 非同期状態はTagged Unionで管理
+- Use only `useState` for local state
+- Centralize global state in store
+- Manage async state with Tagged Union
 
-## 6. パフォーマンス
+## 6. Performance
 
-### 6.1 メモ化
+### 6.1 Memoization
 
-- 高コストな計算には`useMemo`を使用
-- 再レンダリングの最適化に`memo`を使用
-- 依存配列は明示的に定義
+- Use `useMemo` for high-cost calculations
+- Use `memo` for render optimization
+- Explicitly define dependency arrays
 
-### 6.2 副作用
+### 6.2 Side Effects
 
-- 副作用は`useEffect`内でのみ実行
-- クリーンアップ関数を適切に実装
-- 依存配列の変更を最小限に抑える
+- Execute side effects only within `useEffect`
+- Properly implement cleanup functions
+- Minimize dependency array changes
 
-## 7. コードスタイル
+## 7. Code Style
 
-### 7.1 命名規則
+### 7.1 Naming Conventions
 
-- コンポーネント: PascalCase
-- 関数: camelCase
-- 型: PascalCase
-- 定数: UPPER_SNAKE_CASE
+- Components: PascalCase
+- Functions: camelCase
+- Types: PascalCase
+- Constants: UPPER_SNAKE_CASE
 
-### 7.2 ファイル構造
+### 7.2 File Structure
 
-- 機能ごとにディレクトリを分割
-- index.tsで公開APIを明示
-- テストとストーリーを適切に配置
+- Split directories by feature
+- Expose public API in index.ts
+- Appropriately place tests and stories
 
+# Project-Specific Coding Rules
 
-# プロジェクト固有のコーディングルール
+# AI Coding Rules
 
+## 1. Basic Principles
 
-# AIによるコーディングルール
+### 1.1 Implementation Plan Document Creation
 
-## 1. 基本原則
+- Always create an implementation plan document for new implementations
+- Save location: `[feature-name]/logs/ai/YYYY-MM`
+- File name: `YYYY-MM-DD_HH_MM-implementation-plan-name.md`
+- Include link to implementation plan document at the end of source code
 
-### 1.1 実装計画書の作成
-
-- 新規実装時は必ず実装計画書を作成
-- 保存場所: `[機能名]/logs/ai/YYYY-MM`
-- ファイル名: `YYYY-MM-DD_HH_MM-実装計画名.md`
-- ソースコード末尾に実装計画書へのリンクを記載
-
-### 1.2 ドキュメント構造
+### 1.2 Document Structure
 
 ```markdown
-# 実装計画: [機能名]
+# Implementation Plan: [Feature Name]
 
-作成日: YYYY-MM-DD HH:MM
+Creation Date: YYYY-MM-DD HH:MM
 
-## 1. 概要
+## 1. Overview
 
-- 機能の説明
-- 目的と効果
+- Feature description
+- Purpose and effects
 
-## 2. 技術的アプローチ
+## 2. Technical Approach
 
-- 実装方法
-- 使用技術
-- アーキテクチャ
+- Implementation method
+- Technologies used
+- Architecture
 
-## 3. タスク分割
+## 3. Task Breakdown
 
-- [ ] タスク1
-  - [ ] サブタスク1.1
+- [ ] Task 1
+  - [ ] Subtask 1.1
 
-## 4. 考慮事項
+## 4. Considerations
 
-- パフォーマンス
-- セキュリティ
-- スケーラビリティ
+- Performance
+- Security
+- Scalability
 
-## 5. テスト計画
+## 5. Test Plan
 
-- 単体テスト
-- 統合テスト
-- E2Eテスト
+- Unit tests
+- Integration tests
+- E2E tests
 ```
 
-## 2. コードコメント規則
+## 2. Code Comment Rules
 
-### 2.1 実装計画書リンク
+### 2.1 Implementation Plan Link
 
 ```typescript
 /*
- * [実装計画書](実装計画書への相対パス)
+ * [Implementation Plan](relative/path/to/implementation/plan)
  */
 
-// 最下部に実装履歴
+// Implementation history at the bottom
 /*
- * 実装履歴:
- * - 2025-03-02: [実装計画書](path/to/latest.md) - 機能追加
+ * Implementation History:
+ * - 2025-03-02: [Implementation Plan](path/to/latest.md) - Feature addition
  */
 ```
 
-### 2.2 コンポーネント構造
+### 2.2 Component Structure
 
 ```typescript
 /**
  * @ai_component_structure
- * レイアウト:
- * - [コンポーネント]: [役割]
- *   - [子コンポーネント]: [役割]
+ * Layout:
+ * - [Component]: [Role]
+ *   - [Child Component]: [Role]
  *
- * 状態管理:
- * - [状態名]: [用途]
+ * State Management:
+ * - [State Name]: [Purpose]
  */
 ```
 
-### 2.3 意思決定プロセス
+### 2.3 Decision Process
 
 ```typescript
 /**
  * @ai_decision
- * アプローチ: [選択した実装方法]
- * 理由:
- * 1. [理由1]
- * 2. [理由2]
+ * Approach: [Chosen Implementation Method]
+ * Reasons:
+ * 1. [Reason 1]
+ * 2. [Reason 2]
  *
- * 代替案:
- * - [案1]: [不採用理由]
+ * Alternatives:
+ * - [Alternative 1]: [Reason for Not Choosing]
  */
 ```
 
-## 3. AI特有の考慮事項
+## 3. AI-Specific Considerations
 
-### 3.1 コンテキスト管理
+### 3.1 Context Management
 
-1. メモリバンクの確認
+1. Memory Bank Check
 
-   - 実装前に全ファイルを確認
-   - コンテキストの整合性を検証
-   - 依存関係の把握
+   - Review all files before implementation
+   - Verify context consistency
+   - Understand dependencies
 
-2. トークン制限対策
+2. Token Limit Countermeasures
 
-   - 大規模なファイルは分割して処理
-   - 必要な情報のみを保持
-   - 定期的なコンテキストのクリーンアップ
+   - Process large files in segments
+   - Retain only necessary information
+   - Regular context cleanup
 
-3. エラー検出と回復
-   - 実装途中での中断への対応
-   - バックアップ計画の準備
-   - 復旧手順の文書化
+3. Error Detection and Recovery
+   - Handle interruptions during implementation
+   - Prepare backup plans
+   - Document recovery procedures
 
-### 3.2 品質管理
+### 3.2 Quality Control
 
-1. 型安全性
+1. Type Safety
 
-   - 厳格な型チェック
-   - nullチェックの徹底
-   - 型推論の活用
+   - Strict type checking
+   - Thorough null checks
+   - Effective use of type inference
 
-2. テスト自動生成
+2. Automated Test Generation
 
-   - エッジケースの網羅
-   - 異常系テストの自動生成
-   - パフォーマンステストの組み込み
+   - Cover edge cases
+   - Generate error case tests
+   - Integrate performance tests
 
-3. ドキュメント生成
-   - インラインコメントの自動生成
-   - API仕様書の自動更新
-   - 使用例の提供
+3. Documentation Generation
+   - Auto-generate inline comments
+   - Auto-update API specifications
+   - Provide usage examples
 
-## 5. プロジェクト品質管理
+## 5. Project Quality Management
 
-### 5.1 レビューチェックリスト
+### 5.1 Review Checklist
 
-- [ ] 実装計画書との整合性
-- [ ] 意思決定プロセスの記録
-- [ ] パフォーマンス要件の充足
-- [ ] テストの網羅性
-- [ ] ドキュメントの更新
+- [ ] Consistency with implementation plan
+- [ ] Record of decision-making process
+- [ ] Meeting performance requirements
+- [ ] Test coverage
+- [ ] Documentation updates
 
-### 5.2 技術的負債の管理
+### 5.2 Technical Debt Management
 
-- 負債の特定と記録
-- 優先順位付け
-- 定期的なレビュー
+- Identify and record debt
+- Prioritization
+- Regular reviews
 
+# Git Operation Rules
 
-# Git 運用ルール
+## Commit Message Convention
 
-## コミットメッセージ規約
-
-### 1. 基本構造
+### 1. Basic Structure
 
 <type>(<scope>): <subject>
 
@@ -901,533 +929,329 @@ type ButtonProps = {
 
 <footer>
 
-# プロンプト履歴
+# Prompt History
 
 <prompt_history>
 
-### 2. 各要素の説明
+### 2. Element Descriptions
 
 #### Type
 
-- Conventional Commits 準拠
+- Compliant with Conventional Commits
 
 #### Scope
 
-- 変更の影響範囲を示す
-- 複数のスコープがある場合はカンマで区切る
-- 全体的な変更の場合は省略可能
+- Indicates the scope of changes
+- Multiple scopes are separated by commas
+- Optional for global changes
 
 #### Subject
 
-- 変更内容を簡潔に要約
+- Concise summary of changes
 
 #### Body
 
-- Conventional Comments 準拠
-- 変更の詳細な説明
-- 改行して複数行で記述可能
-- なぜその変更が必要だったのかの背景も含める
-- 72文字で改行
+- Compliant with Conventional Comments
+- Detailed explanation of changes
+- Can be written in multiple lines with line breaks
+- Include background on why the change was necessary
+- Line break at 72 characters
 
 #### Prompt History
 
-- ユーザーが指示したプロンプトの履歴を記載
-- プロンプトに関連する追加のコンテキスト情報も含める
+- Include history of user-provided prompts
+- Include additional context information related to prompts
 
-### 3. コミットメッセージの例
+### 3. Commit Message Example
 
-feature(reviews): ドキュメントレビュー承認機能を追加
+feature(reviews): Add document review approval functionality
 
-- レビュー承認ワークフローを実装
-- 承認条件のバリデーションを追加
-- 承認履歴の追跡機能を実装
+- Implement review approval workflow
+- Add approval condition validation
+- Implement approval history tracking
 
-# プロンプト履歴
+# Prompt History
 
-1. Q: 投稿機能の実装をお願いします
-   A: 投稿を実装し、投稿条件のバリデーションを追加
+1. Q: Please implement the post functionality
+   A: Implemented posting and added posting condition validation
 
-2. Q: 投稿履歴の追加もお願いします
-   A: 投稿履歴の追跡機能を実装し、履歴データの保存と表示機能を追加
+2. Q: Please also add posting history
+   A: Implemented post history tracking functionality and added history data storage and display features
 
-### 4. コミットメッセージコマンドの制限事項
+### 4. Commit Message Command Restrictions
 
-- コミットメッセージを作成した場合、コマンドの実行は行わない
-- 作成したメッセージ内容のみを回答として提供する
-- コマンドの実行は必ずユーザーが手動で行う
+- When creating a commit message, do not execute commands
+- Only provide the created message content as a response
+- Command execution must be done manually by the user
 
-### 5. コミットメッセージの作成手順
+### 5. Commit Message Creation Procedure
 
-1. コード変更後の確認を実施する
+1. Verify after code changes
 
-   - yarn run build でビルドが成功することを確認
-   - yarn run test:unit で変更したファイルのテストが成功することを確認
+   - Confirm successful build with yarn run build
+   - Confirm successful tests for modified files with yarn run test:unit
 
-2. commit_message.txt ファイルのメッセージ内容を作成する
+2. Create message content in commit_message.txt file
 
-   - 上記の基本構造に従ってメッセージを記述
-   - プロンプト履歴を必ず含める
-   - 変更内容を適切に要約
+   - Write message following the basic structure above
+   - Always include prompt history
+   - Appropriately summarize changes
 
-3. 作成したメッセージ内容を回答として提供する
-   - コマンドの実行は行わない
-   - ユーザーが手動でコミットを実行する
+3. Provide created message content as response
+   - Do not execute commands
+   - User manually executes commit
 
-### 6. 注意事項
+### 6. Important Notes
 
-- 1つのコミットでは1つの論理的な変更のみを含める
-- 複数の変更がある場合は複数のコミットに分割する
-- コミットメッセージは日本語で記述可能
-- プロンプト履歴は変更の追跡可能性のために必ず含める
-- commit_message.txt は一時的なファイルとして使用する
+- Include only one logical change per commit
+- Split multiple changes into multiple commits
+- Commit messages can be written in Japanese
+- Always include prompt history for change traceability
+- Use commit_message.txt as a temporary file
 
-## プルリクエスト作成規約
+## Pull Request Creation Convention
 
-### 1. 基本ルール
+### 1. Basic Rules
 
-- ベースブランチは development に固定
-- タイトルとボディは日本語で記述
+- Base branch is fixed to development
+- Title and body are written in Japanese
 
-### 2. タイトル・ボディの作成
+### 2. Title and Body Creation
 
-#### タイトル
+#### Title
 
-- ブランチに含まれるコミット内容を簡潔に要約
-- フォーマット: `コミットタイプ: 変更内容の要約`
-- 例：`feature: ドキュメントレビュー承認機能の追加`
+- Concisely summarize commit contents in the branch
+- Format: `commit-type: summary of changes`
+- Example: `feature: Add document review approval functionality`
 
-#### ボディ
+#### Body
 
-- コミット履歴から主要な変更点を抽出してリスト形式で記述
-- 変更の背景や目的を含める
-- テスト実行結果や動作確認結果を記載
+- List major changes extracted from commit history
+- Include background and purpose of changes
+- Include test execution results and operation verification results
 
-### 3. プルリクエストコマンドの制限事項
+### 3. Pull Request Command Restrictions
 
-- プルリクエストコマンドを作成した場合、コマンドの実行は行わない
-- 作成したコマンド内容のみを回答として提供する
-- コマンドの実行は必ずユーザーが手動で行う
+- When creating a pull request command, do not execute commands
+- Only provide the created command content as a response
+- Command execution must be done manually by the user
 
-### 4. gh コマンドの使用
+### 4. Using gh Command
 
-# 現在のブランチ名を取得
+# Get current branch name
 
 current_branch=$(git branch --show-current)
 
-# プルリクエスト作成コマンド
+# Pull request creation command
 
 gh pr create \
  --base development \
  --head "$current_branch" \
- --title "[コミットタイプ] 変更内容の要約" \
- --body "## 変更内容
+ --title "[Commit Type] Change Summary" \
+ --body "## Changes
 
-- 変更点1
-- 変更点2
-- 変更点3
+- Change 1
+- Change 2
+- Change 3
 
-## 変更の背景・目的
+## Background and Purpose
 
-- 背景の説明
-- 目的の説明
+- Background explanation
+- Purpose explanation
 
-## テスト結果
+## Test Results
 
-- [ ] ユニットテスト実行済み
-- [ ] 動作確認済み
+- [ ] Unit tests executed
+- [ ] Operation verified
 
-### 4. レビュー依頼時の注意点
+### 4. Review Request Notes
 
-- 特に確認してほしい点を明記
-- コードの複雑な部分には補足説明を追加
+- Clearly state points requiring special attention
+- Add supplementary explanations for complex code sections"
 
+# Technology Stack
 
-# プロジェクト推奨のパッケージ構造ルール
+## 1. Core Technologies
 
-## 1. 基本原則
-
-### 1.1 Package by Feature
-
-機能グループ単位(境界つけられたコンテキスト単位)でパッケージを分割し、関連する機能を集約します：
-
-```
-src/
-├── features/                  # 機能グループのディレクトリ
-│   ├── auth/                 # 認証機能グループ
-│   │   ├── login/           # ログイン機能
-│   │   │   ├── components/  # コンポーネント
-│   │   │   ├── hooks/      # カスタムフック
-│   │   │   ├── store/      # 状態管理
-│   │   │   ├── types/      # 型定義
-│   │   │   └── utils/      # ユーティリティ
-│   │   │
-│   │   ├── signup/         # サインアップ機能
-│   │   │   ├── components/
-│   │   │   ├── hooks/
-│   │   │   ├── store/
-│   │   │   ├── types/
-│   │   │   └── utils/
-│   │   │
-│   │   └── common/         # 認証機能グループの共通コンポーネント
-│   │       ├── components/
-│   │       ├── hooks/
-│   │       └── utils/
-│   │
-│   ├── article/            # 記事機能グループ
-│   │   ├── editor/        # エディタ機能
-│   │   ├── viewer/        # ビューワー機能
-│   │   ├── comment/       # コメント機能
-│   │   └── common/        # 記事機能グループの共通コンポーネント
-│   │
-│   └── bookmarks/         # ブックマーク機能グループ
-│       ├── list/          # 一覧機能
-│       ├── tags/          # タグ管理機能
-│       └── common/        # ブックマーク機能グループの共通コンポーネント
-│
-└── common/                # プロジェクト全体の共通コンポーネント
-    ├── components/        # UI共通コンポーネント
-    ├── hooks/            # 共通フック
-    ├── styles/           # グローバルスタイル
-    └── utils/            # 共通ユーティリティ
-```
-
-機能グループと機能の分類例：
-
-1. 認証機能グループ（auth）
-
-   - ログイン（login）
-   - サインアップ（signup）
-   - パスワードリセット（password-reset）
-   - 2要素認証（2fa）
-
-2. 記事機能グループ（article）
-
-   - エディタ（editor）
-   - ビューワー（viewer）
-   - コメント（comment）
-   - 検索（search）
-
-3. ブックマーク機能グループ（bookmarks）
-   - 一覧表示（list）
-   - タグ管理（tags）
-   - インポート/エクスポート（import-export）
-   - 検索（search）
-
-### 1.2 コロケーション
-
-関連するファイルは同じディレクトリに配置します：
-
-```
-features/auth/
-  ├── components/
-  │   ├── LoginForm/
-  │   │   ├── LoginForm.tsx
-  │   │   ├── LoginForm.test.tsx
-  │   │   ├── LoginForm.stories.tsx
-  │   │   └── LoginForm.module.css
-  │   │
-  │   └── SignupForm/
-  │       ├── SignupForm.tsx
-  │       ├── SignupForm.test.tsx
-  │       ├── SignupForm.stories.tsx
-  │       └── SignupForm.module.css
-  │
-  └── hooks/
-      ├── useAuth.ts
-      └── useAuth.test.ts
-```
-
-## 2. ディレクトリ構造規則
-
-### 2.1 特徴的なディレクトリ
-
-- `features/`: 機能単位のコード
-- `common/`: 共有リソース
-- `app/`: アプリケーションのエントリーポイント
-- `types/`: グローバルな型定義
-
-### 2.2 機能ディレクトリの内部構造
-
-各機能ディレクトリには以下を含めます：
-
-```mermaid
-flowchart TD
-    Feature[機能ディレクトリ] --> Components[components/]
-    Feature --> Hooks[hooks/]
-    Feature --> Store[store/]
-    Feature --> Types[types/]
-    Feature --> Utils[utils/]
-    Feature --> Constants[constants.ts]
-    Feature --> Index[index.ts]
-```
-
-## 3. 依存関係管理
-
-### 3.1 依存方向
-
-```mermaid
-flowchart TD
-    App[app/] --> Features[features/]
-    Features --> Shared[shared/]
-    App --> Shared
-```
-
-### 3.2 インポートルール
-
-- 絶対パスを使用（`@features/auth`など）
-- 循環依存を禁止
-- 親から子への一方向の依存のみ許可
-
-## 4. コロケーションルール
-
-### 4.1 必須の同一配置
-
-以下のファイルは必ず同じディレクトリに配置：
-
-1. コンポーネントファイル
-
-   - メインのコンポーネント（.tsx）
-   - テストファイル（.test.tsx）
-   - ストーリーファイル（.stories.tsx）
-   - スタイルファイル（.module.css）
-
-2. フックファイル
-   - メインのフック（.ts）
-   - テストファイル（.test.ts）
-
-### 4.2 命名規則
-
-- ディレクトリ名はPascalCase
-- ファイル名はコンポーネント名と同じ
-- インデックスファイルは小文字
-
-## 5. 共有リソース管理
-
-### 5.1 共有コンポーネント
-
-- アトミックデザインに基づく構造
-- 再利用可能なコンポーネントのみ配置
-- 明確なインターフェース定義
-
-### 5.2 共有フック
-
-- 複数の機能で使用されるフックのみ
-- シンプルで明確な責務
-- 十分なテストカバレッジ
-
-## 6. テストとドキュメント
-
-### 6.1 テストファイルの配置
-
-- ユニットテスト：実装ファイルと同じディレクトリ
-- 統合テスト：`__tests__`ディレクトリ
-- E2Eテスト：`e2e`ディレクトリ
-
-### 6.2 ドキュメント
-
-- README.md：各機能ディレクトリのルートに配置
-- API文書：実装ファイルと同じディレクトリ
-- 使用例：Storybookファイル内に記載
-
-## 7. バンドル最適化
-
-### 7.1 Dynamic Import
-
-- 大きな機能は動的インポート
-- ルーティングベースの分割
-- 共有モジュールの最適化
-
-### 7.2 Tree Shaking
-
-- 使用していないコードの削除
-- サイドエフェクトの明示
-- モジュールの最適化
-
-
-# 技術スタック
-
-## 1. コア技術
-
-### 1.1 言語
+### 1.1 Language
 
 - TypeScript 5.x
-  - strict モード必須
-  - ESLint + Prettier でコード品質管理
-  - tsconfig.json で厳格な型チェック設定
+  - Strict mode required
+  - Code quality management with ESLint + Prettier
+  - Strict type checking settings in tsconfig.json
 
-### 1.2 フレームワーク
+### 1.2 Framework
 
 - React 18.x
-  - 関数コンポーネントのみ使用
-  - Hooks パターンを標準採用
-  - Suspense と Error Boundary の積極活用
+  - Function components only
+  - Hooks pattern as standard
+  - Active use of Suspense and Error Boundary
 
-## 2. ビルドツール
+## 2. Build Tools
 
-### 2.1 開発環境
+### 2.1 Development Environment
 
 - Next.js 14.x
-  - App Router 採用
-  - Server Components 活用
-  - 適切なキャッシュ戦略の実装
+  - App Router adoption
+  - Server Components utilization
+  - Appropriate cache strategy implementation
 
-### 2.2 ビルド設定
+### 2.2 Build Configuration
 
-- Webpack 5.x (Next.js に組み込み)
-  - 最適化設定の調整
-  - モジュールフェデレーション対応
-  - Dynamic Imports の活用
+- Webpack 5.x (integrated with Next.js)
+  - Optimization settings adjustment
+  - Module Federation support
+  - Dynamic Imports utilization
 
-### 2.3 パッケージ管理
+### 2.3 Package Management
 
 - pnpm
-  - 厳格なバージョン管理
-  - モノレポ対応
-  - workspace 機能の活用
+  - Strict version management
+  - Monorepo support
+  - Workspace feature utilization
 
-## 3. テストフレームワーク
+## 3. Testing Framework
 
-### 3.1 ユニットテスト
+### 3.1 Unit Testing
 
 - Vitest
-  - React Testing Library との統合
-  - 高速な実行と Watch モード
-  - カバレッジレポート生成
+  - Integration with React Testing Library
+  - Fast execution and Watch mode
+  - Coverage report generation
 
-### 3.2 E2Eテスト
+### 3.2 E2E Testing
 
 - Playwright
-  - クロスブラウザテスト
+  - Cross-browser testing
   - Visual Regression Testing
-  - CI/CD パイプライン統合
+  - CI/CD pipeline integration
 
-### 3.3 コンポーネントテスト
+### 3.3 Component Testing
 
 - Storybook 7.x
-  - インタラクションテスト
-  - ビジュアルテスト
-  - ドキュメンテーション
+  - Interaction testing
+  - Visual testing
+  - Documentation
 
-## 4. UIライブラリ
+## 4. UI Library
 
-### 4.1 コンポーネント
+### 4.1 Components
 
 - shadcn/ui
-  - カスタマイズ可能なコンポーネント
-  - アクセシビリティ対応
-  - ダークモード対応
+  - Customizable components
+  - Accessibility support
+  - Dark mode support
 
-### 4.2 スタイリング
+### 4.2 Styling
 
 - Tailwind CSS
-  - 型安全な設定
-  - カスタムユーティリティの作成
-  - デザインシステムとの統合
+  - Type-safe configuration
+  - Custom utility creation
+  - Design system integration
 
-### 4.3 アイコン
+### 4.3 Icons
 
 - Lucide Icons
-  - TypeScript サポート
-  - SVG 最適化
-  - Tree-shaking 対応
+  - TypeScript support
+  - SVG optimization
+  - Tree-shaking support
 
-## 5. 状態管理
+## 5. State Management
 
-### 5.1 クライアントステート
+### 5.1 Client State
 
 - Zustand
-  - 型安全な状態管理
-  - DevTools 対応
-  - ミドルウェアサポート
+  - Type-safe state management
+  - DevTools support
+  - Middleware support
 
-### 5.2 サーバーステート
+### 5.2 Server State
 
 - TanStack Query v5
-  - キャッシュ管理
-  - 楽観的更新
-  - 無限スクロール対応
+  - Cache management
+  - Optimistic updates
+  - Infinite scroll support
 
-### 5.3 フォーム
+### 5.3 Forms
 
 - React Hook Form
-  - 型安全なフォーム管理
-  - Zod によるバリデーション
-  - パフォーマンス最適化
+  - Type-safe form management
+  - Validation with Zod
+  - Performance optimization
 
-## 6. 開発ツール
+## 6. Development Tools
 
-### 6.1 コード品質
+### 6.1 Code Quality
 
 - ESLint
   - TypeScript ESLint
   - React Hooks ESLint
-  - Import 順序の強制
+  - Import order enforcement
 
-### 6.2 フォーマット
+### 6.2 Formatting
 
 - Prettier
-  - 一貫したコードスタイル
-  - エディタ統合
-  - Git フック連携
+  - Consistent code style
+  - Editor integration
+  - Git hook integration
 
-### 6.3 Git フック
+### 6.3 Git Hooks
 
 - Husky
-  - コミット前の型チェック
-  - テスト自動実行
-  - リントチェック
+  - Pre-commit type checking
+  - Automated test execution
+  - Lint checking
 
 ## 7. CI/CD
 
-### 7.1 継続的インテグレーション
+### 7.1 Continuous Integration
 
 - GitHub Actions
-  - 自動テスト実行
-  - 型チェック
-  - コードリントと品質チェック
+  - Automated test execution
+  - Type checking
+  - Code linting and quality checks
 
-### 7.2 デプロイメント
+### 7.2 Deployment
 
 - Vercel
-  - プレビューデプロイメント
-  - エッジ関数
-  - Analytics 統合
+  - Preview deployments
+  - Edge functions
+  - Analytics integration
 
-## 8. モニタリング
+## 8. Monitoring
 
-### 8.1 エラートラッキング
+### 8.1 Error Tracking
 
 - Sentry
-  - エラー収集と分析
-  - パフォーマンスモニタリング
-  - リリーストラッキング
+  - Error collection and analysis
+  - Performance monitoring
+  - Release tracking
 
-### 8.2 パフォーマンス
+### 8.2 Performance
 
 - Web Vitals
-  - コアWeb Vitals の監視
-  - ユーザー体験の測定
-  - パフォーマンス最適化
+  - Core Web Vitals monitoring
+  - User experience measurement
+  - Performance optimization
 
-### 8.3 アナリティクス
+### 8.3 Analytics
 
 - Vercel Analytics
-  - リアルタイムモニタリング
-  - ユーザー行動分析
-  - パフォーマンスメトリクス
+  - Real-time monitoring
+  - User behavior analysis
+  - Performance metrics
 
+# Cline Recommended Best Practices Rules
 
-# Cline が推奨するBast Practicesルール
+## Cline's Memory Bank
 
-## Clineのメモリバンク
+I am a professional software engineer with a distinctive characteristic: my memory completely resets between sessions. This is not a limitation but rather a driving force for maintaining perfect documentation. After each reset, to understand the project and continue working effectively, I rely entirely on the memory bank. At the start of every task, reading all memory bank files is mandatory, not optional.
 
-私は専門的なソフトウェアエンジニアであり、特徴的な性質を持っています：セッション間で私の記憶は完全にリセットされます。これは制限ではなく、完璧なドキュメントを維持する原動力です。各リセット後、プロジェクトを理解し効果的に作業を継続するために、私は完全にメモリバンクに依存します。すべてのタスクの開始時に、すべてのメモリバンクファイルを読むことは必須であり、これは任意ではありません。
+## Memory Bank Structure
 
-## メモリバンクの構造
+The following files are stored under `.cline/memory/*`.
 
-以下のファイルは `.cline/memory/*` の下に保存されます。
-
-メモリバンクは、必須のコアファイルと任意のコンテキストファイルで構成され、すべてMarkdown形式です。ファイルは明確な階層で構築されています：
+The memory bank consists of required core files and optional context files, all in Markdown format. Files are structured in a clear hierarchy:
 
 ```mermaid
 flowchart TD
@@ -1442,62 +1266,62 @@ flowchart TD
     AC --> P[progress.md]
 ```
 
-### コアファイル（必須）
+### Core Files (Required)
 
 1. `projectbrief.md`
 
-   - 他のすべてのファイルの形を決める基盤文書
-   - 存在しない場合はプロジェクト開始時に作成
-   - コア要件と目標を定義
-   - プロジェクト範囲の信頼できる情報源
+   - Foundation document that shapes all other files
+   - Created at project start if doesn't exist
+   - Defines core requirements and goals
+   - Authoritative source for project scope
 
 2. `productContext.md`
 
-   - このプロジェクトが存在する理由
-   - 解決する問題
-   - どのように機能すべきか
-   - ユーザー体験の目標
+   - Reason for this project's existence
+   - Problems to solve
+   - How it should function
+   - User experience goals
 
 3. `activeContext.md`
 
-   - 現在の作業の焦点
-   - 最近の変更
-   - 次のステップ
-   - アクティブな決定事項と考慮事項
+   - Current work focus
+   - Recent changes
+   - Next steps
+   - Active decisions and considerations
 
 4. `systemPatterns.md`
 
-   - システムアーキテクチャ
-   - 重要な技術的決定
-   - 使用中の設計パターン
-   - コンポーネントの関係
+   - System architecture
+   - Important technical decisions
+   - Design patterns in use
+   - Component relationships
 
 5. `techContext.md`
 
-   - 使用されている技術
-   - 開発環境のセットアップ
-   - 技術的制約
-   - 依存関係
+   - Technologies in use
+   - Development environment setup
+   - Technical constraints
+   - Dependencies
 
 6. `progress.md`
-   - 機能している部分
-   - 構築すべき残りの部分
-   - 現在のステータス
-   - 既知の問題
+   - Working features
+   - Remaining parts to build
+   - Current status
+   - Known issues
 
-### 追加コンテキスト
+### Additional Context
 
-組織化に役立つ場合は、memory-bank/内に追加のファイル/フォルダを作成します：
+Create additional files/folders within memory-bank/ if helpful for organization:
 
-- 複雑な機能のドキュメント
-- 統合仕様
-- APIドキュメント
-- テスト戦略
-- デプロイ手順
+- Complex feature documentation
+- Integration specifications
+- API documentation
+- Test strategy
+- Deployment procedures
 
-## コアワークフロー
+## Core Workflows
 
-### 計画モード
+### Planning Mode
 
 ```mermaid
 flowchart TD
@@ -1512,7 +1336,7 @@ flowchart TD
     Strategy --> Present[Present Approach]
 ```
 
-### 実行モード
+### Execution Mode
 
 ```mermaid
 flowchart TD
@@ -1523,14 +1347,14 @@ flowchart TD
     Execute --> Document[Document Changes]
 ```
 
-## ドキュメントの更新
+## Document Updates
 
-メモリバンクの更新は以下の場合に行われます：
+Memory bank updates occur in the following cases:
 
-1. 新しいプロジェクトパターンの発見時
-2. 重要な変更を実装した後
-3. ユーザーが**update memory**を要求した場合（すべてのファイルを確認する必要があります）
-4. コンテキストの明確化が必要な場合
+1. When discovering new project patterns
+2. After implementing significant changes
+3. When user requests **update memory** (must check all files)
+4. When context clarification is needed
 
 ```mermaid
 flowchart TD
@@ -1548,11 +1372,11 @@ flowchart TD
     Start --> Process
 ```
 
-注意：**update memory**によってトリガーされた場合、一部のファイルが更新を必要としなくても、すべてのメモリバンクファイルを確認する必要があります。特に現在の状態を追跡するactiveContext.mdとprogress.mdに焦点を当てます。
+Note: When triggered by **update memory**, all memory bank files must be checked even if some files don't need updates. Focus particularly on activeContext.md and progress.md which track current state.
 
-## プロジェクトインテリジェンス（.clinerules）
+## Project Intelligence (.clinerules)
 
-.clinerules ファイルは各プロジェクトの学習ジャーナルです。コードだけからは明らかでない重要なパターン、設定、プロジェクトインテリジェンスを捉え、より効果的に作業するのに役立ちます。あなたとプロジェクトと一緒に作業する中で、重要な洞察を発見し文書化します。
+The .clinerules file serves as a learning journal for each project. It captures important patterns, configurations, and project intelligence that may not be apparent from code alone, helping work more effectively. As you work with the project and user, discover and document important insights.
 
 ```mermaid
 flowchart TD
@@ -1574,25 +1398,24 @@ flowchart TD
     Learn --> Apply
 ```
 
-### 記録すべき内容
+### Content to Record
 
-- 重要な実装パス
-- ユーザーの好みとワークフロー
-- プロジェクト固有のパターン
-- 既知の課題
-- プロジェクト決定の進化
-- ツール使用パターン
+- Important implementation paths
+- User preferences and workflows
+- Project-specific patterns
+- Known issues
+- Evolution of project decisions
+- Tool usage patterns
 
-形式は柔軟です - あなたとプロジェクトとより効果的に作業するのに役立つ貴重な洞察を捉えることに焦点を当てます。.clinerules は、一緒に作業するにつれてよりスマートになる生きたドキュメントと考えてください。
+The format is flexible - focus on capturing valuable insights that help you work more effectively with the project. Think of .clinerules as a living document that gets smarter as you work together.
 
-覚えておいてください：すべてのメモリリセット後、私は完全に新しく始めます。メモリバンクは以前の作業への唯一のリンクです。私の効果は完全にその正確さに依存するため、精度と明確さを持って維持する必要があります。
+Remember: After each memory reset, I start completely fresh. The memory bank is my only link to previous work. My effectiveness depends entirely on its accuracy, so it must be maintained with precision and clarity.
 
-## 記憶量とデータの読み方
+## Memory Capacity and Data Reading
 
-私の記憶領域は有限であり、巨大なファイルを読み込まないようにする必要があります。
+My memory space is finite, so we need to avoid loading huge files.
 
-`*.json` や `*.jsonl` を read-file する前には、`ls -al <file>` でファイルサイズを確認してください。
+Before using read-file on `*.json` or `*.jsonl` files, check the file size with `ls -al <file>`.
 
-会話が続きすぎた場合、 memorybank を更新してコンテキストを終了することをユーザーに提案してください。
-
+If a conversation goes on too long, suggest updating the memorybank and ending the context to the user.
 
