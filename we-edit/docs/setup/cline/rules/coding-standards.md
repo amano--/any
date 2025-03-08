@@ -68,28 +68,41 @@
 
 #### 3.2.1 Lodashの活用
 
-関数型プログラミングの実装にはLodashを積極的に活用します：
+関数型プログラミングの実装にはLodashを活用しますが、ファイルサイズを最適化するために必要な関数のみをインポートします：
 
 ```typescript
+// Bad: 全体をインポート
 import _ from "lodash";
 
-// 関数合成
-const processUser = _.flow([
-  (user: User) => _.pick(user, ["id", "name", "email"]),
-  (user: Pick<User, "id" | "name" | "email">) => _.mapValues(user, _.trim),
-  (user: UserDTO) => _.assign({}, user, { updatedAt: new Date() }),
+// Good: 必要な関数のみをインポート
+import flow from "lodash/flow";
+import pick from "lodash/pick";
+import mapValues from "lodash/mapValues";
+import trim from "lodash/trim";
+import assign from "lodash/assign";
+
+// 関数合成の例
+const processUser = flow([
+  (user: User) => pick(user, ["id", "name", "email"]),
+  (user: Pick<User, "id" | "name" | "email">) => mapValues(user, trim),
+  (user: UserDTO) => assign({}, user, { updatedAt: new Date() }),
 ]);
 
 // コレクション操作
+import filter from "lodash/filter";
+import map from "lodash/map";
+import sortBy from "lodash/sortBy";
+
 const processUsers = (users: User[]): UserSummary[] =>
-  _(users)
-    .filter("isActive")
-    .map((user) => _.pick(user, ["id", "name"]))
-    .sortBy("name")
-    .value();
+  sortBy(
+    map(filter(users, "isActive"), (user) => pick(user, ["id", "name"])),
+    "name",
+  );
 
 // メモ化
-const expensiveCalculation = _.memoize((input: string): number => {
+import memoize from "lodash/memoize";
+
+const expensiveCalculation = memoize((input: string): number => {
   // 複雑な計算
   return input.length;
 });
@@ -97,17 +110,55 @@ const expensiveCalculation = _.memoize((input: string): number => {
 
 #### 3.2.2 イミュータビリティ
 
-- `_.cloneDeep`での深いコピー
-- `_.set`での新しいオブジェクト生成
-- 配列操作は`_.concat`などを使用
+必要な関数のみをインポートしてイミュータブルな操作を実装：
 
 ```typescript
+import cloneDeep from "lodash/cloneDeep";
+import set from "lodash/set";
+import concat from "lodash/concat";
+
 // オブジェクトの更新
-const updateUser = (user: User, updates: Partial<User>): User =>
-  _.assign({}, user, updates);
+const updateUser = (user: User, updates: Partial<User>): User => {
+  const newUser = cloneDeep(user);
+  return Object.entries(updates).reduce(
+    (acc, [key, value]) => set(acc, key, value),
+    newUser,
+  );
+};
 
 // 配列の操作
-const addItem = <T>(items: T[], item: T): T[] => _.concat(items, [item]);
+const addItem = <T>(items: T[], item: T): T[] => concat(items, [item]);
+
+// ネストされたオブジェクトの更新
+const updateNestedField = <T>(obj: T, path: string, value: any): T =>
+  set(cloneDeep(obj), path, value);
+```
+
+#### 3.2.3 パフォーマンス最適化
+
+- 必要な関数のみをインポートしてバンドルサイズを削減
+- Tree Shakingの効果を最大限活用
+- 高コストな操作にはメモ化を適用
+
+```typescript
+import debounce from "lodash/debounce";
+import throttle from "lodash/throttle";
+import once from "lodash/once";
+
+// 検索入力の最適化
+const handleSearch = debounce((query: string) => {
+  // 検索処理
+}, 300);
+
+// スクロールイベントの最適化
+const handleScroll = throttle((event: Event) => {
+  // スクロール処理
+}, 100);
+
+// 初期化処理（一度のみ実行）
+const initialize = once(() => {
+  // アプリケーションの初期化
+});
 ```
 
 # TypeScript + React プロジェクトにおける重要な実装規約
@@ -117,7 +168,7 @@ const addItem = <T>(items: T[], item: T): T[] => _.concat(items, [item]);
 ### 1.1 変数宣言
 
 - `type` と `const` のみを使用
-- `let` と `var` の使用を禁止
+- `class` と `interface` と`enum` と`namespace` と `let` と `var` の使用を禁止
 - すべての変数に明示的な型アノテーションを付与
 
 ```typescript
@@ -152,7 +203,7 @@ type LoadState<T> =
   | { type: "error"; error: Error };
 
 // 使用例
-switch (state.type) {
+switch (type) {
   case "idle":
     return <Idle />;
   case "loading":
@@ -162,7 +213,7 @@ switch (state.type) {
   case "error":
     return <Error error={state.error} />;
   default:
-    const _exhaustiveCheck: never = color
+    const _exhaustiveCheck: never = type
     throw new Error("unreachable:" + _exhaustiveCheck)
 }
 ```
