@@ -81,3 +81,58 @@ chrome-ext/build/
 # Project specific
 .cline-tmp/
 .memory-bank-tmp/
+
+# Security
+## Certificates and keys
+*.key
+*.pem
+*.cert
+*.crt
+*.csr
+*.p12
+*.pfx
+*.keystore
+*.jks
+
+## Authentication and tokens
+.npmrc
+.yarnrc
+.env*
+*.token
+*token*
+*password*
+*secret*
+*credential*
+*auth*
+.netrc
+
+## Debug and logs containing sensitive data
+debug.log
+*debug*.log
+npm-debug.log
+yarn-debug.log
+*.dump
+.hypothesis/
+.pytest_cache/
+
+## Personal and local config
+.ssh/
+.aws/
+.config/
+*.local
+*personal*
+*private*
+
+## Backup files that might contain sensitive data
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+.[#]*
+[#]*[#]
+
+## Database files
+*.sql
+*.sqlite
+*.db
