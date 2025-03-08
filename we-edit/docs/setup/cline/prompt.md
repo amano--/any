@@ -1,6 +1,20 @@
+## グループ単位に変更
+
+setup/prompt/rules/package-structure.md　の　### 1.1 Package by Feature　に機能グループ単位に分けるように変更して
+
 ---
-パッケージングに関するルール作りに使用したプロンプト
+
+src/
+├── features/ # 機能ごとのディレクトリ
+│ ├── [fetureGroup]/ # 認証機能
+│ 　 　├── [feture]/ # 認証関連のコンポーネント
+│ 　　 └── common/ # 機能グループ共有の共通コンポーネント
+│
+└── common/ # プロジェクト全体の共通コンポーネント
+
 ---
+
+## パッケージングに関するルール作りに使用したプロンプト
 
 setup/prompt/rules/package-structure.md にこのプロジェクトにが推奨するパッケージングに関するルールが規定されているファイルを作成してください。
 
@@ -12,9 +26,9 @@ setup/prompt/rules/package-structure.md にこのプロジェクトにが推奨�
 
 ---
 
-## docs/setup/prompt/rules 以下を元に.clinerulesを作成するために使ったプロンプト
+## docs/setup/cline/rules 以下を元に.clinerulesを作成するために使ったプロンプト
 
-docs/setup/prompt/rules 以下のファイルを cat して繋げるシェルスクリプトを書いてください
+docs/setup/cline/rules 以下のファイルを cat して繋げるシェルスクリプトを書いてください
 条件は以下の通り
 
 出力先はルートで、ファイル名は　.clinerules
