@@ -5,7 +5,7 @@ set -eu
 
 # スクリプトのディレクトリを取得
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
+PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../" && pwd)
 
 # 出力ファイル
 OUTPUT_FILE="$PROJECT_ROOT/.clinerules"
@@ -24,23 +24,23 @@ check_file() {
     echo "Found file: $1"
 }
 
-# 入力ファイル一覧
+# 入力ファイルの相対パス一覧
 declare -a FILES=(
-    "$SCRIPT_DIR/personal.md"
-    "$SCRIPT_DIR/project.md"
-    "$SCRIPT_DIR/coding-standards.md"
-    "$SCRIPT_DIR/coding-for-project.md"
-    "$SCRIPT_DIR/coding-for-ai.md"
-    "$SCRIPT_DIR/git-workflow.md"
-    "$SCRIPT_DIR/package-structure.md"
-    "$SCRIPT_DIR/tech-stack.md"
-    "$SCRIPT_DIR/cline-best-practices.md"
+    "rules/personal.md"
+    "rules/project.md"
+    "rules/coding-standards.md"
+    "rules/coding-for-project.md"
+    "rules/coding-by-ai.md"
+    "rules/git-workflow.md"
+    "rules/package-structure.md"
+    "rules/tech-stack.md"
+    "rules/cline-best-practices.md"
 )
 
 echo "Checking files..."
 # 各ファイルの存在を確認
 for file in "${FILES[@]}"; do
-    check_file "$file"
+    check_file "$SCRIPT_DIR/$file"
 done
 
 echo "Generating .clinerules..."
@@ -56,7 +56,7 @@ fi
 for file in "${FILES[@]}"; do
     echo "Adding: $(basename "$file")"
     {
-        cat "$file"
+        cat "$SCRIPT_DIR/$file"
         echo -e "\n"  # ファイル間に空行を追加
     } >> "$OUTPUT_FILE" || {
         echo "Error while processing file: $file"

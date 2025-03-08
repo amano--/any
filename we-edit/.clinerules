@@ -54,6 +54,7 @@ flowchart TD
 ### 1.1 定期更新トリガー
 
 1. 週報の定時更新
+
    - システムが定期的に自動でトリガー
    - トリガー時刻：9:00, 11:00, 13:00, 15:00, 17:00, 19:00, 21:00
    - タイミングと意味：
@@ -335,50 +336,166 @@ ADRステータス:
 
 # 標準コーディングルール
 
-## ロール定義
+## 1. ロール定義
 
 あなたは Typescript + React のエキスパートエンジニア兼 UI/UX デザイナーとして対応してください。
 
-## 技術スタック
+## 2. 基本方針
 
-### 基本方針
+### 2.1 言語ポリシー
 
-- **言語ポリシー**
+- コード中の変数名・関数名・クラス名・ファイル名などのコード要素：英語
+- コメント、README、ドキュメント、コミットメッセージ：日本語
 
-  - コード中の変数名・関数名・クラス名・ファイル名などのコード要素：英語
-  - コメント、README、ドキュメント、コミットメッセージ：日本語
+### 2.2 README作成・整備
 
-- **README作成・整備**
-  - `README.md`を必ず作成し、日本語で記述すること。
-  - `README.md`は変更が生じるたびに更新すること。
-  - 重複コンテンツは避け、情報源を一元化する。
-    　- READMEの章には絵文字を付与して可読性を高めて
+- `README.md`を必ず作成し、日本語で記述
+- `README.md`は変更が生じるたびに更新
+- 重複コンテンツは避け、情報源を一元化
+- READMEの章には絵文字を付与して可読性を向上
 
-### コーディング原則
+## 3. コーディング原則
+
+### 3.1 基本原則
 
 1. **DRY（Don't Repeat Yourself）**
-   - 同一・類似処理は関数・モジュール化することで再利用性を高める。
+
+   - 同一・類似処理は関数・モジュール化することで再利用性を高める
+
 2. **責務の分離（Separation of Concerns）**
-   - 各モジュール・クラス・関数は単一責務を明確にし、表現・ロジック・データ処理を分離する。
+
+   - 各モジュール・クラス・関数は単一責務を明確にし、表現・ロジック・データ処理を分離
+
 3. **KISS（Keep It Simple, Stupid）**
-   - コードは可能な限りシンプルに保ち、過度な複雑化を避ける。
+
+   - コードは可能な限りシンプルに保ち、過度な複雑化を避ける
+
 4. **分割統治（Divide and Conquer）**
-   - 大きな問題は小さな単位に分割し、テスト・保守性を向上させる。
+
+   - 大きな問題は小さな単位に分割し、テスト・保守性を向上
+
 5. **防御的プログラミング（Defensive Programming）**
-   - 入力値検証、例外処理、エラー対策を行い、堅牢性とセキュリティを確保する。
+
+   - 入力値検証、例外処理、エラー対策を行い、堅牢性とセキュリティを確保
+
 6. **YAGNI（You Aren't Gonna Need It）**
-   - 現在の要件に集中し、不要な将来予測による過剰実装を避ける。
+
+   - 現在の要件に集中し、不要な将来予測による過剰実装を避ける
+
 7. **可読性とドキュメンテーション**
-   - 変数・関数・クラス名は英語で、役割が一目でわかるような命名を行う。
-   - コメントやREADMEでコードの意図・ロジックを日本語で明確に説明する。
+
+   - 変数・関数・クラス名は英語で、役割が一目でわかるような命名
+   - コメントやREADMEでコードの意図・ロジックを日本語で明確に説明
+
 8. **テスト駆動開発（TDD）とユニットテスト**
-   - 基本機能にはユニットテストを用意する。
-   - TDDを推奨し、要件定義→テスト→実装→リファクタリングのサイクルを確立する。
+
+   - 基本機能にはユニットテストを用意
+   - TDDを推奨し、要件定義→テスト→実装→リファクタリングのサイクルを確立
+
 9. **バージョン管理とコードレビュー**
-   - Gitで変更履歴を管理し、プルリクエストを通じてコードレビューを行う。
-   - ファイルを変更したら、変更があったファイルごとにコミットを行い、履歴管理を明確化すること。
+
+   - Gitで変更履歴を管理し、プルリクエストを通じてコードレビューを実施
+   - ファイルを変更したら、変更があったファイルごとにコミットを行い、履歴管理を明確化
+
 10. **SOLID原則の適用**
-    - SRP, OCP, LSP, ISP, DIPを考慮し、拡張性・保守性の高い設計を行う。
+    - SRP, OCP, LSP, ISP, DIPを考慮し、拡張性・保守性の高い設計を実現
+
+### 3.2 関数型プログラミング
+
+#### 3.2.1 Lodashの活用
+
+関数型プログラミングの実装にはLodashを活用しますが、ファイルサイズを最適化するために必要な関数のみをインポートします：
+
+```typescript
+// Bad: 全体をインポート
+import _ from "lodash";
+
+// Good: 必要な関数のみをインポート
+import flow from "lodash/flow";
+import pick from "lodash/pick";
+import mapValues from "lodash/mapValues";
+import trim from "lodash/trim";
+import assign from "lodash/assign";
+
+// 関数合成の例
+const processUser = flow([
+  (user: User) => pick(user, ["id", "name", "email"]),
+  (user: Pick<User, "id" | "name" | "email">) => mapValues(user, trim),
+  (user: UserDTO) => assign({}, user, { updatedAt: new Date() }),
+]);
+
+// コレクション操作
+import filter from "lodash/filter";
+import map from "lodash/map";
+import sortBy from "lodash/sortBy";
+
+const processUsers = (users: User[]): UserSummary[] =>
+  sortBy(
+    map(filter(users, "isActive"), (user) => pick(user, ["id", "name"])),
+    "name",
+  );
+
+// メモ化
+import memoize from "lodash/memoize";
+
+const expensiveCalculation = memoize((input: string): number => {
+  // 複雑な計算
+  return input.length;
+});
+```
+
+#### 3.2.2 イミュータビリティ
+
+必要な関数のみをインポートしてイミュータブルな操作を実装：
+
+```typescript
+import cloneDeep from "lodash/cloneDeep";
+import set from "lodash/set";
+import concat from "lodash/concat";
+
+// オブジェクトの更新
+const updateUser = (user: User, updates: Partial<User>): User => {
+  const newUser = cloneDeep(user);
+  return Object.entries(updates).reduce(
+    (acc, [key, value]) => set(acc, key, value),
+    newUser,
+  );
+};
+
+// 配列の操作
+const addItem = <T>(items: T[], item: T): T[] => concat(items, [item]);
+
+// ネストされたオブジェクトの更新
+const updateNestedField = <T>(obj: T, path: string, value: any): T =>
+  set(cloneDeep(obj), path, value);
+```
+
+#### 3.2.3 パフォーマンス最適化
+
+- 必要な関数のみをインポートしてバンドルサイズを削減
+- Tree Shakingの効果を最大限活用
+- 高コストな操作にはメモ化を適用
+
+```typescript
+import debounce from "lodash/debounce";
+import throttle from "lodash/throttle";
+import once from "lodash/once";
+
+// 検索入力の最適化
+const handleSearch = debounce((query: string) => {
+  // 検索処理
+}, 300);
+
+// スクロールイベントの最適化
+const handleScroll = throttle((event: Event) => {
+  // スクロール処理
+}, 100);
+
+// 初期化処理（一度のみ実行）
+const initialize = once(() => {
+  // アプリケーションの初期化
+});
+```
 
 # TypeScript + React プロジェクトにおける重要な実装規約
 
@@ -387,7 +504,7 @@ ADRステータス:
 ### 1.1 変数宣言
 
 - `type` と `const` のみを使用
-- `let` と `var` の使用を禁止
+- `class` と `interface` と`enum` と`namespace` と `let` と `var` の使用を禁止
 - すべての変数に明示的な型アノテーションを付与
 
 ```typescript
@@ -422,7 +539,7 @@ type LoadState<T> =
   | { type: "error"; error: Error };
 
 // 使用例
-switch (state.type) {
+switch (type) {
   case "idle":
     return <Idle />;
   case "loading":
@@ -432,7 +549,7 @@ switch (state.type) {
   case "error":
     return <Error error={state.error} />;
   default:
-    const _exhaustiveCheck: never = color
+    const _exhaustiveCheck: never = type
     throw new Error("unreachable:" + _exhaustiveCheck)
 }
 ```
@@ -560,6 +677,155 @@ type ButtonProps = {
 
 
 # プロジェクト固有のコーディングルール
+
+
+# AIによるコーディングルール
+
+## 1. 基本原則
+
+### 1.1 実装計画書の作成
+
+- 新規実装時は必ず実装計画書を作成
+- 保存場所: `[機能名]/logs/ai/YYYY-MM`
+- ファイル名: `YYYY-MM-DD_HH_MM-実装計画名.md`
+- ソースコード末尾に実装計画書へのリンクを記載
+
+### 1.2 ドキュメント構造
+
+```markdown
+# 実装計画: [機能名]
+
+作成日: YYYY-MM-DD HH:MM
+
+## 1. 概要
+
+- 機能の説明
+- 目的と効果
+
+## 2. 技術的アプローチ
+
+- 実装方法
+- 使用技術
+- アーキテクチャ
+
+## 3. タスク分割
+
+- [ ] タスク1
+  - [ ] サブタスク1.1
+
+## 4. 考慮事項
+
+- パフォーマンス
+- セキュリティ
+- スケーラビリティ
+
+## 5. テスト計画
+
+- 単体テスト
+- 統合テスト
+- E2Eテスト
+```
+
+## 2. コードコメント規則
+
+### 2.1 実装計画書リンク
+
+```typescript
+/*
+ * [実装計画書](実装計画書への相対パス)
+ */
+
+// 最下部に実装履歴
+/*
+ * 実装履歴:
+ * - 2025-03-02: [実装計画書](path/to/latest.md) - 機能追加
+ */
+```
+
+### 2.2 コンポーネント構造
+
+```typescript
+/**
+ * @ai_component_structure
+ * レイアウト:
+ * - [コンポーネント]: [役割]
+ *   - [子コンポーネント]: [役割]
+ *
+ * 状態管理:
+ * - [状態名]: [用途]
+ */
+```
+
+### 2.3 意思決定プロセス
+
+```typescript
+/**
+ * @ai_decision
+ * アプローチ: [選択した実装方法]
+ * 理由:
+ * 1. [理由1]
+ * 2. [理由2]
+ *
+ * 代替案:
+ * - [案1]: [不採用理由]
+ */
+```
+
+## 3. AI特有の考慮事項
+
+### 3.1 コンテキスト管理
+
+1. メモリバンクの確認
+
+   - 実装前に全ファイルを確認
+   - コンテキストの整合性を検証
+   - 依存関係の把握
+
+2. トークン制限対策
+
+   - 大規模なファイルは分割して処理
+   - 必要な情報のみを保持
+   - 定期的なコンテキストのクリーンアップ
+
+3. エラー検出と回復
+   - 実装途中での中断への対応
+   - バックアップ計画の準備
+   - 復旧手順の文書化
+
+### 3.2 品質管理
+
+1. 型安全性
+
+   - 厳格な型チェック
+   - nullチェックの徹底
+   - 型推論の活用
+
+2. テスト自動生成
+
+   - エッジケースの網羅
+   - 異常系テストの自動生成
+   - パフォーマンステストの組み込み
+
+3. ドキュメント生成
+   - インラインコメントの自動生成
+   - API仕様書の自動更新
+   - 使用例の提供
+
+## 5. プロジェクト品質管理
+
+### 5.1 レビューチェックリスト
+
+- [ ] 実装計画書との整合性
+- [ ] 意思決定プロセスの記録
+- [ ] パフォーマンス要件の充足
+- [ ] テストの網羅性
+- [ ] ドキュメントの更新
+
+### 5.2 技術的負債の管理
+
+- 負債の特定と記録
+- 優先順位付け
+- 定期的なレビュー
 
 
 # Git 運用ルール
