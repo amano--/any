@@ -90,498 +90,129 @@ The following files are restricted from reading and modification:
 - .env files
 - All files containing API keys, tokens, and authentication information
 
-[... rest of the content remains unchanged ...]
+## Security Measures
 
-# Standard Coding Rules
+- Never commit confidential files
+- Use environment variables for secret information
+- Do not include authentication information in logs or output
 
-## 1. Role Definition
+## 1. Prompt Trigger List
 
-You should act as a TypeScript + React expert engineer and UI/UX designer.
+### 1.1 Regular Update Triggers
 
-## 2. Basic Policy
+1. Weekly Report Regular Update (Details: [weekly-report-update.md](docs/setup/cline/rules/task/weekly-report-update.md))
 
-### 2.1 Language Policy
+   - System trigger times: 9:00, 11:00, 13:00, 15:00, 17:00, 19:00, 21:00
+   - Manual trigger: "Weekly Report Update"
 
-- Code elements (variable names, function names, class names, file names): English
-- Comments, README, documentation, commit messages: Japanese
+2. Work Completion (Trigger: "Good work")
+   - Knowledge summary creation
+   - Memory bank update
+   - ADR creation assessment and creation (if necessary)
+   - Weekly report final update
+   - Commit and push
 
-### 2.2 README Creation and Maintenance
+### 1.2 Knowledge Update (Automatic Detection or "Knowledge Update")
 
-- Always create `README.md` in Japanese
-- Update `README.md` whenever changes occur
-- Avoid duplicate content, maintain single source of truth
-- Add emojis to README sections to improve readability
+- Triggers:
+  1. Automatic detection: When text contains the following keywords
+     - "Issues have been clarified"
+     - "Important discoveries have been made"
+     - "Knowledge has been gained"
+     - "Improvements have been found"
+  2. Manual: "Knowledge Update" keyword
+- Process: Execute knowledge summary creation only
 
-## 3. Coding Principles
+### 1.3 ADR Creation (Automatic Detection or "Create ADR")
 
-### 3.1 Basic Principles
+- Triggers:
+  1. Automatic detection: When text contains the following keywords
+     - "Design policy has been decided"
+     - "Architecture change decided"
+     - "Important decision has been made"
+     - "Decided to change to ~"
+     - "Will proceed with ~ policy"
+  2. Manual: "Create ADR" keyword
+- Process: Execute ADR creation only
 
-1. **DRY (Don't Repeat Yourself)**
+### 1.4 Guideline Revision (Trigger: "Guide Revision")
 
-   - Improve reusability by modularizing identical/similar processes into functions
+1. Work review and contemplation
+2. Revision following existing guidelines
 
-2. **Separation of Concerns**
+## 2. Task Details
 
-   - Each module, class, and function should have a clear single responsibility, separating presentation, logic, and data processing
+For detailed weekly report update procedures, please refer to [weekly-report-update.md](docs/setup/cline/rules/task/weekly-report-update.md).
 
-3. **KISS (Keep It Simple, Stupid)**
-
-   - Keep code as simple as possible, avoid unnecessary complexity
-
-4. **Divide and Conquer**
-
-   - Break down large problems into smaller units to improve testability and maintainability
-
-5. **Defensive Programming**
-
-   - Implement input validation, exception handling, and error measures to ensure robustness and security
-
-6. **YAGNI (You Aren't Gonna Need It)**
-
-   - Focus on current requirements, avoid over-implementation based on unnecessary future predictions
-
-7. **Readability and Documentation**
-
-   - Use clear English names for variables, functions, and classes that immediately convey their role
-   - Clearly explain code intent and logic in Japanese comments and README
-
-8. **Test Driven Development (TDD) and Unit Testing**
-
-   - Prepare unit tests for basic functionality
-   - Encourage TDD, establishing the requirements → test → implementation → refactoring cycle
-
-9. **Version Control and Code Review**
-
-   - Manage change history with Git, conduct code reviews through pull requests
-   - When modifying files, commit changes for each file separately to maintain clear history
-
-10. **SOLID Principles Application**
-    - Consider SRP, OCP, LSP, ISP, DIP to achieve extensible and maintainable design
-
-### 3.2 Functional Programming
-
-#### 3.2.1 Utilizing Lodash
-
-We use Lodash for functional programming implementation, but only import necessary functions to optimize file size:
-
-```typescript
-// Bad: Import everything
-import _ from "lodash";
-
-// Good: Import only necessary functions
-import flow from "lodash/flow";
-import pick from "lodash/pick";
-import mapValues from "lodash/mapValues";
-import trim from "lodash/trim";
-import assign from "lodash/assign";
-
-// Function composition example
-const processUser = flow([
-  (user: User) => pick(user, ["id", "name", "email"]),
-  (user: Pick<User, "id" | "name" | "email">) => mapValues(user, trim),
-  (user: UserDTO) => assign({}, user, { updatedAt: new Date() }),
-]);
-
-// Collection operations
-import filter from "lodash/filter";
-import map from "lodash/map";
-import sortBy from "lodash/sortBy";
-
-const processUsers = (users: User[]): UserSummary[] =>
-  sortBy(
-    map(filter(users, "isActive"), (user) => pick(user, ["id", "name"])),
-    "name",
-  );
-
-// Memoization
-import memoize from "lodash/memoize";
-
-const expensiveCalculation = memoize((input: string): number => {
-  // Complex calculation
-  return input.length;
-});
-```
-
-#### 3.2.2 Immutability
-
-Implement immutable operations by importing only necessary functions:
-
-```typescript
-import cloneDeep from "lodash/cloneDeep";
-import set from "lodash/set";
-import concat from "lodash/concat";
-
-// Object update
-const updateUser = (user: User, updates: Partial<User>): User => {
-  const newUser = cloneDeep(user);
-  return Object.entries(updates).reduce(
-    (acc, [key, value]) => set(acc, key, value),
-    newUser,
-  );
-};
-
-// Array operations
-const addItem = <T>(items: T[], item: T): T[] => concat(items, [item]);
-
-// Nested object update
-const updateNestedField = <T>(obj: T, path: string, value: any): T =>
-  set(cloneDeep(obj), path, value);
-```
-
-#### 3.2.3 Performance Optimization
-
-- Import only necessary functions to reduce bundle size
-- Maximize Tree Shaking effects
-- Apply memoization to high-cost operations
-
-```typescript
-import debounce from "lodash/debounce";
-import throttle from "lodash/throttle";
-import once from "lodash/once";
-
-// Search input optimization
-const handleSearch = debounce((query: string) => {
-  // Search processing
-}, 300);
-
-// Scroll event optimization
-const handleScroll = throttle((event: Event) => {
-  // Scroll processing
-}, 100);
-
-// Initialization (execute only once)
-const initialize = once(() => {
-  // Application initialization
-});
-```
-
-# Important Implementation Guidelines for TypeScript + React Projects
-
-## 1. Type Safety
-
-### 1.1 Variable Declaration
-
-- Use only `type` and `const`
-- Prohibit use of `class`, `interface`, `enum`, `namespace`, `let`, and `var`
-- Add explicit type annotations to all variables
-
-```typescript
-// Good
-type User = {
-  id: string;
-  name: string;
-};
-
-const user: User = {
-  id: "1",
-  name: "John",
-};
-
-// Bad
-let name = "John"; // Using let
-var id = 1; // Using var
-```
-
-### 1.2 Tagged Union
-
-- Actively use Tagged Union for data with multiple states
-- Ensure type safety of states
-- Utilize pattern matching
-
-```typescript
-// Good
-type LoadState<T> =
-  | { type: "idle" }
-  | { type: "loading" }
-  | { type: "success"; data: T }
-  | { type: "error"; error: Error };
-
-// Usage example
-switch (type) {
-  case "idle":
-    return <Idle />;
-  case "loading":
-    return <Loading />;
-  case "success":
-    return <Success data={state.data} />;
-  case "error":
-    return <Error error={state.error} />;
-  default:
-    const _exhaustiveCheck: never = type
-    throw new Error("unreachable:" + _exhaustiveCheck)
-}
-```
-
-## 2. Internationalization (i18n)
-
-### 2.1 Text Management
-
-- Manage all text in i18n resource files
-- Prohibit hardcoded strings
-- Manage translation keys in hierarchical structure
-
-```typescript
-// Good
-const title = t("common.header.title");
-
-// Bad
-const title = "Welcome to our app"; // Hardcoded
-```
-
-### 2.2 Dates and Numbers
-
-- Consider localization for dates and numbers
-- Handle timezones explicitly
-- Change number format according to locale
-
-## 3. Testing and Documentation
-
-### 3.1 Collocation
-
-- Place test files in the same directory as implementation files
-- Place Storybook files similarly
-- Group related files together
+### 2.1 Knowledge Summary Creation
 
 ```
-components/
-  Button/
-    Button.tsx
-    Button.test.tsx
-    Button.stories.tsx
-    Button.module.css
+Location: docs/team/[teamName]/logs/ai/knowledge/[developmentPhase]/YYYY-MM/YYYY-MM-DD-HH-[contentTitleInEnglish].md
+Procedure:
+1. Pre-summary Review
+   - Review overall implementation content
+   - List important decision points
+   - Organize identified issues
+
+2. Contemplation Process
+   - Deep dive into each decision's rationale
+   - Organize options and comparison content
+   - Analyze lessons learned
+
+3. Summary Creation
+   - Specific issues and solutions
+   - Technical decisions and their rationale
+   - Improvement proposals and alternatives
+   - Next step proposals
 ```
 
-### 3.2 Test Coverage
+### 2.2 Memory Bank Update
 
-- Create unit tests for all components
-- Document major use cases in Storybook
-- Always include edge case tests
+### 2.3 ADR Creation
 
-## 4. Error Handling
+```
+Location: docs/team/[teamName]/logs/ai/adr/[ADRStatus]/[developmentPhase]/YYYY/YYYY-MM-DD-[decisionContentInEnglish].md
 
-### 4.1 Exception Handling
+ADR Status:
+- proposed: Under proposal
+- accepted: Approved
+- rejected: Rejected
+- deprecated: Deprecated
+- superseded: Alternative adopted
 
-- Use typed errors
-- Clearly define error boundaries
-- Prevent unhandled exceptions
+Conditions: Create when decision falls under any of the following
+1. Decisions affecting architecture
+   - System structure changes
+   - Component relationship changes
+   - Important interface changes
 
-```typescript
-type Result<T> =
-  | { type: "success"; value: T }
-  | { type: "error"; error: Error };
+2. Important pattern or convention changes
+   - Design pattern adoption
+   - Coding convention changes
+   - Naming convention changes
 
-const fetchData = async (): Promise<Result<Data>> => {
-  try {
-    const data = await api.get();
-    return { type: "success", value: data };
-  } catch (e) {
-    return { type: "error", error: e as Error };
-  }
-};
+3. Team collaboration method changes
+   - Development process changes
+   - Communication method changes
+   - Role assignment changes
+
+4. Technology selections affecting the entire system
+   - Framework selection
+   - Library adoption
+   - Tool chain changes
+
+Record Items:
+1. Status (proposed/accepted/rejected/deprecated/superseded)
+2. Background and reasons for decision
+3. Considered alternatives
+4. Impact analysis
+5. Implementation procedure
 ```
 
-## 5. Component Design
+### 2.4 Weekly Report Creation and Update
 
-### 5.1 Props Type Definition
+For detailed weekly report creation and update procedures, please refer to [weekly-report-update.md](/docs/setup/cline/rules/task/weekly-report-update.md).
 
-- Explicit type definitions for all Props
-- Clear distinction between required and optional properties
-- Reuse common Props types
-
-```typescript
-type ButtonProps = {
-  variant: "primary" | "secondary";
-  size: "small" | "medium" | "large";
-  onClick: () => void;
-  children: React.ReactNode;
-  disabled?: boolean;
-};
-```
-
-### 5.2 State Management
-
-- Use only `useState` for local state
-- Centralize global state in store
-- Manage async state with Tagged Union
-
-## 6. Performance
-
-### 6.1 Memoization
-
-- Use `useMemo` for high-cost calculations
-- Use `memo` for render optimization
-- Explicitly define dependency arrays
-
-### 6.2 Side Effects
-
-- Execute side effects only within `useEffect`
-- Properly implement cleanup functions
-- Minimize dependency array changes
-
-## 7. Code Style
-
-### 7.1 Naming Conventions
-
-- Components: PascalCase
-- Functions: camelCase
-- Types: PascalCase
-- Constants: UPPER_SNAKE_CASE
-
-### 7.2 File Structure
-
-- Split directories by feature
-- Expose public API in index.ts
-- Appropriately place tests and stories
-
-# Project-Specific Coding Rules
-
-# AI Coding Rules
-
-## 1. Basic Principles
-
-### 1.1 Implementation Plan Document Creation
-
-- Always create an implementation plan document for new implementations
-- Save location: `[feature-name]/logs/ai/YYYY-MM`
-- File name: `YYYY-MM-DD_HH_MM-implementation-plan-name.md`
-- Include link to implementation plan document at the end of source code
-
-### 1.2 Document Structure
-
-```markdown
-# Implementation Plan: [Feature Name]
-
-Creation Date: YYYY-MM-DD HH:MM
-
-## 1. Overview
-
-- Feature description
-- Purpose and effects
-
-## 2. Technical Approach
-
-- Implementation method
-- Technologies used
-- Architecture
-
-## 3. Task Breakdown
-
-- [ ] Task 1
-  - [ ] Subtask 1.1
-
-## 4. Considerations
-
-- Performance
-- Security
-- Scalability
-
-## 5. Test Plan
-
-- Unit tests
-- Integration tests
-- E2E tests
-```
-
-## 2. Code Comment Rules
-
-### 2.1 Implementation Plan Link
-
-```typescript
-/*
- * [Implementation Plan](relative/path/to/implementation/plan)
- */
-
-// Implementation history at the bottom
-/*
- * Implementation History:
- * - 2025-03-02: [Implementation Plan](path/to/latest.md) - Feature addition
- */
-```
-
-### 2.2 Component Structure
-
-```typescript
-/**
- * @ai_component_structure
- * Layout:
- * - [Component]: [Role]
- *   - [Child Component]: [Role]
- *
- * State Management:
- * - [State Name]: [Purpose]
- */
-```
-
-### 2.3 Decision Process
-
-```typescript
-/**
- * @ai_decision
- * Approach: [Chosen Implementation Method]
- * Reasons:
- * 1. [Reason 1]
- * 2. [Reason 2]
- *
- * Alternatives:
- * - [Alternative 1]: [Reason for Not Choosing]
- */
-```
-
-## 3. AI-Specific Considerations
-
-### 3.1 Context Management
-
-1. Memory Bank Check
-
-   - Review all files before implementation
-   - Verify context consistency
-   - Understand dependencies
-
-2. Token Limit Countermeasures
-
-   - Process large files in segments
-   - Retain only necessary information
-   - Regular context cleanup
-
-3. Error Detection and Recovery
-   - Handle interruptions during implementation
-   - Prepare backup plans
-   - Document recovery procedures
-
-### 3.2 Quality Control
-
-1. Type Safety
-
-   - Strict type checking
-   - Thorough null checks
-   - Effective use of type inference
-
-2. Automated Test Generation
-
-   - Cover edge cases
-   - Generate error case tests
-   - Integrate performance tests
-
-3. Documentation Generation
-   - Auto-generate inline comments
-   - Auto-update API specifications
-   - Provide usage examples
-
-## 5. Project Quality Management
-
-### 5.1 Review Checklist
-
-- [ ] Consistency with implementation plan
-- [ ] Record of decision-making process
-- [ ] Meeting performance requirements
-- [ ] Test coverage
-- [ ] Documentation updates
-
-### 5.2 Technical Debt Management
-
-- Identify and record debt
-- Prioritization
-- Regular reviews
 
 # Git Operation Rules
 
@@ -734,379 +365,6 @@ gh pr create \
 
 - Clearly state points requiring special attention
 - Add supplementary explanations for complex code sections"
-
-# Recommended Package Structure Rules for Projects
-
-## 1. Basic Principles
-
-### 1.1 Package by Feature
-
-Divide packages by functional groups (bounded context units) and consolidate related features:
-
-```
-src/
-├── features/                  # Directory for feature groups
-│   ├── auth/                 # Authentication feature group
-│   │   ├── login/           # Login feature
-│   │   │   ├── components/  # Components
-│   │   │   ├── hooks/      # Custom hooks
-│   │   │   ├── store/      # State management
-│   │   │   ├── types/      # Type definitions
-│   │   │   └── utils/      # Utilities
-│   │   │
-│   │   ├── signup/         # Signup feature
-│   │   │   ├── components/
-│   │   │   ├── hooks/
-│   │   │   ├── store/
-│   │   │   ├── types/
-│   │   │   └── utils/
-│   │   │
-│   │   └── common/         # Common components for auth feature group
-│   │       ├── components/
-│   │       ├── hooks/
-│   │       └── utils/
-│   │
-│   ├── article/            # Article feature group
-│   │   ├── editor/        # Editor feature
-│   │   ├── viewer/        # Viewer feature
-│   │   ├── comment/       # Comment feature
-│   │   └── common/        # Common components for article feature group
-│   │
-│   └── bookmarks/         # Bookmark feature group
-│       ├── list/          # List feature
-│       ├── tags/          # Tag management feature
-│       └── common/        # Common components for bookmark feature group
-│
-└── common/                # Project-wide common components
-    ├── components/        # UI common components
-    ├── hooks/            # Common hooks
-    ├── styles/           # Global styles
-    └── utils/            # Common utilities
-```
-
-Examples of feature groups and feature classifications:
-
-1. Authentication Feature Group (auth)
-
-   - Login (login)
-   - Signup (signup)
-   - Password Reset (password-reset)
-   - Two-Factor Authentication (2fa)
-
-2. Article Feature Group (article)
-
-   - Editor (editor)
-   - Viewer (viewer)
-   - Comments (comment)
-   - Search (search)
-
-3. Bookmarks Feature Group (bookmarks)
-   - List View (list)
-   - Tag Management (tags)
-   - Import/Export (import-export)
-   - Search (search)
-
-### 1.2 Colocation
-
-Place related files in the same directory:
-
-```
-features/auth/
-  ├── components/
-  │   ├── LoginForm/
-  │   │   ├── LoginForm.tsx
-  │   │   ├── LoginForm.test.tsx
-  │   │   ├── LoginForm.stories.tsx
-  │   │   └── LoginForm.module.css
-  │   │
-  │   └── SignupForm/
-  │       ├── SignupForm.tsx
-  │       ├── SignupForm.test.tsx
-  │       ├── SignupForm.stories.tsx
-  │       └── SignupForm.module.css
-  │
-  └── hooks/
-      ├── useAuth.ts
-      └── useAuth.test.ts
-```
-
-## 2. Directory Structure Rules
-
-### 2.1 Characteristic Directories
-
-- `features/`: Code organized by feature units
-- `common/`: Shared resources
-- `app/`: Application entry points
-- `types/`: Global type definitions
-
-### 2.2 Internal Structure of Feature Directories
-
-Each feature directory should include:
-
-```mermaid
-flowchart TD
-    Feature[Feature Directory] --> Components[components/]
-    Feature --> Hooks[hooks/]
-    Feature --> Store[store/]
-    Feature --> Types[types/]
-    Feature --> Utils[utils/]
-    Feature --> Constants[constants.ts]
-    Feature --> Index[index.ts]
-```
-
-## 3. Dependency Management
-
-### 3.1 Dependency Direction
-
-```mermaid
-flowchart TD
-    App[app/] --> Features[features/]
-    Features --> Shared[shared/]
-    App --> Shared
-```
-
-### 3.2 Import Rules
-
-- Use absolute paths (e.g., `@features/auth`)
-- Prohibit circular dependencies
-- Allow only unidirectional dependencies from parent to child
-
-## 4. Colocation Rules
-
-### 4.1 Required Colocation
-
-The following files must be placed in the same directory:
-
-1. Component Files
-
-   - Main component (.tsx)
-   - Test file (.test.tsx)
-   - Story file (.stories.tsx)
-   - Style file (.module.css)
-
-2. Hook Files
-   - Main hook (.ts)
-   - Test file (.test.ts)
-
-### 4.2 Naming Conventions
-
-- Directory names use PascalCase
-- File names match component names
-- Index files use lowercase
-
-## 5. Shared Resource Management
-
-### 5.1 Shared Components
-
-- Structure based on Atomic Design
-- Place only reusable components
-- Clear interface definitions
-
-### 5.2 Shared Hooks
-
-- Only hooks used by multiple features
-- Simple and clear responsibilities
-- Sufficient test coverage
-
-## 6. Testing and Documentation
-
-### 6.1 Test File Placement
-
-- Unit tests: Same directory as implementation files
-- Integration tests: `__tests__` directory
-- E2E tests: `e2e` directory
-
-### 6.2 Documentation
-
-- README.md: Placed at the root of each feature directory
-- API documentation: Same directory as implementation files
-- Usage examples: Included in Storybook files
-
-## 7. Bundle Optimization
-
-### 7.1 Dynamic Import
-
-- Dynamic import for large features
-- Routing-based code splitting
-- Optimization of shared modules
-
-### 7.2 Tree Shaking
-
-- Remove unused code
-- Explicit side effects
-- Module optimization
-
-# Technology Stack
-
-## 1. Core Technologies
-
-### 1.1 Language
-
-- TypeScript 5.x
-  - Strict mode required
-  - Code quality management with ESLint + Prettier
-  - Strict type checking settings in tsconfig.json
-
-### 1.2 Framework
-
-- React 18.x
-  - Function components only
-  - Hooks pattern as standard
-  - Active use of Suspense and Error Boundary
-
-## 2. Build Tools
-
-### 2.1 Development Environment
-
-- Next.js 14.x
-  - App Router adoption
-  - Server Components utilization
-  - Appropriate cache strategy implementation
-
-### 2.2 Build Configuration
-
-- Webpack 5.x (integrated with Next.js)
-  - Optimization settings adjustment
-  - Module Federation support
-  - Dynamic Imports utilization
-
-### 2.3 Package Management
-
-- pnpm
-  - Strict version management
-  - Monorepo support
-  - Workspace feature utilization
-
-## 3. Testing Framework
-
-### 3.1 Unit Testing
-
-- Vitest
-  - Integration with React Testing Library
-  - Fast execution and Watch mode
-  - Coverage report generation
-
-### 3.2 E2E Testing
-
-- Playwright
-  - Cross-browser testing
-  - Visual Regression Testing
-  - CI/CD pipeline integration
-
-### 3.3 Component Testing
-
-- Storybook 7.x
-  - Interaction testing
-  - Visual testing
-  - Documentation
-
-## 4. UI Library
-
-### 4.1 Components
-
-- shadcn/ui
-  - Customizable components
-  - Accessibility support
-  - Dark mode support
-
-### 4.2 Styling
-
-- Tailwind CSS
-  - Type-safe configuration
-  - Custom utility creation
-  - Design system integration
-
-### 4.3 Icons
-
-- Lucide Icons
-  - TypeScript support
-  - SVG optimization
-  - Tree-shaking support
-
-## 5. State Management
-
-### 5.1 Client State
-
-- Zustand
-  - Type-safe state management
-  - DevTools support
-  - Middleware support
-
-### 5.2 Server State
-
-- TanStack Query v5
-  - Cache management
-  - Optimistic updates
-  - Infinite scroll support
-
-### 5.3 Forms
-
-- React Hook Form
-  - Type-safe form management
-  - Validation with Zod
-  - Performance optimization
-
-## 6. Development Tools
-
-### 6.1 Code Quality
-
-- ESLint
-  - TypeScript ESLint
-  - React Hooks ESLint
-  - Import order enforcement
-
-### 6.2 Formatting
-
-- Prettier
-  - Consistent code style
-  - Editor integration
-  - Git hook integration
-
-### 6.3 Git Hooks
-
-- Husky
-  - Pre-commit type checking
-  - Automated test execution
-  - Lint checking
-
-## 7. CI/CD
-
-### 7.1 Continuous Integration
-
-- GitHub Actions
-  - Automated test execution
-  - Type checking
-  - Code linting and quality checks
-
-### 7.2 Deployment
-
-- Vercel
-  - Preview deployments
-  - Edge functions
-  - Analytics integration
-
-## 8. Monitoring
-
-### 8.1 Error Tracking
-
-- Sentry
-  - Error collection and analysis
-  - Performance monitoring
-  - Release tracking
-
-### 8.2 Performance
-
-- Web Vitals
-  - Core Web Vitals monitoring
-  - User experience measurement
-  - Performance optimization
-
-### 8.3 Analytics
-
-- Vercel Analytics
-  - Real-time monitoring
-  - User behavior analysis
-  - Performance metrics
 
 # Cline Recommended Best Practices Rules
 

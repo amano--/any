@@ -27,7 +27,8 @@ The following files are restricted from reading and modification:
 
 ### 1.1 Regular Update Triggers
 
-1. Weekly Report Regular Update (Details: [weekly-report-update.md](/docs/setup/cline/rules/task/weekly-report-update.md))
+1. Weekly Report Regular Update (Details: [weekly-report-update.md](docs/setup/cline/rules/task/weekly-report-update.md))
+
    - System trigger times: 9:00, 11:00, 13:00, 15:00, 17:00, 19:00, 21:00
    - Manual trigger: "Weekly Report Update"
 
@@ -68,7 +69,7 @@ The following files are restricted from reading and modification:
 
 ## 2. Task Details
 
-For detailed weekly report update procedures, please refer to [weekly-report-update.md](/docs/setup/cline/rules/task/weekly-report-update.md).
+For detailed weekly report update procedures, please refer to [weekly-report-update.md](docs/setup/cline/rules/task/weekly-report-update.md).
 
 ### 2.1 Knowledge Summary Creation
 
