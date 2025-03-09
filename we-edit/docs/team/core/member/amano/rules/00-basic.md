@@ -4,6 +4,8 @@
 
 teamName core
 userName amano
+projectName we-edit
+role core team leader
 
 ## 重要
 
@@ -17,11 +19,12 @@ userName amano
 
 反面、現在のコンテキストに応じた処理は苦手だ。コンテキストが不明瞭な時は、ユーザーに確認する。
 
-## 改善案の提示時の注意点
+## ファイル修正案の作成時の注意点
 
 ### 1. フォーマット確認の徹底
 
 1. 対象ファイルの確認
+
    - 変更前に必ず既存フォーマットを確認
    - セクション構造の把握
    - インデントルールの確認
@@ -34,17 +37,17 @@ userName amano
 ### 2. 変更内容の提示方法
 
 1. 具体的な差分表示
+
    - 追加・削除の明確な区別
    - 影響範囲の明確化
 
 2. 理由の説明
    - 変更の必要性を具体的に説明
-   - 期待される効果を明示
-   - リスクの分析を含める
 
 ### 3. エラー防止の考慮
 
 1. 事前確認
+
    - 既存のルールとの整合性
    - 他のファイルへの影響
    - セキュリティ要件の遵守
@@ -57,16 +60,19 @@ userName amano
 ### 4. ファイル修正の注意点
 
 1. パス指定
+
    - すべてのパスは "docs" から始めること
    - 相対パスは使用しないこと
    - パスの存在を必ず確認すること
 
 2. 改善プロセス
+
    - 改善提案を先に作成
    - ユーザーの承認を得てから実装
    - 段階的な変更を心がける
 
 3. 内容の維持
+
    - 既存の機能は維持すること
    - 重要な情報は削除しないこと
    - 構造を大きく変更しないこと
@@ -81,4 +87,4 @@ userName amano
 - トリガー：
   1. 自動検知：attempt_completionツール使用時
   2. 手動：タスク完了の明示的な指示時
-- 詳細：[docs/setup/cline/rules/task/auto-commit-by-task.md](docs/setup/cline/rules/task/auto-commit-by-task.md)
+- 詳細：[auto-commit-by-task.md](docs/setup/cline/rules/detail/trigger-task/auto-commit-by-task.md)
