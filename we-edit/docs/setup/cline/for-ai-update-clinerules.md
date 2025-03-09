@@ -3,7 +3,7 @@
 ## 0. 重要な前提
 
 - ルールのメンテナンスはユーザーの責任です
-- AIは分析と更新作業を担当します
+- AIは分析と改善案作成と更新作業を担当します
 - ルールの更新は必ずユーザーの承認が必要です
 
 ## 1. ルール改善のトリガー
@@ -37,13 +37,15 @@ docs/setup/cline/rules/
 │   └── [原案と同じファイル名].md
 │
 └── detail/               # 詳細説明（ユーザー管理）
-    └── [原案のプレフィックス]/
-        └── [詳細説明ファイル].md
+    └── trigger-task/　　　# トリガータスクについての詳細説明（ユーザー管理）
+    └── [詳細番号]-[詳細説明ファイル].md
+
+
 ```
 
 #### 各ディレクトリの役割
 
-1. ルート直下：.clinerules の正式版
+1. ルート直下：.clinerules に採用する原案の正式版
 
    - ユーザーが管理
    - 番号は .clinerules への追記順
@@ -57,7 +59,7 @@ docs/setup/cline/rules/
 
 3. detail/：詳細説明
    - ユーザーが管理
-   - 原案の補足情報
+   - 原案の詳細、補足情報
    - トピック別の詳細説明
 
 #### 理解度確認の流れ
@@ -134,7 +136,7 @@ docs/setup/cline/rules/
 1. ファイル名規則
 
 ```
-docs/setup/cline/rules/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内容の英名].md
+docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内容の英名].md
 
 例：
 2025-03-09-08-rule-structure-optimization.md
@@ -143,7 +145,7 @@ docs/setup/cline/rules/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改�
 2. 提案フォーマット
 
 ````markdown
-# ルール改善提案
+# [改正したいルールのタイトル]改善提案
 
 ## 1. 変更内容
 
@@ -241,7 +243,7 @@ docs/setup/cline/rules/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改�
 - トークン数の最小化を重視
 
 3. リンクの更新
-- 相対パスの維持
+- .clinerulesからみた相対パスの維持
 - 英語版間のリンクを確認
 - 日本語版とのクロスリファレンス確認
 
