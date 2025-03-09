@@ -27,15 +27,18 @@
 ### 2.1 情報収集
 
 1. メンバールールの確認
+
    ```
    docs/team/[teamName]/member/[userName]/rules/
    ```
+
    - 00-basic.mdから開始
    - 個人情報セクションを確認
    - 重要セクションを理解
    - タスク関連設定を把握
 
 2. ユーザー特性の把握
+
    ```yaml
    個人情報:
      基本情報:
@@ -57,9 +60,11 @@
 ### 2.2 理解度確認
 
 1. 完全理解の場合
+
    - チームルールの確認に進む
 
 2. 部分的理解の場合
+
    - 不足部分を再確認
    - 必要に応じて質問
 
@@ -71,17 +76,21 @@
 ## 3. ルール階層の分析
 
 ### 3.1 チームルールの確認
+
 ```
 docs/team/[teamName]/rules/
 ```
+
 - メンバールールとの整合性
 - チーム固有のプラクティス
 - ワークフローの要件
 
 ### 3.2 プロジェクトルールの確認
+
 ```
 docs/setup/cline/rules/detail/
 ```
+
 - プロジェクトの基本方針
 - セキュリティ要件
 - 標準プラクティス
@@ -89,33 +98,40 @@ docs/setup/cline/rules/detail/
 ## 4. プレビュー作成フェーズ
 
 ### 4.1 プレビューファイルの作成
+
 ```
 docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-clinerules-preview.md
 ```
 
 ### 4.2 プレビュー構造
+
 ```markdown
 # .clinerules プレビュー
 
 ## 1. メンバールール（最優先）
+
 [個人情報とユーザー特性]
 [作業プロセスと自動化設定]
 
 ## 2. チームルール（次優先）
+
 [チーム共通の規約とプラクティス]
 
 ## 3. プロジェクトルール（基盤）
+
 [プロジェクト全体の要件と制約]
 ```
 
 ### 4.3 レビュープロセス
 
 1. 自己チェック
+
    - メンバー情報の正確性
    - ルール間の整合性
    - 設定の実現可能性
 
 2. ユーザーレビュー依頼
+
    - 構造の説明
    - 重要ポイントの強調
    - 確認項目の明示
@@ -130,18 +146,21 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-clin
 ### 5.1 AIの熟考プロセス
 
 1. 過去の作業の振り返り
+
    - 実施したタスクの分析
    - 発生した問題点の整理
    - 非効率な手順の特定
    - エラーが起きやすい箇所の把握
 
 2. ルールの利用状況分析
+
    - よく使用されるルールの特定
    - 問題が発生しやすい箇所
    - 理解しにくい部分の特定
    - トークン効率の低い箇所
 
 3. 改善方針の検討
+
    - トークン効率の向上
    - 理解しやすさの改善
    - エラー防止の仕組み
@@ -156,8 +175,9 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-clin
 ### 5.2 改善提案の作成と保存
 
 1. ファイル名規則
+
 ```
-docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-[改善内容の英名].md
+docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-mm-[改善内容の英名].md
 ```
 
 2. 提案フォーマット
@@ -166,15 +186,19 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-[改
 # [改正したいルールのタイトル]改善提案
 
 ## 1. 変更内容
+
 [変更の具体的な内容]
 
 ## 2. 変更理由
+
 [なぜこの変更が最適なのか]
 
 ## 3. 影響範囲
+
 [この変更が影響を与える範囲]
 
 ## 4. 期待される効果
+
 [変更による具体的な改善点]
 ```
 
@@ -190,11 +214,13 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-[改
 ### 6.1 生成前の最終確認
 
 1. ユーザー特性の反映
+
    - 作業スタイルの考慮
    - 重要な注意点
    - 自動化設定
 
 2. ルール階層の確認
+
    - 優先順位の正確性
    - 依存関係の整理
    - 矛盾の有無
@@ -207,11 +233,13 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-[改
 ### 6.2 生成と検証
 
 1. ファイル生成
+
    - 承認済みプレビューに基づく生成
    - 形式の検証
    - リンクの確認
 
 2. 動作確認
+
    - 基本機能の確認
    - エラーケースのテスト
    - パフォーマンスの確認
@@ -226,6 +254,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-[改
 ### 7.1 作業記録の管理
 
 1. ログの保存
+
    - 作業プロセス
    - 決定事項
    - 重要な注意点
@@ -238,6 +267,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-[改
 ### 7.2 プロセス改善
 
 1. 定期的な見直し
+
    - 手順の最適化
    - テンプレートの更新
    - ツールの改善
