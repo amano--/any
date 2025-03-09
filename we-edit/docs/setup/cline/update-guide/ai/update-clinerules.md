@@ -25,7 +25,9 @@
 ## 1.5 計画書作成フェーズ
 
 ### 1.5.1 計画書フォーマット参照
+
 AIは以下のファイルのフォーマットを厳密に遵守すること：
+
 ```
 docs/setup/cline/update-guide/ai/create-clinerules-plan.md
 ```
@@ -33,6 +35,7 @@ docs/setup/cline/update-guide/ai/create-clinerules-plan.md
 ### 1.5.2 計画書作成の事前チェック
 
 1. フォーマット確認手順
+
    - 00-personal.md の構造を必ず確認
    - 01-team.md の構造を必ず確認
    - 02-project.md の構造を必ず確認
@@ -46,12 +49,15 @@ docs/setup/cline/update-guide/ai/create-clinerules-plan.md
    ```
 
 ### 1.5.3 計画書作成プロセス
+
 1. ルールファイルの確認
+
    - 00-personal.md の構造確認
    - 01-team.md の構造確認
    - 02-project.md の構造確認
 
 2. 計画書の構造設計
+
    - 前提確認セクション
    - 作業計画セクション
    - 検証計画セクション
@@ -62,6 +68,7 @@ docs/setup/cline/update-guide/ai/create-clinerules-plan.md
    - 実装前検証項目の準備
 
 ### 1.5.4 計画書の保存
+
 ```
 docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-plan.md
 ```
@@ -71,15 +78,18 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
 ### 2.1 情報収集
 
 1. メンバールールの確認
+
    ```
    docs/team/[teamName]/member/[userName]/rules/
    ```
+
    - 00-basic.mdから開始
    - 個人情報セクションを確認
    - タスク関連設定を把握
    - AIとの協業方法を理解
 
 2. 段階的な理解度チェック
+
    ```yaml
    確認項目:
      基本情報:
@@ -93,7 +103,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
        - 不得意分野
 
      作業スタイル:
-       - プログラミング方針 
+       - プログラミング方針
        - AIとの協業方法
        - 品質管理アプローチ
    ```
@@ -101,11 +111,13 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
 ### 2.2 理解度確認
 
 1. 完全理解の場合
+
    - すべての要件を把握
    - 具体的な適用方法を理解
    - 次のフェーズに進行可能
 
 2. 部分的理解の場合
+
    - 不足部分の特定
    - 追加確認事項の整理
    - 再確認の実施
@@ -124,6 +136,7 @@ docs/team/[teamName]/rules/
 ```
 
 チェック項目：
+
 - メンバールールとの整合性
 - チーム固有のプラクティス
 - ワークフローの要件
@@ -135,6 +148,7 @@ docs/setup/cline/rules/detail/
 ```
 
 チェック項目：
+
 - プロジェクトの基本方針
 - セキュリティ要件
 - 標準プラクティス
@@ -144,6 +158,7 @@ docs/setup/cline/rules/detail/
 ### 4.1 プレビュー作成の前提条件
 
 1. 計画書の完了確認
+
    - すべてのセクションが記載済み
    - エラー防止メカニズムの準備完了
    - ユーザーの承認取得
@@ -156,6 +171,7 @@ docs/setup/cline/rules/detail/
 ### 4.2 プレビュー作成の事前チェック
 
 1. フォーマット確認
+
    - 00-personal.md 形式での個人ルール
    - 01-team.md 形式でのチームルール
    - 02-project.md 形式でのプロジェクトルール
@@ -170,11 +186,13 @@ docs/setup/cline/rules/detail/
 ### 4.3 段階的な作成プロセス
 
 1. 基本情報の組み込み
+
    - メンバー情報の反映
    - 技術特性の考慮
    - 作業スタイルの統合
 
 2. ルール階層の構築
+
    - 個人ルールの優先度設定
    - チームルールとの整合性確保
    - プロジェクトルールの基盤化
@@ -187,30 +205,44 @@ docs/setup/cline/rules/detail/
 ### 4.4 プレビューファイルの作成
 
 1. ファイル生成
+
    ```
-   docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-preview.md
+   docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD/YYYY-MM-DD-HH-clinerules-preview.md
    ```
 
 2. 構造
+
    ```markdown
    # .clinerules プレビュー
 
    ## 1. 個人ルール設定
+
    ### 1.1 確認対象のルール
+
    ### 1.2 理解度判定基準
+
    ### 1.3 重点確認項目
 
    ## 2. チームルール設定
+
    ### 2.1 確認対象のルール
+
    ### 2.2 理解度判定基準
+
    ### 2.3 重点確認項目
 
    ## 3. プロジェクトルール設定
+
    ### 3.1 メモリバンクの基本概念
+
    ### 3.2 メモリバンクの構造と更新
+
    ### 3.3 ドキュメント更新の原則
+
    ### 3.4 Git運用ルール
+
    ### 3.5 プロジェクト基本ルール
+
    ### 3.6 トリガー処理ルール
    ```
 
@@ -222,16 +254,19 @@ docs/setup/cline/rules/detail/
 ## 5. 作業フロー概要
 
 ### 5.1 計画フェーズ
+
 - 計画書フォーマットの確認
 - 計画書の作成
 - 承認の取得
 
 ### 5.2 プレビューフェーズ
+
 - プレビューの作成
 - レビューと修正
 - 承認の取得
 
 ### 5.3 実装フェーズ
+
 - .clinerules の生成
 - 検証の実施
 - 最終承認の取得
@@ -241,16 +276,19 @@ docs/setup/cline/rules/detail/
 ### 6.1 AIの熟考プロセス
 
 1. タスク履歴の確認
+
    - 過去のタスク実行状況
    - 成功/失敗の要因分析
    - 効率化可能なポイント
 
 2. ユーザー特性の分析
+
    - コミュニケーションスタイル
    - 作業の優先順位付け方法
    - フィードバックの傾向
 
 3. 改善方針の検討
+
    - トークン効率の向上
    - 理解しやすさの改善
    - エラー防止の仕組み
@@ -264,24 +302,30 @@ docs/setup/cline/rules/detail/
 ### 6.2 改善提案の作成と保存
 
 1. ファイル名規則
+
    ```
-   docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-mm-[改善内容の英名].md
+   docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD/YYYY-MM-DD-HH-mm-[改善内容の英名].md
    ```
 
 2. 提案フォーマット
+
    ```markdown
    # [改正したいルールのタイトル]改善提案
 
    ## 1. 変更内容
+
    [変更の具体的な内容]
 
    ## 2. 変更理由
+
    [なぜこの変更が最適なのか]
 
    ## 3. 影響範囲
+
    [この変更が影響を与える範囲]
 
    ## 4. 期待される効果
+
    [変更による具体的な改善点]
    ```
 
@@ -305,11 +349,13 @@ docs/setup/cline/rules/detail/
 ### 8.1 日本語版の生成（clinerules.ja）
 
 1. プレビューからの移行
+
    - プレビューの承認確認
    - 最終的な調整の反映
    - ファイル名の確認
 
 2. 生成と保存
+
    ```
    .clinerules.ja
    ```
@@ -322,16 +368,19 @@ docs/setup/cline/rules/detail/
 ### 8.2 英語版への変換（.clinerules）
 
 1. 変換の基本方針
+
    - トークン数の削減を優先
    - 文脈の維持を重視
    - 技術用語の適切な使用
 
 2. 変換プロセス
+
    - セクションごとの順次変換
    - 重要な文脈の抽出
    - 簡潔な表現への置き換え
 
 3. 最適化のポイント
+
    - 冗長な説明の削除
    - 同じ意味の繰り返しを避ける
    - 箇条書きの活用
@@ -344,11 +393,13 @@ docs/setup/cline/rules/detail/
 ### 8.3 バイリンガル検証
 
 1. 日本語版の検証
+
    - 内容の完全性
    - 説明の明確さ
    - フォーマットの一貫性
 
 2. 英語版の検証
+
    - トークン数の確認
    - 文脈の保持確認
    - 技術用語の適切性
@@ -363,6 +414,7 @@ docs/setup/cline/rules/detail/
 ### 9.1 作業記録の管理
 
 1. ログの保存
+
    ```yaml
    記録項目:
      作業プロセス:
@@ -384,6 +436,7 @@ docs/setup/cline/rules/detail/
 ### 9.2 プロセス改善
 
 1. 定期的な見直し
+
    - 手順の最適化
    - テンプレートの更新
    - ツールの改善
@@ -396,11 +449,13 @@ docs/setup/cline/rules/detail/
 ### 9.3 バイリンガル版の最適化
 
 1. トークン効率の向上
+
    - 英語表現の最適化
    - 構造の簡素化
    - 重複の排除
 
 2. 文脈維持の工夫
+
    - 重要ポイントの明確化
    - 関係性の表現方法
    - 簡潔な説明技術
