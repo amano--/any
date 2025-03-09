@@ -29,31 +29,27 @@
 AIは以下の3つの階層のルールを理解し、それぞれの役割を認識すること：
 
 1. メンバールール（個人固有の設定）
-   ```bash
    docs/team/[teamName]/member/[userName]/rules/
    例：docs/team/core/member/amano/rules/
-   ```
 
 2. チームルール（チームメンバーとして共通の設定）
-   ```bash
    docs/team/[teamName]/rules/
    例：docs/team/core/rules/
-   ```
 
 3. プロジェクトルール（プロジェクトメンバーとして共通の設定）
-   ```bash
    docs/setup/cline/rules/detail/
-   ```
 
 ### 2.2 .clinerules生成の優先順位
 
 AIは必ず以下の順序でルールを読み込み、.clinerules を生成すること：
 
 1. メンバールール（最優先）
+
    - 個人の開発環境に特化した設定
    - 個人のワークフロー最適化設定
 
 2. チームルール（次優先）
+
    - チーム共通の開発プラクティス
    - チーム固有のワークフロー
 
@@ -72,11 +68,13 @@ AIは必ず以下の順序でルールを読み込み、.clinerules を生成す
 ### 3.1 分析内容
 
 1. ルール間の整合性
+
    - 重複や矛盾の確認
    - 参照関係の確認
    - 更新必要箇所の特定
 
 2. 形式の統一性
+
    - フォーマットの確認
    - インデントの確認
    - リンクの有効性確認
@@ -91,18 +89,21 @@ AIは必ず以下の順序でルールを読み込み、.clinerules を生成す
 ### 4.1 AIの熟考プロセス
 
 1. 過去の作業の振り返り
+
    - 実施したタスクの分析
    - 発生した問題点の整理
    - 非効率な手順の特定
    - エラーが起きやすい箇所の把握
 
 2. ルールの利用状況分析
+
    - よく使用されるルールの特定
    - 問題が発生しやすい箇所
    - 理解しにくい部分の特定
    - トークン効率の低い箇所
 
 3. 改善方針の検討
+
    - トークン効率の向上
    - 理解しやすさの改善
    - エラー防止の仕組み
@@ -117,8 +118,9 @@ AIは必ず以下の順序でルールを読み込み、.clinerules を生成す
 ### 4.2 改善提案の作成と保存
 
 1. ファイル名規則
+
 ```
-docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内容の英名].md
+docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM/YYYY-MM-DD-HH-[改善内容の英名].md
 
 例：
 2025-03-09-08-rule-structure-optimization.md
@@ -126,7 +128,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内�
 
 2. 提案フォーマット
 
-```markdown
+````markdown
 # [改正したいルールのタイトル]改善提案
 
 ## 1. 変更内容
@@ -135,6 +137,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内�
 - [削除する部分]
 + [追加する部分]
 ```
+````
 
 ## 2. 変更理由
 
@@ -143,43 +146,53 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内�
 ## 3. 概要
 
 ### 対象ファイル
+
 [改善対象のファイルパス]
 
 ### 改善の動機
+
 [なぜこの改善が必要か、簡潔に説明]
 
 ### 期待される成果
+
 [この改善によって得られる具体的な効果]
 
 ## 4. 現状の課題
 
 ### 4.1 問題点
+
 - [具体的な問題点を箇条書きで列挙]
 - [各問題点は明確で具体的に]
 
 ### 4.2 影響範囲
+
 - [この問題が影響を与えている範囲]
 - [関連するファイルやプロセス]
 
 ## 5. 実装計画
 
 ### 5.1 実装手順
+
 1. [具体的な実装ステップ]
 2. [各ステップの詳細]
 
 ### 5.2 検証項目
+
 - [実装後の確認ポイント]
 - [期待される動作や結果]
 
 ## 6. リスク評価
 
 ### 6.1 潜在的な問題
+
 - [予想される問題点]
 - [対応策]
 
 ### 6.2 代替案
+
 - [他の解決方法]
 - [採用しなかった理由]
+
 ```
 
 ### 4.3 提案時の注意点
@@ -195,6 +208,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内�
 
 1. ファイル配置と命名規則
 ```
+
 # 日本語版と同じファイル名を維持
 
 日本語版：docs/setup/cline/rules/task/auto-commit-by-task.md
@@ -203,7 +217,8 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内�
 # ディレクトリ構造も維持
 
 日本語版のパスの rules/ 直下に en/ を追加
-```
+
+````
 
 2. 作成のポイント
    - 簡潔な英語表現の使用
@@ -222,7 +237,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-[改善内�
 ```bash
 cd docs/setup/cline
 ./mk-clinerules.sh
-```
+````
 
 2. 更新結果の確認
    - 生成された内容の確認
@@ -256,3 +271,4 @@ git add docs/setup/cline/rules/en/[変更ファイル]
 git add docs/setup/cline/rules/[変更ファイル]
 git add .clinerules
 git commit -m "[コミットメッセージ]"
+```
