@@ -24,3 +24,15 @@ userName amano
   2. 手動：タスク完了の明示的な指示時
 - 詳細：[auto-commit-by-task.md](docs/setup/cline/rules/task/auto-commit-by-task.md)
 
+## 2. ルール改善時（自動検知または「ルール改善」）
+
+### 2.1 トリガー条件
+
+- 自動検知：以下のキーワードを含む文章を検出した場合
+  - 「ルールの問題点が見つかりました」
+  - 「ルールの改善が必要です」
+  - 「ルールの更新を提案します」
+  - 「ルールの矛盾を発見しました」
+  - 「ルールの最適化が可能です」
+- 手動：「ルール改善」というキーワード
+- 詳細：[rule-improvement.md](docs/setup/cline/rules/task/rule-improvement.md)
