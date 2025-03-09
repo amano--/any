@@ -86,17 +86,16 @@ AIは個人ルールの確認後、以下のチームルールを確認するこ
 
 AIは作業開始時に、以下のドキュメントの内容理解を確認すること：
 
-```
-docs/setup/cline/rules/detail/00-basic.md
-docs/setup/cline/rules/detail/01-trigger-task.md
-docs/setup/cline/rules/detail/02-git-workflow.md
-docs/setup/cline/rules/detail/03-clinerules-best-practices.md
-docs/setup/cline/rules/detail/04-memory-bank.md
-docs/setup/cline/rules/detail/05-document-update.md
-docs/setup/cline/rules/detail/06-project-intelligence.md
-docs/setup/cline/rules/detail/07-communication.md
-docs/setup/cline/rules/detail/08-security.md
-```
+1. docs/setup/cline/rules/detail/basic/00-basic.md
+2. docs/setup/cline/rules/detail/basic/01-trigger-task.md
+3. docs/setup/cline/rules/detail/basic/02-git-workflow.md
+4. docs/setup/cline/rules/detail/basic/03-clinerules-best-practices.md
+5. docs/setup/cline/rules/detail/trigger-task/adr-creation.md
+6. docs/setup/cline/rules/detail/trigger-task/auto-commit-by-task.md
+7. docs/setup/cline/rules/detail/trigger-task/guideline-revision.md
+8. docs/setup/cline/rules/detail/trigger-task/knowledge-update.md
+9. docs/setup/cline/rules/detail/trigger-task/rule-improvement.md
+10. docs/setup/cline/rules/detail/trigger-task/weekly-report-update.md
 
 ### 理解度判定基準
 
