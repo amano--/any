@@ -4,11 +4,9 @@
 
 ### 1.1 確認対象のルール
 
-AIは作業開始時に、以下の順序でルールを確認すること：
+AIは作業開始時に、以下のドキュメントの内容を理解していることを確認すること：
 
-1. メンバー固有のルール
-   docs/team/[teamName]/member/[userName]/rules/
-   例：docs/team/core/member/amano/rules/
+1. [docs/team/[teamName]/member/[userName]/rules/ 以下のすべてのファイルのルートからの相対パスが列挙]
 
 ### 1.2 理解度判定基準
 
