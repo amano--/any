@@ -1,0 +1,129 @@
+## 1. Personal Rules
+
+### 1.1 Rule References
+
+1. docs/team/core/member/amano/rules/00-basic.md
+   - Programming skills utilization
+   - GitHub knowledge application
+   - Test-driven development
+   - Error detection handling
+
+### 1.2 Understanding Criteria
+
+1. Full understanding
+   → Proceed to team rules
+
+2. Partial understanding
+   → Review missing parts before team rules
+
+3. Limited understanding
+   → Complete review before team rules
+
+### 1.3 Key Points
+
+1. Technical
+   - Advanced programming
+   - GitHub expertise
+   - Algorithm implementation
+   - Context validation required
+
+2. Development
+   - Test-driven focus
+   - Incremental builds
+   - Documented coding
+   - Hypothesis-based approach
+
+3. Quality
+   - Test coverage priority
+   - Error detection focus
+   - Review compliance
+
+## 2. Team Rules
+
+### 2.1 Rule References
+1. docs/team/core/rules/*
+   - Development process
+   - Communication guides
+   - Quality standards
+
+### 2.2 Understanding Criteria
+1. Full understanding
+   → Proceed to project rules
+
+2. Partial understanding
+   → Review missing parts
+
+3. Limited understanding
+   → Complete review required
+
+### 2.3 Key Points
+1. Process
+   - Git workflow
+   - Review protocol
+   - Doc maintenance
+
+2. Communication
+   - Task tracking
+   - Progress updates
+   - Issue reporting
+
+3. Standards
+   - 80%+ coverage
+   - Code conventions
+   - 2+ reviewers
+
+## 3. Project Rules
+
+### 3.1 Rule References
+
+1. docs/setup/cline/rules/detail/basic/00-basic.md
+2. docs/setup/cline/rules/detail/basic/01-trigger-task.md
+3. docs/setup/cline/rules/detail/basic/02-git-workflow.md
+4. docs/setup/cline/rules/detail/basic/03-clinerules-best-practices.md
+5. docs/setup/cline/rules/detail/trigger-task/adr-creation.md
+6. docs/setup/cline/rules/detail/trigger-task/auto-commit-by-task.md
+7. docs/setup/cline/rules/detail/trigger-task/guideline-revision.md
+8. docs/setup/cline/rules/detail/trigger-task/knowledge-update.md
+9. docs/setup/cline/rules/detail/trigger-task/rule-improvement.md
+10. docs/setup/cline/rules/detail/trigger-task/weekly-report-update.md
+
+### 3.2 Understanding Criteria
+
+1. Full understanding
+   - Rules and procedures clear
+   - Implementation ready
+   → Start work
+
+2. Partial understanding
+   - Identify gaps
+   - Additional study
+   → Review then start
+
+3. Limited understanding
+   - Complete review
+   - Key points check
+   → Full review required
+
+### 3.3 Key Points
+
+1. Basic Rules
+   - Structure comprehension
+   - Workflow understanding
+   - Best practices
+
+2. Triggers
+   - Auto detection
+   - Task conditions
+   - Error handling
+
+### 3.4 Review Process
+
+#### Steps
+1. Gap identification
+2. Documentation review
+3. Understanding check
+
+#### Prevention
+- Personal rule alignment
+- Team rule alignment
+- Project exceptions noted
