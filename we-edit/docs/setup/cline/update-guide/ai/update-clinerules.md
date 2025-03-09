@@ -22,24 +22,34 @@
 
 ユーザーから「ルール改善」命令を受けた場合
 
-## 1.5 参照すべきルールファイル
+### 1.5 計画書作成フェーズ
 
+#### 1.5.1 計画書フォーマット参照
 AIは以下のファイルのフォーマットを厳密に遵守すること：
+```
+docs/setup/cline/update-guide/ai/create-clinerules-plan.md
+```
 
-1. 個人ルール（最優先）
-   ```
-   docs/setup/cline/rules/00-personal.md
-   ```
+#### 1.5.2 計画書作成プロセス
+1. ルールファイルの確認
+   - 00-personal.md の構造確認
+   - 01-team.md の構造確認
+   - 02-project.md の構造確認
 
-2. チームルール（次優先）
-   ```
-   docs/setup/cline/rules/01-team.md
-   ```
+2. 計画書の構造設計
+   - 前提確認セクション
+   - 作業計画セクション
+   - 検証計画セクション
 
-3. プロジェクトルール（基盤）
-   ```
-   docs/setup/cline/rules/02-project.md
-   ```
+3. エラー防止メカニズムの組込
+   - 確認ポイントの設定
+   - エラー対応の定義
+   - 実装前検証項目の準備
+
+#### 1.5.3 計画書の保存
+```
+docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-plan.md
+```
 
 ## 2. メンバー理解フェーズ
 
@@ -116,7 +126,19 @@ docs/setup/cline/rules/detail/
 
 ## 4. プレビュー作成フェーズ
 
-### 4.1 段階的な作成プロセス
+### 4.1 プレビュー作成の前提条件
+
+1. 計画書の完了確認
+   - すべてのセクションが記載済み
+   - エラー防止メカニズムの準備完了
+   - ユーザーの承認取得
+
+2. 必要な情報の確認
+   - メンバー情報の把握
+   - チームルールの理解
+   - プロジェクトルールの確認
+
+### 4.2 段階的な作成プロセス
 
 1. 基本情報の組み込み
    - メンバー情報の反映
@@ -133,13 +155,13 @@ docs/setup/cline/rules/detail/
    - エラー処理の追加
    - パフォーマンスの最適化
 
-### 4.2 プレビューファイルの作成
+### 4.3 プレビューファイルの作成
 
 ```
 docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-preview.md
 ```
 
-### 4.3 プレビュー構造
+### 4.4 プレビュー構造
 
 1. ファイル構成
    ```markdown
@@ -169,9 +191,26 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
    - 箇条書きでの記述を基本とする
    - サブセクションは適切にインデント
 
-## 5. 改善案の作成
+## 5. 作業フロー概要
 
-### 5.1 AIの熟考プロセス
+### 5.1 計画フェーズ
+- 計画書フォーマットの確認
+- 計画書の作成
+- 承認の取得
+
+### 5.2 プレビューフェーズ
+- プレビューの作成
+- レビューと修正
+- 承認の取得
+
+### 5.3 実装フェーズ
+- .clinerules の生成
+- 検証の実施
+- 最終承認の取得
+
+## 6. 改善案の作成
+
+### 6.1 AIの熟考プロセス
 
 1. タスク履歴の確認
    - 過去のタスク実行状況
@@ -194,7 +233,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
    - リスクの分析
    - 効果の予測
 
-### 5.2 改善提案の作成と保存
+### 6.2 改善提案の作成と保存
 
 1. ファイル名規則
    ```
@@ -218,24 +257,24 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
    [変更による具体的な改善点]
    ```
 
-## 6. 改善案のユーザー確認
+## 7. 改善案のユーザー確認
 
-### 6.1 提案時の注意点
+### 7.1 提案時の注意点
 
 - 具体的な改善内容を示す
 - 変更の理由を明確に説明
 - トークン削減効果を予測
 - 影響範囲を明示
 
-### 6.2 フィードバック対応
+### 7.2 フィードバック対応
 
 - 修正要求への対応
 - 変更履歴の管理
 - 再提案の実施
 
-## 7. .clinerules生成フェーズ
+## 8. .clinerules生成フェーズ
 
-### 7.1 生成前の最終確認
+### 8.1 生成前の最終確認
 
 ```yaml
 チェック項目:
@@ -255,7 +294,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
     - エラー処理の確認
 ```
 
-### 7.2 生成と検証
+### 8.2 生成と検証
 
 1. 自動チェックリスト
    ```yaml
@@ -286,9 +325,9 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
    - 必要に応じた調整
    - 承認の記録
 
-## 8. 継続的改善
+## 9. 継続的改善
 
-### 8.1 作業記録の管理
+### 9.1 作業記録の管理
 
 1. ログの保存
    ```yaml
@@ -309,7 +348,7 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
        - 検討事項
    ```
 
-### 8.2 プロセス改善
+### 9.2 プロセス改善
 
 1. 定期的な見直し
    - 手順の最適化
@@ -320,22 +359,3 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
    - ユーザーからの提案
    - 効率化の検討
    - 新規要件の取り込み
-
-## 9. 作業フロー最適化
-
-### 9.1 段階的な作業プロセス
-
-1. ルールファイル形式の確認
-   - 00-personal.md の構造確認
-   - 01-team.md の構造確認
-   - 02-project.md の構造確認
-
-2. プレビュー作成の段階化
-   - 個人ルールセクションの作成
-   - チームルールセクションの作成
-   - プロジェクトルールセクションの作成
-
-3. レビューと修正
-   - フォーマット整合性の確認
-   - 内容の過不足チェック
-   - 優先順位の確認
