@@ -136,7 +136,7 @@ docs/setup/cline/update-guide/ai/create-clinerules-plan.md
 ### 1.5.4 計画書の保存
 
 ```
-docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-plan.md
+docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD/YYYY-MM-DD-HH-clinerules-plan.md
 ```
 
 ## 2. メンバー理解フェーズ
@@ -196,12 +196,14 @@ docs/setup/cline/logs/ai/advice/[teamName]/[userName]/YYYY-MM-DD-HH-clinerules-p
 ### 5.3 エラー防止プロセス
 
 1. 事前確認（各フェーズ共通）
+
    - 前フェーズの承認確認
    - すべてのパスが "docs" から始まることを確認
    - 参照ファイルの存在確認
    - ファイル構造の整合性確認
 
 2. 実行時確認
+
    - 変更前の状態を記録
    - 段階的な更新の実施
    - 各ステップでの整合性確認
@@ -271,10 +273,11 @@ docs/setup/cline/rules/detail/
 ### 3.1 プレビュー作成の前提条件
 
 1. 計画書の承認確認（必須）
+
    - すべてのセクションが完了
    - ユーザーの承認取得済み
    - エラー防止メカニズムの準備完了
-   ※承認がない場合は次フェーズに進めない
+     ※承認がない場合は次フェーズに進めない
 
 2. 必要な情報の確認
    - メンバー情報の把握
@@ -369,6 +372,7 @@ docs/setup/cline/rules/detail/
 ### 5.1 チェックポイント管理
 
 1. フェーズ移行時
+
    - 前フェーズの完了確認
    - 承認状態の確認
    - 依存関係の確認
@@ -381,6 +385,7 @@ docs/setup/cline/rules/detail/
 ### 5.2 承認状態管理
 
 1. 承認記録
+
    - 承認者の記録
    - 承認日時の記録
    - 承認内容の記録
