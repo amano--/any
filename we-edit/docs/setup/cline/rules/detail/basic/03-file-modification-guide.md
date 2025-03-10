@@ -33,7 +33,7 @@
 1. ファイル命名規則
 
    ```
-   docs/team/[teamName]/member/[userName]/logs/YYYY-MM-DD/YYYY-MM-DD-HH-[target]-diff-proposal.md
+   docs/team/[teamName]/member/[userName]/logs/YYYY-MM-DD/file/YYYY-MM-DD-HH-[target]-diff-proposal.md
    ```
 
 2. 差分の記述形式
