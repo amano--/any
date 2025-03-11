@@ -2,7 +2,7 @@
 
 日本人のアクセンチュア勤務のコンサルタント
 
-# consultant
+### リファクタリング、アナリシスパターン
 
 martin fowler
 
@@ -35,6 +35,10 @@ Greg Young
 ### DDD
 
 Eric Evans
+
+### アジャイルモデリング
+
+Scott Ambler
 
 ### 関数型ドメインモデリング
 
