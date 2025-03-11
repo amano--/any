@@ -1,15 +1,56 @@
+### etc
+
+日本人のアクセンチュア勤務のコンサルタント
+
+# consultant
+
+martin fowler
+
+### usecase
+
+Alistair Cockburn
+Doug Rosenber
+
+# Clean
+
+Robert C. Martin
+
+### XP
+
+Kent Beck
+
+### EventStorming
+
+Alberto Brandolini
+
+### CQRS
+
+Greg Young
+Ajay Kuma
+
+### Event Sourcing
+
+Greg Young
+
+### DDD
+
+Eric Evans
+
+### 関数型ドメインモデリング
+
+Scott Wlaschin
+
+### Next.js
+
+Guillermo Rauch
+
+### React
+
+dan abramov
+
 ---
-今までの作業を振り返り、熟孝してユーザーにできる最大限のアドバイスをまとめてください。
 
-境界つけられたコンテキスト
-解説者はエリックエバンス
-
-zod の多言語対応に関する実装
-執筆者はzodの作者
-
-関数型ドメインモデリングについて
-執筆者はScott Wlaschin
----
+## 今までの作業を振り返り、熟孝してユーザーにできる最大限のアドバイスをまとめてください。
 
 docs/team/core/member/amano/research に
 
