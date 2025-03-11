@@ -6,7 +6,7 @@
 
 martin fowler
 
-### usecase
+### Effective Usecase
 
 Alistair Cockburn
 Doug Rosenber
