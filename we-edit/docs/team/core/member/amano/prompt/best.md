@@ -1,3 +1,7 @@
+### Effect-TS
+
+Giulio Canti
+
 ### etc
 
 日本人のアクセンチュア勤務のコンサルタント
