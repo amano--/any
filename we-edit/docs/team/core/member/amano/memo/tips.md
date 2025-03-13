@@ -4,13 +4,8 @@
 []()
 []()
 []()
-[]()
-[]()
-[]()
-[]()
-[]()
-[]()
-[自分のコーディングスタイル(TDD/DDD/FP)をAIに叩き込む](https://zenn.dev/mizchi/articles/ai-ddd-tdd-prompt)
+
+[AI*Agent*の作り方\_近藤憲児　Clineの解説](https://speakerdeck.com/kenjikondobai/ai-agent-nozuo-rifang-jin-teng-xian-er)
 
 ### Webで拾ったTips集
 
