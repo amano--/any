@@ -6,41 +6,41 @@
 ## ツール構成
 
 ### 1. 自動化ツール
-[01-automation-tools.md](./01-automation-tools.md)
+[automation-tools.md](./automation-tools.md)
 - テンプレート生成
 - 品質チェック
 - バージョン管理
+- レビュー管理
 - メトリクス収集
-- 文書変換
 
 主な用途：
 - 文書の自動生成
 - 品質の自動チェック
 - バージョン管理の自動化
-- メトリクスの自動収集
+- レビュープロセスの効率化
 
 ### 2. スクリプト・ワークフロー
-[02-scripts-workflows.md](./02-scripts-workflows.md)
+[scripts-workflows.md](./scripts-workflows.md)
 - CI/CDワークフロー
-- 品質チェックスクリプト
+- 検証スクリプト
 - 自動化スクリプト
-- 変更管理スクリプト
+- レポート生成
 
 主な用途：
 - 継続的な品質確保
 - 自動チェックの実施
 - インデックスの生成
-- 変更の追跡
+- レポートの作成
 
 ## セットアップ方法
 
 ### 1. 環境準備
 ```bash
 # 必要なツールのインストール
-npm install -g document-tools
+npm install -g doc-tools
 
 # 設定ファイルの配置
-cp config/document-tools.yaml .document-tools.yaml
+cp config/doc-tools.yaml .doc-tools.yaml
 
 # 環境変数の設定
 export DOC_TOOLS_HOME=/path/to/tools
@@ -65,7 +65,7 @@ validate:
 ### 1. 自動化ツール
 ```bash
 # テンプレート生成
-doc-tools generate template --type analysis
+doc-tools generate template --type technical
 
 # 品質チェック
 doc-tools check quality --path docs/
@@ -76,14 +76,14 @@ doc-tools version bump --type minor
 
 ### 2. スクリプト実行
 ```bash
-# リンクチェック
-npm run check:links
+# 構造検証
+npm run validate:structure
 
-# インデックス生成
-npm run generate:index
+# 品質チェック
+npm run check:quality
 
-# 差分レポート生成
-npm run generate:diff
+# レポート生成
+npm run generate:report
 ```
 
 ## カスタマイズ
@@ -164,7 +164,7 @@ Q: インストールに失敗する場合は？
 A: 依存関係とNodeバージョンを確認してください。
 
 Q: 設定ファイルの場所は？
-A: プロジェクトルートの.document-tools.yamlを確認してください。
+A: プロジェクトルートの.doc-tools.yamlを確認してください。
 
 ### 2. 運用
 Q: 自動チェックをスキップするには？
