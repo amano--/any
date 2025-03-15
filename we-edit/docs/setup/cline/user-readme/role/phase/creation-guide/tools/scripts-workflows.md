@@ -1,243 +1,245 @@
-# スクリプトとワークフロー集
+# スクリプト・ワークフローガイド v3
 
-## 1. CI/CDワークフロー
+## 1. CI/CDパイプライン
 
-### 1.1 文書検証ワークフロー
-```yaml
-# .github/workflows/document-validation.yml
-name: Document Validation
+### 1.1 基本構成
+```markdown
+1. 継続的インテグレーション
+   - 文書の自動ビルド
+   - 品質チェック実行
+   - テスト自動化
+   - レポート生成
 
-on:
-  push:
-    paths:
-      - 'docs/**'
-  pull_request:
-    paths:
-      - 'docs/**'
-
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Run structure validation
-        run: |
-          npm run validate:structure
-          npm run validate:links
-          npm run validate:format
-      
-      - name: Run quality checks
-        run: |
-          npm run check:completeness
-          npm run check:consistency
-          npm run check:style
-      
-      - name: Generate validation report
-        run: npm run generate:validation-report
-      
-      - name: Upload report artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: validation-report
-          path: reports/validation
+2. 継続的デリバリー
+   - 承認プロセス
+   - 環境別デプロイ
+   - バージョン管理
+   - 通知連携
 ```
 
-### 1.2 自動生成ワークフロー
-```yaml
-# .github/workflows/document-generation.yml
-name: Document Generation
+### 1.2 プロジェクトタイプ別設定
+```markdown
+1. 大規模プロジェクト
+   □ 複数環境管理
+   □ 詳細な承認フロー
+   □ 包括的なテスト
+   □ 高度な自動化
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
+2. 中規模プロジェクト
+   □ 標準環境構成
+   □ 基本承認フロー
+   □ 主要テスト項目
+   □ 必要な自動化
 
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Setup environment
-        run: |
-          npm install
-          npm run setup:tools
-      
-      - name: Generate documents
-        run: |
-          npm run generate:templates
-          npm run generate:indexes
-          npm run generate:toc
-      
-      - name: Run quality checks
-        run: npm run quality:check
-      
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          title: 'docs: Update generated documents'
-          branch: update-docs
-          commit-message: 'docs: Update generated documents'
+3. 小規模プロジェクト
+   □ シンプルな環境
+   □ 軽量な承認
+   □ 重要テスト
+   □ 最小限の自動化
 ```
 
-## 2. 検証スクリプト
+## 2. 自動化スクリプト
 
-### 2.1 構造検証
-```javascript
-// scripts/validate-structure.js
-const validateStructure = async (docPath) => {
-  const structure = {
-    required: ['概要', '目的', '詳細', '結論'],
-    optional: ['参考', '付録']
-  };
+### 2.1 文書処理スクリプト
+```markdown
+1. 生成スクリプト
+   - テンプレート適用
+   - メタデータ設定
+   - 構造チェック
+   - フォーマット調整
 
-  const doc = await readDocument(docPath);
-  const validation = {
-    missing: [],
-    incomplete: [],
-    invalid: []
-  };
-
-  // 必須セクションのチェック
-  structure.required.forEach(section => {
-    if (!doc[section]) {
-      validation.missing.push(section);
-    } else if (!isComplete(doc[section])) {
-      validation.incomplete.push(section);
-    }
-  });
-
-  // 構造の整合性チェック
-  validateHierarchy(doc, validation);
-  validateReferences(doc, validation);
-  validateFormatting(doc, validation);
-
-  return validation;
-};
-
-// 使用例
-const main = async () => {
-  const results = await validateStructure('path/to/doc');
-  generateReport(results);
-};
+2. 検証スクリプト
+   - 文法チェック
+   - リンク検証
+   - 参照確認
+   - スタイル検証
 ```
 
-### 2.2 品質検証
-```javascript
-// scripts/validate-quality.js
-const validateQuality = async (docPath) => {
-  const quality = {
-    readability: [],
-    consistency: [],
-    completeness: [],
-    accuracy: []
-  };
+### 2.2 バッチ処理
+```markdown
+1. 定期実行
+   - 夜間ビルド
+   - 品質チェック
+   - バックアップ
+   - メトリクス収集
 
-  const doc = await readDocument(docPath);
-
-  // 可読性チェック
-  quality.readability = checkReadability(doc);
-
-  // 一貫性チェック
-  quality.consistency = checkConsistency(doc);
-
-  // 完全性チェック
-  quality.completeness = checkCompleteness(doc);
-
-  // 正確性チェック
-  quality.accuracy = checkAccuracy(doc);
-
-  return quality;
-};
-
-// 使用例
-const main = async () => {
-  const results = await validateQuality('path/to/doc');
-  generateQualityReport(results);
-};
+2. イベント駆動
+   - コミット時検証
+   - PR時レビュー
+   - マージ時デプロイ
+   - 障害時通知
 ```
 
-## 3. 自動化スクリプト
+## 3. 検証フロー
 
-### 3.1 インデックス生成
-```javascript
-// scripts/generate-index.js
-const generateIndex = async (directory) => {
-  const files = await scanDirectory(directory);
-  const index = {
-    categories: {},
-    tags: {},
-    authors: {},
-    updated: new Date()
-  };
+### 3.1 自動検証
+```markdown
+1. 静的検証
+   - 文法チェック
+   - スタイルガイド準拠
+   - リンク有効性
+   - メタデータ検証
 
-  // ファイルの解析と分類
-  for (const file of files) {
-    const metadata = await extractMetadata(file);
-    categorizeDocument(index, metadata);
-    indexTags(index, metadata);
-    trackAuthors(index, metadata);
-  }
-
-  // インデックスの生成
-  await writeIndex(index, directory);
-  await generateNavigation(index);
-  await updateSearchIndex(index);
-
-  return index;
-};
-
-// 使用例
-const main = async () => {
-  await generateIndex('docs/');
-};
+2. 動的検証
+   - ビルド確認
+   - レンダリング
+   - クロスリファレンス
+   - インタラクティブ要素
 ```
 
-### 3.2 レポート生成
-```javascript
-// scripts/generate-report.js
-const generateReport = async (validationResults) => {
-  const report = {
-    summary: {
-      total: 0,
-      passed: 0,
-      failed: 0,
-      warnings: 0
-    },
-    details: {
-      structure: [],
-      quality: [],
-      links: []
-    },
-    timestamp: new Date()
-  };
+### 3.2 品質ゲート
+```markdown
+1. 必須チェック
+   □ 基本フォーマット
+   □ 必須項目
+   □ エラー検出
+   □ セキュリティ
 
-  // 結果の集計
-  summarizeResults(report, validationResults);
-  
-  // 詳細レポートの生成
-  generateDetailedReport(report);
-  
-  // HTML形式のレポート生成
-  await generateHtmlReport(report);
-  
-  // 通知の送信
-  await notifyResults(report);
+2. オプションチェック
+   □ スタイルガイド
+   □ ベストプラクティス
+   □ パフォーマンス
+   □ アクセシビリティ
+```
 
-  return report;
-};
+## 4. モニタリング・レポート
 
-// 使用例
-const main = async () => {
-  const validation = await runValidation();
-  await generateReport(validation);
-};
+### 4.1 監視項目
+```markdown
+1. パフォーマンス指標
+   - 処理時間
+   - リソース使用率
+   - エラー率
+   - 応答時間
+
+2. 品質指標
+   - カバレッジ
+   - エラー検出数
+   - 修正率
+   - 完了率
+```
+
+### 4.2 レポート生成
+```markdown
+1. 定期レポート
+   - 日次サマリー
+   - 週次レポート
+   - 月次分析
+   - トレンド報告
+
+2. イベントレポート
+   - ビルド結果
+   - テスト結果
+   - デプロイ状況
+   - インシデント報告
+```
+
+## 5. シナリオ別ワークフロー
+
+### 5.1 新規プロジェクト
+```markdown
+1. 初期セットアップ
+   □ 環境構築
+   □ 基本設定
+   □ テンプレート準備
+   □ CI/CD設定
+
+2. 展開フロー
+   □ 段階的自動化
+   □ 検証導入
+   □ モニタリング設定
+   □ フィードバック収集
+```
+
+### 5.2 既存プロジェクト改善
+```markdown
+1. 移行準備
+   □ 現状分析
+   □ ギャップ評価
+   □ 移行計画
+   □ リスク管理
+
+2. 改善フロー
+   □ 段階的導入
+   □ 並行運用
+   □ 効果測定
+   □ 最適化
+```
+
+### 5.3 緊急対応
+```markdown
+1. クイックセットアップ
+   □ 最小構成
+   □ 重要機能
+   □ 基本検証
+   □ 即時展開
+
+2. 緊急フロー
+   □ 優先度管理
+   □ リスク最小化
+   □ 迅速な展開
+   □ 効果確認
+```
+
+## 6. トラブルシューティング
+
+### 6.1 一般的な問題
+```markdown
+1. パイプライン問題
+   - ビルド失敗
+   - テストエラー
+   - デプロイ失敗
+   - 環境問題
+
+2. スクリプト問題
+   - 実行エラー
+   - パフォーマンス低下
+   - 依存関係
+   - リソース枯渇
+```
+
+### 6.2 解決フロー
+```markdown
+1. 問題特定
+   □ ログ分析
+   □ エラー特定
+   □ 影響評価
+   □ 原因究明
+
+2. 対応実施
+   □ 一時対策
+   □ 恒久対策
+   □ 検証実施
+   □ モニタリング
+```
+
+## 7. メンテナンス
+
+### 7.1 定期メンテナンス
+```markdown
+1. スクリプト管理
+   - バージョン更新
+   - 依存関係更新
+   - パフォーマンス最適化
+   - セキュリティ対応
+
+2. 環境管理
+   - システム更新
+   - リソース最適化
+   - バックアップ
+   - クリーンアップ
+```
+
+### 7.2 改善活動
+```markdown
+1. 効率化
+   - プロセス最適化
+   - 自動化範囲拡大
+   - ツール改善
+   - フィードバック反映
+
+2. 品質向上
+   - チェック項目追加
+   - 検証強化
+   - モニタリング改善
+   - レポート充実
