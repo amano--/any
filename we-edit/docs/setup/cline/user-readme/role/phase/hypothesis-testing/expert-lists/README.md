@@ -1,121 +1,165 @@
-# 仮説検証フェーズの専門家リスト
+# 仮説検証フェーズの専門家リスト概要
 
-## 概要
-本ディレクトリには、仮説検証フェーズで必要となる各分野の専門家のプロフィール、知見、活用方法が含まれています。仮説の立案、検証計画の策定、実験設計、データ分析など、仮説検証に関わる様々な専門性を効果的に活用することができます。
+## 1. 全体構成
 
-## リスト構成
+### 1.1 ビジネス領域
+```markdown
+[experts-list-business-01.md](./experts-list-business-01.md)：戦略系専門家
+- 戦略立案、イノベーション理論
+- 競争分析、市場戦略
+- 戦略的実験、成長戦略
 
-### 1. ビジネス専門家
-[experts-list-business-01.md](./experts-list-business-01.md)
-- ビジネス仮説立案
-- 市場検証手法
-- ユーザー調査
-- ROI分析
+[experts-list-business-02.md](./experts-list-business-02.md)：マーケティング系専門家
+- 顧客開発、市場検証
+- ブランド戦略、成長戦略
+- 行動分析、市場開発
 
-主な用途：
-- ビジネス仮説の構築
-- 市場検証計画の立案
-- 顧客インサイトの分析
-- 投資対効果の評価
+[experts-list-business-03.md](./experts-list-business-03.md)：イノベーション系専門家
+- リーンスタートアップ
+- ビジネスモデル設計
+- 価値提案検証
+```
 
-### 2. 技術専門家
-[experts-list-technical-02.md](./experts-list-technical-02.md)
-- 技術実現性検証
-- プロトタイピング
-- パフォーマンス評価
-- アーキテクチャ検証
+### 1.2 技術領域
+```markdown
+[experts-list-technical-01.md](./experts-list-technical-01.md)：アーキテクチャ系専門家
+- システム設計検証
+- アーキテクチャ評価
+- 技術選定方法論
 
-主な用途：
-- 技術仮説の検証
-- 実装可能性の評価
-- 性能要件の検証
-- アーキテクチャの妥当性確認
+[experts-list-technical-02.md](./experts-list-technical-02.md)：テスト・プロトタイピング系専門家
+- テスト戦略設計
+- プロトタイプ評価
+- 検証環境構築
 
-### 3. 分析専門家
-[experts-list-analysis-03.md](./experts-list-analysis-03.md)
+[experts-list-technical-03.md](./experts-list-technical-03.md)：パフォーマンス系専門家
+- スケーラビリティ検証
+- パフォーマンステスト
+- 負荷試験設計
+
+[experts-list-technical-04.md](./experts-list-technical-04.md)：セキュリティ・DevOps系専門家
+- セキュリティ検証
+- 自動化戦略
+- 運用設計検証
+```
+
+### 1.3 分析領域
+```markdown
+[experts-list-analysis-01.md](./experts-list-analysis-01.md)：実験設計系専門家
+- 統計的実験設計
+- A/Bテスト設計
 - データ分析手法
-- 統計的検証
-- 実験計画法
-- 定量・定性分析
 
-主な用途：
-- データに基づく検証
-- 統計的有意性の評価
-- 実験デザインの設計
-- 結果の解釈と分析
+[experts-list-analysis-02.md](./experts-list-analysis-02.md)：統計・因果推論系専門家
+- 因果関係分析
+- 統計的推論
+- 効果推定手法
 
-### 4. プロセス専門家
-[experts-list-process-04.md](./experts-list-process-04.md)
-- 仮説検証プロセス
+[experts-list-analysis-03.md](./experts-list-analysis-03.md)：機械学習系専門家
+- 予測モデル検証
+- アルゴリズム評価
+- モデル選択手法
+
+[experts-list-analysis-04.md](./experts-list-analysis-04.md)：可視化系専門家
+- データ可視化手法
+- インサイト導出
+- 結果コミュニケーション
+```
+
+### 1.4 プロセス領域
+```markdown
+[experts-list-process-01.md](./experts-list-process-01.md)：品質管理系専門家
 - 品質管理手法
-- 改善サイクル
-- チーム組織化
+- プロセス改善
+- 検証プロセス設計
 
-主な用途：
-- 検証プロセスの設計
-- 品質基準の設定
-- 継続的改善の推進
-- チーム体制の構築
+[experts-list-process-02.md](./experts-list-process-02.md)：リーン・アジャイル系専門家
+- リーン手法適用
+- アジャイル検証
+- 反復的改善
 
-## 活用方法
+[experts-list-process-03.md](./experts-list-process-03.md)：組織学習系専門家
+- 組織的学習設計
+- 変革マネジメント
+- 文化変革推進
 
-### 1. 専門家の選択
-```markdown
-1. 検証目的の特定
-   - 検証したい仮説の明確化
-   - 必要な専門性の特定
-   - 期待する成果の定義
-   - 制約条件の確認
-
-2. 専門家の選定
-   - 適切な分野の選択
-   - プロフィールの確認
-   - 活用シーンの確認
-   - 組み合わせの検討
+[experts-list-process-04.md](./experts-list-process-04.md)：システム思考系専門家
+- システム思考適用
+- 問題解決手法
+- 制約理論活用
 ```
 
-### 2. プロンプトの活用
-```markdown
-1. プロンプトの準備
-   - テンプレートの選択
-   - 状況の記述
-   - 要件の明確化
-   - 期待値の設定
+## 2. 活用ガイドライン
 
-2. フィードバックの活用
-   - 結果の評価
-   - 改善点の特定
-   - プロンプトの改善
-   - 再試行の判断
+### 2.1 専門家の選択基準
+```markdown
+1. 仮説の性質による選択
+   □ ビジネス仮説 → [experts-list-business-01.md](./experts-list-business-01.md) ～ [experts-list-business-03.md](./experts-list-business-03.md)
+   □ 技術仮説 → [experts-list-technical-01.md](./experts-list-technical-01.md) ～ [experts-list-technical-04.md](./experts-list-technical-04.md)
+   □ 分析仮説 → [experts-list-analysis-01.md](./experts-list-analysis-01.md) ～ [experts-list-analysis-04.md](./experts-list-analysis-04.md)
+   □ プロセス仮説 → [experts-list-process-01.md](./experts-list-process-01.md) ～ [experts-list-process-04.md](./experts-list-process-04.md)
+
+2. 検証段階による選択
+   □ 計画段階 → 設計・戦略系専門家
+   □ 実行段階 → 実装・実験系専門家
+   □ 評価段階 → 分析・評価系専門家
+   □ 改善段階 → 改善・最適化系専門家
 ```
 
-## 組み合わせのヒント
+### 2.2 組み合わせパターン
+```markdown
+1. クロスドメイン検証
+   □ ビジネス × 技術
+   □ 技術 × 分析
+   □ 分析 × プロセス
+   □ プロセス × ビジネス
 
-### 1. ビジネス仮説検証
-- ビジネス × 分析
-- ビジネス × プロセス
-- ビジネス × 技術
+2. 段階的検証
+   □ 計画 → 実行 → 評価 → 改善
+   □ 仮説 → 実験 → 分析 → 最適化
+   □ 設計 → 実装 → 検証 → 改良
+```
 
-### 2. 技術仮説検証
-- 技術 × 分析
-- 技術 × プロセス
-- 技術 × ビジネス
+## 3. 活用シナリオ例
 
-### 3. 統合的検証
-- ビジネス × 技術 × 分析
-- 技術 × プロセス × 分析
-- ビジネス × プロセス × 分析
+### 3.1 新規事業仮説検証
+```markdown
+1. 戦略フェーズ
+   □ [experts-list-business-01.md](./experts-list-business-01.md)：戦略立案専門家
+   □ [experts-list-analysis-02.md](./experts-list-analysis-02.md)：因果推論専門家
+   □ [experts-list-process-04.md](./experts-list-process-04.md)：システム思考専門家
 
-## メンテナンス
+2. 実験フェーズ
+   □ [experts-list-business-02.md](./experts-list-business-02.md)：市場検証専門家
+   □ [experts-list-technical-02.md](./experts-list-technical-02.md)：プロトタイピング専門家
+   □ [experts-list-analysis-01.md](./experts-list-analysis-01.md)：実験設計専門家
+```
 
-### 1. 定期更新
-- 新しい専門家の追加
-- 最新の手法の反映
-- 事例の更新
-- プロンプトの改善
+### 3.2 技術選定仮説検証
+```markdown
+1. 評価フェーズ
+   □ [experts-list-technical-01.md](./experts-list-technical-01.md)：アーキテクチャ専門家
+   □ [experts-list-technical-03.md](./experts-list-technical-03.md)：パフォーマンス専門家
+   □ [experts-list-process-02.md](./experts-list-process-02.md)：リーン手法専門家
 
-### 2. 品質管理
-- 情報の正確性確認
-- 有効性の評価
-- フィードバックの収集
-- 改善の実施
+2. 検証フェーズ
+   □ [experts-list-technical-02.md](./experts-list-technical-02.md)：テスト専門家
+   □ [experts-list-analysis-03.md](./experts-list-analysis-03.md)：予測モデル専門家
+   □ [experts-list-process-01.md](./experts-list-process-01.md)：品質管理専門家
+```
+
+## 4. メンテナンス方針
+
+### 4.1 定期更新
+```markdown
+1. 内容の更新
+   □ 新規専門家の追加
+   □ 最新手法の反映
+   □ 事例の更新
+   □ プロンプトの改善
+
+2. 構成の最適化
+   □ カテゴリーの見直し
+   □ 組み合わせの更新
+   □ 活用シナリオの拡充
+   □ フィードバックの反映
