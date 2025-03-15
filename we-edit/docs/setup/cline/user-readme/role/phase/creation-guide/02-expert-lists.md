@@ -1,214 +1,188 @@
 # 文書作成専門家リスト
 
-## 1. 文書設計専門家
+## 1. 技術文書専門家
 
-### 1.1 アダプティブコンテンツ設計
+### 1.1 API/技術文書
 ```markdown
-1. Karen McGrane
-   専門：アダプティブコンテンツ
-   実績：
-   - 『Content Strategy for Mobile』著者
-   - アダプティブコンテンツ手法の確立
-   - Fortune 500企業のコンテンツ戦略指導
-   - 数百のプロジェクトでの実践経験
-
-   活用シーン：
-   - マルチデバイス対応設計
-   - コンテンツモデリング
-   - 再利用可能な構造設計
-   - コンテンツ戦略立案
+Bob Ducharme
+- 専門：XML、API文書、データモデリング
+- 実績：
+  □ 『XML and JSON Recipes for SQL Server』著者
+  □ 『Learning SPARQL』著者
+  □ XMLおよびSPARQLの第一人者
+- プロンプト例：
+  □ プロフィール指定：
+    「XML/API文書の専門家Bob Ducharmeとして、
+     以下の観点から評価してください：
+     - API設計の整合性
+     - データモデルの明確さ
+     - インターフェース設計
+     - メタデータ活用」
 ```
 
-### 1.2 構造化文書設計
+### 1.2 コード文書
 ```markdown
-1. Mark Baker
-   専門：構造化文書、DITA
-   実績：
-   - 『Every Page is Page One』著者
-   - DITA導入メソッドの確立
-   - IBM、Oracle等での導入実績
-   - トピック指向文書手法の開発
-
-   活用シーン：
-   - 大規模文書の構造化
-   - DITA導入プロジェクト
-   - 再利用戦略の策定
-   - 文書アーキテクチャ設計
+Robert C. Martin (Uncle Bob)
+- 専門：クリーンコード、設計原則
+- 実績：
+  □ 『Clean Code』著者
+  □ SOLID原則の提唱者
+  □ アジャイルマニフェスト作者
+- プロンプト例：
+  □ プロフィール指定：
+    「クリーンコードの第一人者Uncle Bobとして、
+     以下の原則に基づいて評価してください：
+     - コードの可読性
+     - 保守性の確保
+     - SOLID原則の適用
+     - リファクタリングの必要性」
 ```
 
-## 2. 技術文書専門家
+## 2. 文書設計専門家
 
-### 2.1 API文書化
+### 2.1 コンテンツ戦略
 ```markdown
-1. Tom Johnson
-   専門：API文書、開発者向け文書
-   実績：
-   - I'd Rather Be Writing ブログ運営
-   - Amazon等での API文書開発
-   - API文書化ベストプラクティス確立
-   - 技術文書コミュニティリーダー
-
-   活用シーン：
-   - API文書設計
-   - 開発者向け文書作成
-   - ツール選定・導入
-   - プロセス確立
+Karen McGrane
+- 専門：アダプティブコンテンツ、UX設計
+- 実績：
+  □ 『Content Strategy for Mobile』著者
+  □ アダプティブコンテンツ手法の確立
+  □ Fortune 500企業のコンサルティング
+- プロンプト例：
+  □ プロフィール指定：
+    「コンテンツ戦略家Karen McGraneとして、
+     以下の観点から分析してください：
+     - マルチデバイス対応
+     - コンテンツの再利用性
+     - ユーザー中心設計
+     - 構造化アプローチ」
 ```
 
-### 2.2 クリーンコード文書
+### 2.2 ユーザビリティ
 ```markdown
-1. Robert C. Martin
-   専門：コード文書、設計原則
-   実績：
-   - 『Clean Code』著者
-   - SOLID原則の確立
-   - アジャイル開発手法の普及
-   - 数十年の実務経験
-
-   活用シーン：
-   - コード文書化
-   - 設計原則の文書化
-   - レビュー基準の策定
-   - 品質基準の確立
+Ginny Redish
+- 専門：ユーザビリティ、情報設計
+- 実績：
+  □ 『Letting Go of the Words』著者
+  □ ユーザー中心文書設計の先駆者
+  □ 政府機関の文書改善プロジェクト多数
+- プロンプト例：
+  □ プロフィール指定：
+    「ユーザビリティ専門家Ginny Redishとして、
+     以下の視点で評価してください：
+     - 読みやすさ
+     - タスク完了性
+     - 情報アクセス性
+     - ユーザー満足度」
 ```
 
 ## 3. プロセス文書専門家
 
 ### 3.1 文書プロセス管理
 ```markdown
-1. JoAnn Hackos
-   専門：文書プロセス、組織管理
-   実績：
-   - Information Process Maturity Model開発
-   - 『Managing Your Documentation Projects』著者
-   - CIDM（Center for Information-Development Management）設立
-   - ISO/IEC JTC1/SC7メンバー
-
-   活用シーン：
-   - プロセス評価・改善
-   - 組織成熟度評価
-   - プロジェクト管理
-   - 品質管理体制構築
+JoAnn Hackos
+- 専門：文書プロセス、品質管理
+- 実績：
+  □ 『Managing Your Documentation Projects』著者
+  □ Information Process Maturity Model開発者
+  □ CIDM設立者
+- プロンプト例：
+  □ プロフィール指定：
+    「文書プロセス専門家JoAnn Hackosとして、
+     以下の観点から評価してください：
+     - プロセス成熟度
+     - 品質管理手法
+     - 効率性の改善
+     - 組織的アプローチ」
 ```
 
-### 3.2 標準化・品質管理
+### 3.2 標準化/DITA
 ```markdown
-1. Andrea Ames
-   専門：技術文書品質、戦略
-   実績：
-   - IBM コンテンツ戦略担当
-   - STC（Society for Technical Communication）会長
-   - 『Single Sourcing』著者
-   - 品質評価フレームワーク開発
-
-   活用シーン：
-   - 品質基準策定
-   - レビュープロセス設計
-   - メトリクス設定
-   - 戦略立案
+Tony Self
+- 専門：DITA、文書標準化
+- 実績：
+  □ 『DITA Style Guide』著者
+  □ DITA導入コンサルティング多数
+  □ 技術文書標準化の第一人者
+- プロンプト例：
+  □ プロフィール指定：
+    「DITA専門家Tony Selfとして、
+     以下の観点から分析してください：
+     - 構造化手法
+     - 再利用戦略
+     - 標準化アプローチ
+     - 移行計画」
 ```
 
 ## 4. 教育文書専門家
 
-### 4.1 学習デザイン
+### 4.1 学習設計
 ```markdown
-1. Julie Dirksen
-   専門：学習デザイン、行動変容
-   実績：
-   - 『Design for How People Learn』著者
-   - eLearning Guild マスター
-   - 学習効果測定手法の開発
-   - 数百の教育プログラム設計
-
-   活用シーン：
-   - トレーニング設計
-   - 学習コンテンツ開発
-   - 評価方法設計
-   - インタラクション設計
+Julie Dirksen
+- 専門：学習設計、行動変容
+- 実績：
+  □ 『Design for How People Learn』著者
+  □ eLearning Guild マスター
+  □ 学習効果測定手法の開発者
+- プロンプト例：
+  □ プロフィール指定：
+    「学習設計専門家Julie Dirksenとして、
+     以下の観点から評価してください：
+     - 学習効果
+     - 記憶定着
+     - 行動変容
+     - インタラクション設計」
 ```
 
 ### 4.2 マイクロラーニング
 ```markdown
-1. Ray Jimenez
-   専門：マイクロラーニング設計
-   実績：
-   - 『3-Minute eLearning』著者
-   - Vignettes Learning 創設者
-   - マイクロラーニング手法の確立
-   - 効果測定モデルの開発
-
-   活用シーン：
-   - 短時間学習設計
-   - モバイル学習設計
-   - 実践的演習設計
-   - 評価システム構築
+Ray Jimenez
+- 専門：マイクロラーニング設計
+- 実績：
+  □ 『3-Minute eLearning』著者
+  □ マイクロラーニング手法の確立者
+  □ Vignettes Learning創設者
+- プロンプト例：
+  □ プロフィール指定：
+    「マイクロラーニング専門家Ray Jimenezとして、
+     以下の観点から分析してください：
+     - 学習単位の設計
+     - 効果的な要約
+     - 実践的演習
+     - 学習効果測定」
 ```
 
-## 5. 専門家の組み合わせ
+## 5. 専門家の組み合わせ例
 
-### 5.1 プロジェクトタイプ別
+### 5.1 技術文書プロジェクト
 ```markdown
-1. 大規模技術文書
-   - Mark Baker（構造設計）
-   - JoAnn Hackos（プロセス管理）
-   - Andrea Ames（品質管理）
+主担当：Bob Ducharme
+補助担当：
+- Robert C. Martin（コード品質）
+- Tony Self（構造化）
+- JoAnn Hackos（プロセス）
 
-2. アジャイル開発文書
-   - Tom Johnson（API文書）
-   - Robert C. Martin（コード文書）
-   - Ray Jimenez（学習設計）
-
-3. 教育・トレーニング
-   - Julie Dirksen（学習設計）
-   - Karen McGrane（コンテンツ設計）
-   - Ray Jimenez（マイクロラーニング）
+プロンプト例：
+「Bob DucharmeとRobert C. Martinの視点から、
+ 以下のAPI文書を評価してください：
+ - 技術的正確性（Ducharme）
+ - コード品質（Martin）
+ - インターフェース設計（Ducharme）
+ - 保守性（Martin）」
 ```
 
-### 5.2 目的別
+### 5.2 教育コンテンツ開発
 ```markdown
-1. 品質改善
-   - Andrea Ames（品質管理）
-   - JoAnn Hackos（プロセス）
-   - Robert C. Martin（設計原則）
+主担当：Julie Dirksen
+補助担当：
+- Ray Jimenez（マイクロ化）
+- Karen McGrane（構造化）
+- Ginny Redish（ユーザビリティ）
 
-2. 効率化推進
-   - Mark Baker（構造化）
-   - Karen McGrane（再利用）
-   - Tom Johnson（ツール活用）
-
-3. 学習効果向上
-   - Julie Dirksen（学習設計）
-   - Ray Jimenez（実践手法）
-   - Karen McGrane（アダプティブ）
-```
-
-## 6. 専門家への相談
-
-### 6.1 相談方法
-```markdown
-1. 直接相談
-   - カンファレンス参加
-   - ワークショップ参加
-   - コンサルティング依頼
-   - トレーニング受講
-
-2. 間接相談
-   - 書籍・記事の参照
-   - オンラインコース受講
-   - コミュニティ活用
-   - 事例研究
-```
-
-### 6.2 相談のポイント
-```markdown
-1. 準備
-   - 目的の明確化
-   - 課題の整理
-   - 背景情報の準備
-   - 質問事項の整理
-
-2. フォローアップ
-   - 助言の記録
-   - 実践計画の作成
-   - 効果測定の準備
-   - 継続的な改善
+プロンプト例：
+「Julie DirksenとRay Jimenezの視点から、
+ 以下の学習コンテンツを設計してください：
+ - 学習目標設定（Dirksen）
+ - マイクロ化戦略（Jimenez）
+ - インタラクション（Dirksen）
+ - 効果測定（Jimenez）」
